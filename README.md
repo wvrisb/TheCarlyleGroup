@@ -1,6 +1,6 @@
 # Investor Event Outcomes: AI / BI Analytics Take-Home
 
-**Live dashboard:** https://wvrisb.github.io/TheCarlyleGroup/ · **Readout:** [`docs/readout.pdf`](docs/readout.pdf)
+**Live dashboard:** https://wvrisb.github.io/TheCarlyleGroup/ · **Readout (PDF):** https://wvrisb.github.io/TheCarlyleGroup/docs/readout.pdf
 
 **Question:** What happened following our investor events, what business outcomes are associated with them, and what should we learn for future events?
 
