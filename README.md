@@ -4,7 +4,7 @@
 
 **Question:** What happened following our investor events, what business outcomes are associated with them, and what should we learn for future events?
 
-**Short answer:** Three events cost $1.2M and 78% of our investor firms attended. Meetings rose after the events: 43% of attending firms had a meeting with us in the 60 days before an event, 60% in the 60 days after. But similar firms that were not at the event rose almost as much over the same weeks (26% → 41%), so most of the rise would have happened anyway. Only the London dinner added more, and that rests on a comparison with 9 firms. We cannot yet show that events bring in new deals: attending firms opened no more new deals than firms that were not there, and those deals did not close more often. What to act on: Tier 1 follow-up is slow (10 of 13 not met within 60 days of an event; 4 with open deals still have no logged meeting), we met fewer of Berlin's firms after it than before although it cost the most (partly because the team's follow-up went to London attendees), and one $650M deal we have not verified is 55% of committed capital.
+**Short answer:** Three events cost $1.2M and 78% of our investor firms attended. Meetings rose after the events: 43% of attending firms had a meeting with us in the 60 days before an event, 60% in the 60 days after. But similar firms that were not at the event rose almost as much over the same weeks (26% → 41%), so most of the rise would have happened anyway. Only the London dinner added more, and that rests on a comparison with 9 firms. We cannot yet show that events bring in new deals: attending firms opened no more new deals than firms that were not there, and those deals did not close more often. What to do: keep event spending flat and run the next events as a measured test; check deal by deal the $1.40B recorded at the investor's investment committee, where only 2 of 39 deals have gone on to commit, and verify the $650M deal (55% of committed capital); and call the 12 firms with open deals worth $707M that we have not met since their event.
 
 ## How this answers the brief
 
@@ -15,11 +15,11 @@ A funnel from reach to capital, where each stage answers one question: **Reach**
 The headline metrics are the ones that hold up against a fair comparison:
 - follow-up rate against the same firms' rate before the event (43% → 60%);
 - Tier 1 firms not met within 60 days of an event (10 of 13);
-- change in firms opening a new deal, against firms at other events (27% → 33% vs 32% → 44%: +6 vs +12 points);
-- commit rate of deals of similar age (13% vs 19%);
+- change in firms opening a new deal, against firms at other events (27% → 33% versus 32% → 44%: +6 versus +12 points);
+- commit rate of deals of similar age (13% versus 19%);
 - cost per firm the event added, after taking away the rise that would have happened anyway (London $23K; New York and Berlin none).
 
-Follow-up is the leading indicator because it is the one IR controls directly. Two obvious metrics were rejected: cost per firm followed up (it counts firms we would have met anyway) and raw pipeline dollars (target sizes, not likely outcomes).
+Follow-up is the leading indicator because it is the one Investor Relations controls directly. Two obvious metrics were rejected: cost per firm followed up (it counts firms we would have met anyway) and raw pipeline dollars (target sizes, not likely outcomes).
 → [`docs/metric_definitions.md`](docs/metric_definitions.md) · dashboard Methods tab
 
 ### How to measure or associate event-related outcomes
@@ -51,15 +51,19 @@ For a five-minute conversation, the three-slide readout carries the same story.
 ### What insights and actions can be derived
 
 - Meetings rose after the events, but almost as much at similar firms that were not there; only London added more, and that rests on a comparison with 9 firms.
-- Attending firms opened no more new deals than firms that were not there, and deals opened after events did not close more often.
-- Tier 1 follow-up is slow: 10 of 13 were not met within 60 days of an event, and 4 with live deals still have no meeting logged.
+- None of four checks shows that events changed deals: new deals (+6 points against +12 for firms at other events), deals already open (50% moved forward against 55%), and commitments (13% against 19% for deals of similar age).
+- Family offices commit far more often: 6 of 14 of their deals at least 120 days old committed, against 6 of 57 for all other investors. They had 23% of event places and gave 70% of committed capital. This is the clearest pattern in the data, but it is one year and one of many comparisons, so it is something to test.
+- 34 deals worth $1.40B are recorded at the investor's investment committee, but only 2 of the 39 deals that reached that stage committed. The deals are stuck or the records are out of date; 9 of 14 commitments skipped due diligence, which points to loose records.
+- Tier 1 follow-up is slow (10 of 13 not met within 60 days), but faster follow-up shows no effect on deals (33% against 33%).
 - We met fewer of Berlin's firms after it than before, although it was the most expensive event; partly because the team's follow-up went to London attendees.
 - One unverified $650M deal is 55% of committed capital.
 
 **Actions:**
-1. Make events measurable and verify the $650M deal before the next budget.
-2. Set a 30-day Tier 1 follow-up standard and test it, starting with the call list.
-3. Review Berlin and its follow-up, and test two more dinners before shifting spend.
+1. Keep event spending flat and run the next events as a measured test: record which event each deal came from, log meetings for every invited firm, compare with similar firms left out only because places ran out, and follow firms for 6 to 12 months. Use the test to try more places for family offices, a redesigned or skipped Berlin, and two more dinners.
+2. Check the late-stage pipeline deal by deal with each deal owner, close deals that are no longer live, and verify the $650M deal before quoting any total.
+3. Call the firms with open deals and no meeting since their event, Tier 1 first, after checking the client database.
+
+Every recommendation, the evidence behind it and the assumptions it depends on are set out in [`docs/assumptions.md`](docs/assumptions.md).
 
 → [`docs/readout.pdf`](docs/readout.pdf) · dashboard Summary tab · call list on the "What to learn" tab
 
@@ -70,7 +74,7 @@ For a five-minute conversation, the three-slide readout carries the same story.
 | 1. Interactive analytics | [`dashboard/index.html`](dashboard/index.html) · [live page](https://wvrisb.github.io/TheCarlyleGroup/dashboard/) · [screenshots](docs/screenshots/) | Six tabs organised around the three questions: Summary, What happened, What it led to, What to learn, Firm explorer, Methods and data. Filters for window, attendance definition, segment, tier, region and the $650M deal |
 | 2. Analysis and data model | [`src/`](src/) · [`sql/`](sql/) · [`output/`](output/) · [`docs/metric_definitions.md`](docs/metric_definitions.md) · [`docs/data_quality.md`](docs/data_quality.md) | Python pipeline; the same model and KPIs in SQL (staging → firm × event table → KPI tables), checked against Python; model tables as CSV; every metric definition and data-quality decision |
 | 3. Executive readout | [`docs/readout.pdf`](docs/readout.pdf) · [speaker notes](docs/readout_notes.md) | Three slides: the answer and three decisions, the evidence, and what to do this week and before the next event. The notes hold the talking points and backup answers to likely questions |
-| 4. AI usage | [`AI_USAGE.md`](AI_USAGE.md) | Where AI helped, how output was validated, and nineteen documented corrections |
+| 4. AI usage | [`AI_USAGE.md`](AI_USAGE.md) | Where AI helped, how output was validated, and twenty documented corrections |
 
 ### Analysis and data model: where each piece lives
 
@@ -80,7 +84,7 @@ For a five-minute conversation, the three-slide readout carries the same story.
 | Python | [`src/profile_data.py`](src/profile_data.py) profiling · [`src/build_model.py`](src/build_model.py) model · [`src/analysis.py`](src/analysis.py) insights · [`src/build_dashboard.py`](src/build_dashboard.py) dashboard build |
 | Transformations | Raw CSVs → cleaned dimension and fact tables → firm × event table, in both SQL and Python; every table saved in [`output/`](output/) |
 | Calculations | [`sql/03_kpis.sql`](sql/03_kpis.sql) → `output/sql/`; [`src/analysis.py`](src/analysis.py) → `output/insights.json` (30, 60 and 90-day windows) |
-| Assumptions | [Key assumptions](#key-assumptions) below; structural limits in [`docs/data_quality.md`](docs/data_quality.md) section 3 |
+| Assumptions | [`docs/assumptions.md`](docs/assumptions.md): each recommendation's evidence, assumptions and what would change it; [Key assumptions](#key-assumptions) below; structural limits in [`docs/data_quality.md`](docs/data_quality.md) section 3 |
 | Metric definitions | [`docs/metric_definitions.md`](docs/metric_definitions.md); also in the dashboard's Methods tab and as hover definitions |
 | Data-quality decisions | [`docs/data_quality.md`](docs/data_quality.md): every issue, its evidence, severity and decision; summarised in the Methods tab |
 | Validation | `src/run_sql.py` (SQL = Python), `src/check_dashboard.py` (dashboard = Python), `src/check_narrative.py` (text under every filter) |
@@ -125,7 +129,7 @@ python src/capture_screenshots.py  # optional: refresh docs/screenshots/
 
 **Linking outcomes to events (association, not cause).** An outcome counts for an event if it happens within the window after an event the firm attended; overlaps are credited to the most recent event. Each claim is then tested against a fair comparison: the same firms before the event, firms that attended a different event over the same dates, and deals old enough to have closed. With three events these comparisons are directional; bootstrap 95% ranges are reported.
 
-**KPIs, from reach to capital.** Reach (firms attended) → Follow-up (follow-up rate vs before-event baseline, days to first meeting, Tier 1 firms not met) → Deals (new deals, existing deals moved forward, change vs firms not at the event) → Outcome (event-sourced commitments, commit rate of deals of similar age) → Efficiency (cost per firm the event added). Full definitions: [`docs/metric_definitions.md`](docs/metric_definitions.md).
+**KPIs, from reach to capital.** Reach (firms attended) → Follow-up (follow-up rate versus before-event baseline, days to first meeting, Tier 1 firms not met) → Deals (new deals, existing deals moved forward, change versus firms not at the event) → Outcome (event-sourced commitments, commit rate of deals of similar age) → Efficiency (cost per firm the event added). Full definitions: [`docs/metric_definitions.md`](docs/metric_definitions.md).
 
 ## Key assumptions
 
@@ -134,7 +138,7 @@ python src/capture_screenshots.py  # optional: refresh docs/screenshots/
 - The $650M deal (O0017) is kept but unverified; every dollar view can exclude it.
 - O9998/O9999 are one duplicated, low-confidence commitment; one is kept and flagged.
 - Deal size ($) is the deal's target size, not probability-weighted.
-- Priority tiers are IR's own labels; the data does not define them.
+- Priority tiers are Investor Relations' own labels; the data does not define them.
 
 Full log with evidence: [`docs/data_quality.md`](docs/data_quality.md).
 
@@ -142,15 +146,15 @@ Full log with evidence: [`docs/data_quality.md`](docs/data_quality.md).
 
 - Three events: every event comparison is directional, and both key bootstrap ranges include zero.
 - Meetings are logged only for firms that attended an event, so firms never invited cannot be compared on meetings, and "no meeting logged" may not mean "no contact".
-- "Firms not at the event" are similar firms we also invite, which went to a different event and had no event of their own in the same weeks. Firms whose own event fell in those weeks were removed because their own follow-up inflated their "before" count, which made our events look better. With them removed, the overall rise in meetings is about what happened at firms not at the event (+54% vs +62%); only London is clearly higher (+158% vs +33%), and that rests on 9 firms, so read it as directional.
+- "Firms not at the event" are similar firms we also invite, which went to a different event and had no event of their own in the same weeks. Firms whose own event fell in those weeks were removed because their own follow-up inflated their "before" count, which made our events look better. With them removed, the overall rise in meetings is about what happened at firms not at the event (+54% versus +62%); only London is clearly higher (+158% versus +33%), and that rests on 9 firms, so read it as directional.
 - Event efficiency is a signal, not a ranking: few firms not at each event are available to compare with (9 for London and Berlin), so the cost per firm the event added changes with the window. Berlin's drop in meetings is the one event finding that holds at every window.
-- Meetings are under-logged: 4 of 37 attending firms whose deals moved past the first stage have no meeting logged at all, so the call list should be checked against the CRM.
+- Meetings are under-logged: 4 of 37 attending firms whose deals moved past the first stage have no meeting logged at all, so the call list should be checked against the client database.
 - Meetings and deals share only a firm ID, so a meeting cannot be tied to the deal it drove.
 
 ## Taking this to production
 
 - **Source data:** add a "source event" field to opportunities, log meetings for all firms, and record actual attendance at the door.
-- **Pipeline:** move the `sql/` model into the warehouse (it is standard SQL; only date arithmetic differs by engine), schedule it after each CRM refresh, and keep `run_sql.py`, `check_dashboard.py` and `check_narrative.py` as CI tests.
+- **Pipeline:** move the `sql/` model into the warehouse (it is standard SQL; only date arithmetic differs by engine), schedule it after each refresh of the CRM (client database), and keep `run_sql.py`, `check_dashboard.py` and `check_narrative.py` as CI tests.
 - **Front end:** the static HTML suits a take-home and offline review. In production the same model would feed the firm's BI tool, with row-level security for coverage teams.
 - **Measurement design:** before the next event, set up a comparison of invited firms with similar firms not invited (matched by tier, segment and region), so next year's readout can speak to cause.
 

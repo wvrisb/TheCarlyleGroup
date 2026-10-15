@@ -931,6 +931,56 @@
     "solo_post": 4
    }
   },
+  "who_commits": {
+   "family_office": {
+    "deals": 14,
+    "committed": 6
+   },
+   "others": {
+    "deals": 57,
+    "committed": 6
+   },
+   "family_office_excl_fast": {
+    "deals": 11,
+    "committed": 3
+   },
+   "others_excl_fast": {
+    "deals": 53,
+    "committed": 2
+   },
+   "places": 70,
+   "places_family_office": 16,
+   "places_found_ins_pension": 36,
+   "committed_usd": 528000000.0,
+   "committed_usd_family_office": 370000000.0,
+   "committed_usd_found_ins_pension": 6500000.0
+  },
+  "late_stage": {
+   "reached_ic": 39,
+   "reached_ic_committed": 2,
+   "reached_ic_declined": 3,
+   "at_ic_deals": 34,
+   "at_ic_usd": 1397500000.0,
+   "at_ic_firms": 28,
+   "commitments": 14,
+   "commitments_skipping_dd": 9,
+   "commitments_clean": 12,
+   "commitments_clean_skipping_dd": 7,
+   "meetings_last_date": "2026-09-07",
+   "stages_last_date": "2026-10-14"
+  },
+  "existing_deals_moved": {
+   "not_at_event": {
+    "deals": 87,
+    "moved": 36,
+    "rate": 0.41379310344827586
+   },
+   "attended": {
+    "deals": 48,
+    "moved": 21,
+    "rate": 0.4375
+   }
+  },
   "ci_meeting_growth_gap": {
    "point": -0.6333333333333333,
    "lo": -5.3062709030100335,
@@ -1727,6 +1777,56 @@
     "solo_post": 6
    }
   },
+  "who_commits": {
+   "family_office": {
+    "deals": 14,
+    "committed": 6
+   },
+   "others": {
+    "deals": 57,
+    "committed": 6
+   },
+   "family_office_excl_fast": {
+    "deals": 11,
+    "committed": 3
+   },
+   "others_excl_fast": {
+    "deals": 53,
+    "committed": 2
+   },
+   "places": 70,
+   "places_family_office": 16,
+   "places_found_ins_pension": 36,
+   "committed_usd": 528000000.0,
+   "committed_usd_family_office": 370000000.0,
+   "committed_usd_found_ins_pension": 6500000.0
+  },
+  "late_stage": {
+   "reached_ic": 39,
+   "reached_ic_committed": 2,
+   "reached_ic_declined": 3,
+   "at_ic_deals": 34,
+   "at_ic_usd": 1397500000.0,
+   "at_ic_firms": 28,
+   "commitments": 14,
+   "commitments_skipping_dd": 9,
+   "commitments_clean": 12,
+   "commitments_clean_skipping_dd": 7,
+   "meetings_last_date": "2026-09-07",
+   "stages_last_date": "2026-10-14"
+  },
+  "existing_deals_moved": {
+   "not_at_event": {
+    "deals": 87,
+    "moved": 48,
+    "rate": 0.5517241379310345
+   },
+   "attended": {
+    "deals": 48,
+    "moved": 24,
+    "rate": 0.5
+   }
+  },
   "ci_meeting_growth_gap": {
    "point": -0.07879924953095685,
    "lo": -1.9459294587400178,
@@ -2416,6 +2516,56 @@
     "solo_firms": 13,
     "solo_pre": 14,
     "solo_post": 9
+   }
+  },
+  "who_commits": {
+   "family_office": {
+    "deals": 14,
+    "committed": 6
+   },
+   "others": {
+    "deals": 57,
+    "committed": 6
+   },
+   "family_office_excl_fast": {
+    "deals": 11,
+    "committed": 3
+   },
+   "others_excl_fast": {
+    "deals": 53,
+    "committed": 2
+   },
+   "places": 70,
+   "places_family_office": 16,
+   "places_found_ins_pension": 36,
+   "committed_usd": 528000000.0,
+   "committed_usd_family_office": 370000000.0,
+   "committed_usd_found_ins_pension": 6500000.0
+  },
+  "late_stage": {
+   "reached_ic": 39,
+   "reached_ic_committed": 2,
+   "reached_ic_declined": 3,
+   "at_ic_deals": 34,
+   "at_ic_usd": 1397500000.0,
+   "at_ic_firms": 28,
+   "commitments": 14,
+   "commitments_skipping_dd": 9,
+   "commitments_clean": 12,
+   "commitments_clean_skipping_dd": 7,
+   "meetings_last_date": "2026-09-07",
+   "stages_last_date": "2026-10-14"
+  },
+  "existing_deals_moved": {
+   "not_at_event": {
+    "deals": 87,
+    "moved": 48,
+    "rate": 0.5517241379310345
+   },
+   "attended": {
+    "deals": 48,
+    "moved": 24,
+    "rate": 0.5
    }
   },
   "ci_meeting_growth_gap": {

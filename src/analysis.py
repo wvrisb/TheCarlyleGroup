@@ -211,6 +211,55 @@ def analyse(m, w=60, att_def="confirmed"):
                         solo_firms=len(solo), solo_pre=int(s_.meetings_pre.sum()), solo_post=int(s_.meetings_post.sum()))
     out["followup_attention"] = focus
 
+    # 16. who commits: by investor type, among deals old enough to have closed (excluding the unverified $650M deal).
+    #     Also without commitments that skipped due diligence (possible fast re-ups), to test the pattern does not rest on them.
+    x = opps[~opps.flag_outlier].assign(seg=lambda d: d.firm_id.map(firms.segment))
+    mat_ = x[x.age >= MATURE_DAYS]
+    fo = mat_.seg == "Family Office"
+    no_fast = mat_[~(mat_.committed & (mat_.flag_skipped_diligence | mat_.flag_low_confidence))]
+    fo2 = no_fast.seg == "Family Office"
+    places = attended.firm_id.map(firms.segment)
+    com_ = x[x.committed]
+    out["who_commits"] = dict(
+        family_office=dict(deals=int(fo.sum()), committed=int(mat_[fo].committed.sum())),
+        others=dict(deals=int((~fo).sum()), committed=int(mat_[~fo].committed.sum())),
+        family_office_excl_fast=dict(deals=int(fo2.sum()), committed=int(no_fast[fo2].committed.sum())),
+        others_excl_fast=dict(deals=int((~fo2).sum()), committed=int(no_fast[~fo2].committed.sum())),
+        places=int(len(attended)), places_family_office=int((places == "Family Office").sum()),
+        places_found_ins_pension=int(places.isin(["Foundation", "Insurance", "Pension"]).sum()),
+        committed_usd=float(com_.amount_usd.sum()), committed_usd_family_office=float(com_[com_.seg == "Family Office"].amount_usd.sum()),
+        committed_usd_found_ins_pension=float(com_[com_.seg.isin(["Foundation", "Insurance", "Pension"])].amount_usd.sum()))
+
+    # 17. late-stage pipeline: deals recorded at the investor's investment committee, and how often stages are skipped
+    first = stages.pivot_table(index="opportunity_id", columns="stage", values="stage_date", aggfunc="min")
+    reached_ic = first[first["IC / Documentation"].notna()]
+    at_ic = opps[opps.current_stage == "IC / Documentation"]
+    cm = first[first["Committed"].notna()]
+    cm_clean = cm.drop(index=[i for i in cm.index if i in set(opps[opps.flag_outlier | opps.flag_low_confidence].opportunity_id)])
+    out["late_stage"] = dict(reached_ic=int(len(reached_ic)), reached_ic_committed=int(reached_ic["Committed"].notna().sum()),
+                             reached_ic_declined=int(reached_ic["Declined"].notna().sum()) if "Declined" in reached_ic else 0,
+                             at_ic_deals=int(len(at_ic)), at_ic_usd=float(at_ic.amount_usd.sum()), at_ic_firms=int(at_ic.firm_id.nunique()),
+                             commitments=int(len(cm)), commitments_skipping_dd=int(cm["Due Diligence"].isna().sum()),
+                             commitments_clean=int(len(cm_clean)), commitments_clean_skipping_dd=int(cm_clean["Due Diligence"].isna().sum()),
+                             meetings_last_date=str(meet.meeting_date.max().date()), stages_last_date=str(stages.stage_date.max().date()))
+
+    # 18. do events move existing deals? deals open on the event date: share that reached a later stage within the window,
+    #     firms that attended vs firms not at the event (Tentative-only firms left out)
+    rows18 = []
+    for e in ev.index:
+        d0 = ev.event_date[e]
+        for o in opps[opps.created_date < d0].itertuples():
+            s_ = stages[stages.opportunity_id == o.opportunity_id]
+            if ((s_.stage.isin(["Committed", "Declined"])) & (s_.stage_date < d0)).any():
+                continue
+            if (e, o.firm_id) not in pairs and (e, o.firm_id) in set(zip(att.event_id, att.firm_id)):
+                continue
+            moved = ((s_.stage_date >= d0) & (s_.stage_date <= d0 + W) & (s_.stage != "Declined") & (s_.stage_ord >= 2)).any()
+            rows18.append(dict(att=(e, o.firm_id) in pairs, moved=moved))
+    r18 = pd.DataFrame(rows18)
+    out["existing_deals_moved"] = {("attended" if k else "not_at_event"): dict(deals=len(g_), moved=int(g_.moved.sum()), rate=g_.moved.mean())
+                                   for k, g_ in r18.groupby("att")}
+
     # 12. uncertainty: bootstrap 95% ranges (resampling firm-event pairs, 5,000 draws, fixed seed)
     rng = np.random.default_rng(7)
     A, O = pl[pl.group == "attended"][["pre", "post"]].values, pl[pl.group == "clean"][["pre", "post"]].values
@@ -243,6 +292,9 @@ def main():
     print("Call list:", d["call_list_summary"])
     print("Follow-up speed vs outcome:", d["followup_speed_vs_outcome"])
     print("Logging gap:", d["logging_gap"])
+    print("Who commits:", d["who_commits"])
+    print("Late stage:", d["late_stage"])
+    print("Existing deals moved:", d["existing_deals_moved"])
     print("Incremental follow-up:", d["incremental_followup"])
     print("95% range, meeting growth gap:", {k: round(v, 2) for k, v in d["ci_meeting_growth_gap"].items()})
     print("95% range, new-deal gap:", {k: round(v, 2) for k, v in d["ci_new_deal_gap"].items()})

@@ -21,7 +21,7 @@ JS = """() => ({
   inc: Object.fromEntries(EVS.map(e => { const x = eventStats(e); return [e, [x.extra, x.cpx]]; })),
   season: Object.fromEntries(EVS.map(e => { const x = eventStats(e); return [e, [x.cN, x.exp, x.net, x.cpxNet]]; })),
   notMet: (c => [c.length, c.filter(x => x.od).length, c.reduce((s, x) => s + x.usd, 0), c.filter(x => x.od && x.f.priority === "Tier 1").length])(callList().filter(c => c.metSince == null)),
-  speed: speedOutcome(), lg: loggingGap(), cmp: cmpFirmShare(), fa: followAttention(),
+  speed: speedOutcome(), lg: loggingGap(), cmp: cmpFirmShare(), fa: followAttention(), who: whoCommits(), late: lateStage(), ex: existingMoved(),
   band: (() => { const g = k => oppsVisible().filter(o => oppGroup(o) === k && ageDays(o) >= MATURE_DAYS && ageDays(o) <= AGE_BAND_MAX);
     return Object.fromEntries([["event", "event"], ["before", "existing_before"]].map(([k, n]) => [n, [g(k).length, g(k).filter(o => o.current_stage === "Committed").length]])); })()
 })"""
@@ -68,6 +68,14 @@ def main():
         ("deals 120-240 days old: n and committed, event vs before", js["band"], {k: [d["age_matched_commit"][k]["n"], d["age_matched_commit"][k]["committed"]] for k in ("event", "existing_before")}),
         ("follow-up attention (team meetings after, with attendees, with earlier event's, solo before/after)", {e: [v["post"], v["toA"], v["toP"], v["soloPre"], v["soloPost"]] for e, v in js["fa"].items()},
          {e: [v["team_meetings_after"], v["with_attendees"], v["with_prior_event_attendees"], v["solo_pre"], v["solo_post"]] for e, v in d["followup_attention"].items()}),
+        ("who commits: family offices vs others, incl. without fast commitments", [js["who"][k][f] for k in ("fo", "oth", "foNF", "othNF") for f in ("deals", "committed")],
+         [d["who_commits"][k][f] for k in ("family_office", "others", "family_office_excl_fast", "others_excl_fast") for f in ("deals", "committed")]),
+        ("who commits: places and committed $", [js["who"][k] for k in ("places", "placesFO", "placesInst", "usd", "usdFO", "usdInst")],
+         [d["who_commits"][k] for k in ("places", "places_family_office", "places_found_ins_pension", "committed_usd", "committed_usd_family_office", "committed_usd_found_ins_pension")]),
+        ("late-stage pipeline", [js["late"][k] for k in ("reached", "reachedCom", "reachedDec", "atIC", "atICusd", "atICfirms", "com", "skip", "comClean", "skipClean")],
+         [d["late_stage"][k] for k in ("reached_ic", "reached_ic_committed", "reached_ic_declined", "at_ic_deals", "at_ic_usd", "at_ic_firms", "commitments", "commitments_skipping_dd", "commitments_clean", "commitments_clean_skipping_dd")]),
+        ("existing deals moved forward: attended vs not at the event", (js["ex"]["attN"], js["ex"]["att"], js["ex"]["notN"], js["ex"]["not"]),
+         (d["existing_deals_moved"]["attended"]["deals"], d["existing_deals_moved"]["attended"]["rate"], d["existing_deals_moved"]["not_at_event"]["deals"], d["existing_deals_moved"]["not_at_event"]["rate"])),
         ("event vs mix (London)", (js["mix"]["E002"]["actual"], js["mix"]["E002"]["expected"]), (d["event_vs_mix"]["E002"]["actual"], d["event_vs_mix"]["E002"]["expected_from_mix"])),
     ]
     norm = lambda v: json.dumps(v, sort_keys=True, default=lambda x: x) if not isinstance(v, (int, float, tuple, list)) else v

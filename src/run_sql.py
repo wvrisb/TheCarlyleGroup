@@ -90,7 +90,15 @@ def main():
         check(f"[{w}d] call list: firms, not met since, with live deals, $", [len(cl), len(ns), int((ns.live_deals > 0).sum()), float(ns.live_usd.sum())],
               [d["call_list_summary"][k] for k in ("firms", "not_met_since", "not_met_since_live", "not_met_since_live_usd")])
         if w == 60:
-            for name in ("kpi_followup", "kpi_tier1", "kpi_comparison", "kpi_new_deal_groups", "kpi_event_scorecard", "kpi_deal_origin", "kpi_call_list"):
+            wc = q(con, "SELECT * FROM kpi_who_commits").set_index("investor_group")
+            check("who commits: family offices vs others (deals 120+ days old, committed)",
+                  [int(wc.loc["family_office", "deals_120_days_or_older"]), int(wc.loc["family_office", "committed"]), int(wc.loc["others", "deals_120_days_or_older"]), int(wc.loc["others", "committed"])],
+                  [d["who_commits"]["family_office"]["deals"], d["who_commits"]["family_office"]["committed"], d["who_commits"]["others"]["deals"], d["who_commits"]["others"]["committed"]])
+            ls = q(con, "SELECT * FROM kpi_late_stage").iloc[0]
+            check("late-stage pipeline (reached committee, of which committed, at committee now, $, commitments skipping due diligence)",
+                  [int(ls.reached_ic), int(ls.reached_ic_committed), int(ls.at_ic_deals), float(ls.at_ic_usd), int(ls.commitments_skipping_dd)],
+                  [d["late_stage"][k] for k in ("reached_ic", "reached_ic_committed", "at_ic_deals", "at_ic_usd", "commitments_skipping_dd")])
+            for name in ("kpi_who_commits", "kpi_late_stage", "kpi_followup", "kpi_tier1", "kpi_comparison", "kpi_new_deal_groups", "kpi_event_scorecard", "kpi_deal_origin", "kpi_call_list"):
                 q(con, f"SELECT * FROM {name}").to_csv(OUT / "sql" / f"{name}.csv", index=False)
             # staging tables must match the Python cleaned tables
             do = q(con, "SELECT opportunity_id, current_stage, max_stage_ord, amount_usd FROM dim_opportunity ORDER BY 1")

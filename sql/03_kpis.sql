@@ -101,3 +101,27 @@ SELECT g.firm_id, f.priority, f.segment,
        (SELECT MAX(meeting_date) FROM fact_meeting m WHERE m.firm_id = g.firm_id) AS last_meeting
 FROM gap g JOIN dim_firm f USING (firm_id)
 ORDER BY met_since IS NOT NULL, live_usd DESC;
+
+-- Who commits: deals at least 120 days old (old enough to have closed), family offices against everyone else,
+-- excluding the unverified $650M deal (O0017)
+DROP TABLE IF EXISTS kpi_who_commits;
+CREATE TABLE kpi_who_commits AS
+SELECT CASE WHEN f.segment = 'Family Office' THEN 'family_office' ELSE 'others' END AS investor_group,
+       COUNT(*) AS deals_120_days_or_older, SUM(o.committed) AS committed,
+       SUM(CASE WHEN o.committed THEN d.amount_usd ELSE 0 END) AS committed_usd
+FROM deal_origin o JOIN dim_opportunity d USING (opportunity_id) JOIN dim_firm f ON f.firm_id = d.firm_id
+WHERE o.age_days >= 120 AND NOT d.flag_outlier
+GROUP BY 1;
+
+-- Late-stage pipeline: deals recorded at the investor's investment committee, and commitments that skipped due diligence
+DROP TABLE IF EXISTS kpi_late_stage;
+CREATE TABLE kpi_late_stage AS
+SELECT
+  (SELECT COUNT(DISTINCT opportunity_id) FROM fact_opp_stage WHERE stage = 'IC / Documentation')                          AS reached_ic,
+  (SELECT COUNT(DISTINCT s.opportunity_id) FROM fact_opp_stage s WHERE s.stage = 'Committed'
+     AND s.opportunity_id IN (SELECT opportunity_id FROM fact_opp_stage WHERE stage = 'IC / Documentation'))              AS reached_ic_committed,
+  (SELECT COUNT(*) FROM dim_opportunity WHERE current_stage = 'IC / Documentation')                                        AS at_ic_deals,
+  (SELECT SUM(amount_usd) FROM dim_opportunity WHERE current_stage = 'IC / Documentation')                                 AS at_ic_usd,
+  (SELECT COUNT(*) FROM dim_opportunity WHERE current_stage = 'Committed')                                                 AS commitments,
+  (SELECT COUNT(*) FROM dim_opportunity d WHERE d.current_stage = 'Committed'
+     AND NOT EXISTS (SELECT 1 FROM fact_opp_stage s WHERE s.opportunity_id = d.opportunity_id AND s.stage = 'Due Diligence')) AS commitments_skipping_dd;
