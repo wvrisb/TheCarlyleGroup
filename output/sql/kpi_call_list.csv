@@ -1,0 +1,25 @@
+firm_id,priority,segment,live_deals,live_usd,met_since,last_meeting
+F017,Tier 3,Insurance,6,155500000.0,,2026-06-04
+F050,Tier 2,Family Office,1,150000000.0,,2026-06-08
+F045,Tier 1,Insurance,2,76500000.0,,
+F019,Tier 2,Foundation,3,75000000.0,,2026-03-21
+F022,Tier 1,Foundation,2,50000000.0,,2026-03-09
+F047,Tier 3,Pension,4,50000000.0,,2026-05-10
+F026,Tier 1,Foundation,1,40000000.0,,2026-06-09
+F044,Tier 1,Insurance,1,40000000.0,,2026-05-17
+F016,Tier 3,Asset Manager,2,35000000.0,,
+F001,Tier 3,Family Office,2,25000000.0,,2026-06-01
+F056,Tier 3,Family Office,1,5000000.0,,
+F060,Tier 2,Sovereign Wealth,1,5000000.0,,
+F009,Tier 3,Asset Manager,0,0.0,,
+F013,Tier 2,Pension,0,0.0,,2026-03-07
+F031,Tier 1,Foundation,3,201500000.0,2026-09-01,2026-09-01
+F006,Tier 1,Asset Manager,2,165000000.0,2026-05-12,2026-07-20
+F030,Tier 1,Sovereign Wealth,1,100000000.0,2026-07-25,2026-07-25
+F029,Tier 2,Sovereign Wealth,2,80000000.0,2026-05-24,2026-07-12
+F059,Tier 1,Foundation,2,80000000.0,2026-06-02,2026-06-02
+F057,Tier 2,Family Office,1,75000000.0,2026-07-01,2026-07-01
+F002,Tier 1,Pension,1,40000000.0,2026-06-06,2026-07-03
+F036,Tier 1,Insurance,1,15000000.0,2026-05-26,2026-08-02
+F055,Tier 2,Insurance,0,0.0,2026-06-24,2026-06-24
+F058,Tier 2,Insurance,0,0.0,2026-08-25,2026-08-25

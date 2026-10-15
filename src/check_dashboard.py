@@ -21,7 +21,9 @@ JS = """() => ({
   inc: Object.fromEntries(EVS.map(e => { const x = eventStats(e); return [e, [x.extra, x.cpx]]; })),
   season: Object.fromEntries(EVS.map(e => { const x = eventStats(e); return [e, [x.cN, x.exp, x.net, x.cpxNet]]; })),
   notMet: (c => [c.length, c.filter(x => x.od).length, c.reduce((s, x) => s + x.usd, 0), c.filter(x => x.od && x.f.priority === "Tier 1").length])(callList().filter(c => c.metSince == null)),
-  speed: speedOutcome(), lg: loggingGap()
+  speed: speedOutcome(), lg: loggingGap(), cmp: cmpFirmShare(), fa: followAttention(),
+  band: (() => { const g = k => oppsVisible().filter(o => oppGroup(o) === k && ageDays(o) >= MATURE_DAYS && ageDays(o) <= AGE_BAND_MAX);
+    return Object.fromEntries([["event", "event"], ["before", "existing_before"]].map(([k, n]) => [n, [g(k).length, g(k).filter(o => o.current_stage === "Committed").length]])); })()
 })"""
 
 
@@ -62,6 +64,10 @@ def main():
         ("follow-up within 30 days vs later: n and new-deal rate", (js["speed"]["yN"], js["speed"]["yOpen"], js["speed"]["nN"], js["speed"]["nOpen"]),
          tuple(d["followup_speed_vs_outcome"][k][f] for k in ("within_30_days", "later_or_never") for f in ("n", "opened"))),
         ("logging gap (progressed firms, with no meetings)", (js["lg"]["n"], js["lg"]["none"]), (d["logging_gap"]["progressed_firms"], d["logging_gap"]["no_meetings"])),
+        ("comparison firms met, counted in firms (n, before, after)", (js["cmp"]["n"], js["cmp"]["before"], js["cmp"]["after"]), (d["firm_share"]["clean"]["n"], d["firm_share"]["clean"]["before"], d["firm_share"]["clean"]["after"])),
+        ("deals 120-240 days old: n and committed, event vs before", js["band"], {k: [d["age_matched_commit"][k]["n"], d["age_matched_commit"][k]["committed"]] for k in ("event", "existing_before")}),
+        ("follow-up attention (team meetings after, with attendees, with earlier event's, solo before/after)", {e: [v["post"], v["toA"], v["toP"], v["soloPre"], v["soloPost"]] for e, v in js["fa"].items()},
+         {e: [v["team_meetings_after"], v["with_attendees"], v["with_prior_event_attendees"], v["solo_pre"], v["solo_post"]] for e, v in d["followup_attention"].items()}),
         ("event vs mix (London)", (js["mix"]["E002"]["actual"], js["mix"]["E002"]["expected"]), (d["event_vs_mix"]["E002"]["actual"], d["event_vs_mix"]["E002"]["expected_from_mix"])),
     ]
     norm = lambda v: json.dumps(v, sort_keys=True, default=lambda x: x) if not isinstance(v, (int, float, tuple, list)) else v

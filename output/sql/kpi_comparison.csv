@@ -1,0 +1,4 @@
+grp,pairs,meetings_before,meetings_after,share_met_before,share_met_after
+attended,70,41,63,0.42857142857142855,0.6
+comparison,39,13,21,0.2564102564102564,0.41025641025641024
+overlap,32,25,25,0.53125,0.65625

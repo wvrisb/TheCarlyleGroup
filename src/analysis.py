@@ -14,6 +14,7 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "output"
 AS_OF = pd.Timestamp("2026-10-14")
+AGE_BAND_MAX = 240
 MATURE_DAYS = 120          # deals at least this old have had time to commit (median create->commit ~53d)
 INSTITUTIONAL = {"Foundation", "Insurance"}  # Tier 1 pension funds were mostly followed up (3 of 4)
 
@@ -65,6 +66,9 @@ def analyse(m, w=60, att_def="confirmed"):
     out["placebo_total"] = pl.groupby("group")[["pre", "post"]].sum().to_dict("index")
     tot = pl[pl.group != "attended"][["pre", "post"]].sum()
     out["placebo_total"]["other_event_all"] = {"pre": int(tot.pre), "post": int(tot.post)}   # original comparison, for the robustness note
+    #    same comparison counted in firms: share of firm-event pairs with at least one meeting, before vs after
+    out["firm_share"] = {g: dict(n=len(x), before=(x.pre > 0).mean(), after=(x.post > 0).mean())
+                         for g, x in pl[pl.group.isin(["attended", "clean"])].groupby("group")}
 
     # 3. new-deal rate before vs after, by group (difference-in-differences)
     grp = lambda r: "attended" if r.attended else "other_event" if r.firm_id in ever else "never_invited" if r.firm_id not in on_list else "tentative_only"
@@ -131,6 +135,12 @@ def analyse(m, w=60, att_def="confirmed"):
     fg = opps.groupby("group").agg(n=("opportunity_id", "size"), committed=("committed", "sum"), median_age=("age", "median"))
     mat = opps[opps.age >= MATURE_DAYS].groupby("group").agg(mature_n=("committed", "size"), mature_commit_rate=("committed", "mean"))
     out["funnel_groups"] = fg.join(mat).reset_index().to_dict("records")
+    #    deals already open before a firm's first event are older on average; compare deals of similar age
+    #    (120-240 days old, the range where both groups overlap) so age does not drive the gap
+    band = opps[(opps.age >= MATURE_DAYS) & (opps.age <= AGE_BAND_MAX)]
+    out["age_matched_commit"] = {g: dict(n=len(x), committed=int(x.committed.sum()), rate=x.committed.mean())
+                                 for g, x in band.groupby("group")}
+    out["median_age"] = {g: float(x.age.median()) for g, x in opps.groupby("group")}
 
     # 10. priority call list: attending firms with no follow-up, ranked by live deals
     gap = a[~a.fu]
@@ -182,6 +192,24 @@ def analyse(m, w=60, att_def="confirmed"):
     progressed = set(stages[stages.stage_ord >= 2].firm_id) & ever
     out["logging_gap"] = dict(progressed_firms=len(progressed), no_meetings=len(progressed - set(meet.firm_id)),
                               firms=sorted(progressed - set(meet.firm_id)))
+
+    # 15. follow-up attention after each event: team meetings in the window after, and how many went to that
+    #     event's attendees; and attendees with no other attended event in the window before (no overlap)
+    att_by_e = attended.groupby("event_id").firm_id.apply(set)
+    focus = {}
+    for e in ev.index:
+        d0 = ev.event_date[e]
+        post_m = meet[(meet.meeting_date >= d0) & (meet.meeting_date <= d0 + W)]
+        to_att = post_m[post_m.firm_id.isin(att_by_e[e])]
+        prior = {x for x in ev.index if x != e and d0 - W <= ev.event_date[x] < d0}
+        solo = [fid for fid in att_by_e[e] if not any(fid in att_by_e[x] for x in prior)]
+        s_ = a[(a.event_id == e) & a.firm_id.isin(solo)]
+        focus[e] = dict(team_meetings_after=len(post_m), with_attendees=len(to_att),
+                        by_team={t: [int((post_m.internal_attendee == t).sum()), int((to_att.internal_attendee == t).sum())]
+                                 for t in sorted(meet.internal_attendee.unique())},
+                        with_prior_event_attendees=int(post_m[~post_m.firm_id.isin(att_by_e[e]) & post_m.firm_id.isin(set().union(*[att_by_e[x] for x in prior]))].shape[0]) if prior else 0,
+                        solo_firms=len(solo), solo_pre=int(s_.meetings_pre.sum()), solo_post=int(s_.meetings_post.sum()))
+    out["followup_attention"] = focus
 
     # 12. uncertainty: bootstrap 95% ranges (resampling firm-event pairs, 5,000 draws, fixed seed)
     rng = np.random.default_rng(7)

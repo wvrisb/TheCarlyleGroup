@@ -11,11 +11,12 @@ I used Claude (Anthropic) throughout, as a pair analyst: it proposed options, wr
 | Data model and analysis | Wrote the pipeline (`build_model.py`, `analysis.py`) and the stress tests (comparison group, before/after by group, bootstrap ranges, investor-mix adjustment) | About a day of coding → a few hours |
 | Dashboard | Built a self-contained HTML dashboard with drill-downs, hover definitions and filter-aware text | The largest saving: an interactive build in hours |
 | Readout | Drafted three structures; I chose a mix and the AI built the deck | Most of the layout work |
-| Validation tooling | Wrote the two automated test suites described below | Tests I would not otherwise have had time to write |
+| SQL version of the model | Translated the Python model into SQL (`sql/`) and wrote `src/run_sql.py` to prove both give the same answer | The model in the language a BI team would run, at little extra cost |
+| Validation tooling | Wrote the automated test suites described below | Tests I would not otherwise have had time to write |
 
 ## How I validated the output
 
-1. **Two independent code paths for every number.** The dashboard recomputes every figure in JavaScript; `src/check_dashboard.py` compares 23 groups of figures against the Python pipeline. All match.
+1. **Two independent code paths for every number.** The dashboard recomputes every figure in JavaScript; `src/check_dashboard.py` compares 26 groups of figures against the Python pipeline. All match. A third path, the SQL model, is checked by `src/run_sql.py`: the firm × event table matches Python cell by cell at 30, 60 and 90 days, and every headline KPI matches (26 checks). I also broke a cleaning rule on purpose to confirm the check fails when it should.
 2. **Every sentence tested under every filter.** Takeaways and titles are generated from the numbers on screen. `src/check_narrative.py` renders all 6 tabs in all 1,344 filter combinations, plus every firm's detail view, and checks that the words agree with the numbers next to them (for example, "beat" only when the first number is higher). Final run: 0 issues across 8,064 rendered tabs.
 3. **Data quality is reproducible.** `src/profile_data.py` re-derives every issue in `docs/data_quality.md`.
 4. **Stress-testing claims, not just code.** For each headline claim I asked how it could be wrong and had it tested: a comparison group for seasonality, before/after per group instead of raw comparisons, deal age, investor mix, attribution rule, window length, and bootstrap ranges.
@@ -41,6 +42,8 @@ I used Claude (Anthropic) throughout, as a pair analyst: it proposed options, wr
 | 13 | "London was the most efficient event" | Robustness check across windows | London's season-adjusted lead holds at 60 days only, on 9 comparison firms; Berlin's drop holds at every window, also for Berlin attendees who skipped London | Decision 3 reordered: review Berlin first, treat dinners as a format to test |
 | 14 | "Follow up Tier 1 within 30 days" as a pipeline lever | Mock interviewer ("what is the evidence?") | Firms met within 30 days opened new deals at the same rate as those met later (33% vs 33%) | Framed as a service standard to test, not a proven driver |
 | 15 | Bootstrap ranges reported to the point | My re-run of the pipeline | The ranges moved between runs: firm order came from a Python set, so the seeded resampling was not reproducible | Order fixed; ranges are now identical on every run |
+| 16 | "Deals opened after events closed less often: 13% vs 24%" | Mock interviewer review | Deals already open before a firm's first event are older (median 237 vs 125 days) and had longer to close; at similar age (120 to 240 days) it is 13% vs 19% | Similar-age comparison is now the headline; the wider gap is shown only as context |
+| 17 | "Berlin was followed by less contact", read as a verdict on the event | Mock Head of IR review ("is it Berlin or us?") | In the 60 days after Berlin only 11 of the team's 31 meetings were with Berlin attendees; 15 were with London attendees from 26 days earlier | Recommendation 3 now reviews Berlin and its follow-up, and asks for named follow-up owners when events are close together |
 
 ## What I kept for my own judgment
 
