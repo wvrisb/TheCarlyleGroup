@@ -1,5 +1,7 @@
 # Investor Event Outcomes: AI / BI Analytics Take-Home
 
+**Live dashboard:** https://wvrisb.github.io/TheCarlyleGroup/ · **Readout:** [`docs/readout.pdf`](docs/readout.pdf)
+
 **Question:** What happened following our investor events, what business outcomes are associated with them, and what should we learn for future events?
 
 **Short answer:** Three events cost $1.2M and reached 78% of our investor firms. More attending firms were met after the events (43% → 60%), but most of that rise matches the season: firms at other events rose as much over the same dates. Only after the London dinner did contact beat the season, and that rests on a small comparison group. We cannot detect that the events created new pipeline, and today's data cannot show it either way. What to act on: Tier 1 follow-up is slow (10 of 13 not met within 60 days of an event; 4 with live deals still have no meeting logged), Berlin, the most expensive event, was followed by less contact (partly because the team's follow-up went to London attendees), and one unverified $650M deal is 55% of committed capital.
@@ -65,7 +67,7 @@ For a five-minute conversation, the three-slide readout carries the same story.
 
 | | Where | What it is |
 |---|---|---|
-| 1. Interactive analytics | [`dashboard/index.html`](dashboard/index.html) · [live page](https://<your-username>.github.io/<repo>/dashboard/) · [screenshots](docs/screenshots/) | Six tabs organised around the three questions: Summary, What happened, What it led to, What to learn, Firm explorer, Methods and data. Filters for window, attendance definition, segment, tier, region and the $650M deal |
+| 1. Interactive analytics | [`dashboard/index.html`](dashboard/index.html) · [live page](https://wvrisb.github.io/TheCarlyleGroup/dashboard/) · [screenshots](docs/screenshots/) | Six tabs organised around the three questions: Summary, What happened, What it led to, What to learn, Firm explorer, Methods and data. Filters for window, attendance definition, segment, tier, region and the $650M deal |
 | 2. Analysis and data model | [`src/`](src/) · [`sql/`](sql/) · [`output/`](output/) · [`docs/metric_definitions.md`](docs/metric_definitions.md) · [`docs/data_quality.md`](docs/data_quality.md) | Python pipeline; the same model and KPIs in SQL (staging → firm × event table → KPI tables), checked against Python; model tables as CSV; every metric definition and data-quality decision |
 | 3. Executive readout | [`docs/readout.pdf`](docs/readout.pdf) · [speaker notes](docs/readout_notes.md) | Three slides: the answer and three decisions, the evidence, and what to do this week and before the next event. The notes hold the talking points and backup answers to likely questions |
 | 4. AI usage | [`AI_USAGE.md`](AI_USAGE.md) | Where AI helped, how output was validated, and seventeen documented corrections |
