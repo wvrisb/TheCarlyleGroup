@@ -37,7 +37,7 @@ python src/analysis.py         # insights at 30/60/90 days -> output/insights.js
 python src/build_dashboard.py  # embeds the data into dashboard/template.html -> dashboard/index.html
 
 # validation (needs: playwright install chromium)
-python src/check_dashboard.py  # dashboard figures == Python figures (18 checks)
+python src/check_dashboard.py  # dashboard figures == Python figures (19 checks)
 python src/check_narrative.py  # every tab's text under all 1,344 filter combinations
 python src/capture_screenshots.py  # optional: refresh docs/screenshots/
 ```
