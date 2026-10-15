@@ -4,7 +4,7 @@
 
 - **Time spent:** about a day and a half, within the two-day guide. AI wrote most of the code, which made it affordable to spend much of that time on checking the work.
 - **Where AI helped:** profiling the data, proposing options for metrics and linking outcomes to events, writing the Python and SQL model, building the dashboard, drafting the readout, and writing the automated checks.
-- **How it sped things up:** an estimated three to four days of hands-on work fit into a day and a half (rough estimates by area are in the table below).
+- **How it sped things up:** AI wrote most of the code, so a day and a half covered the analysis, an interactive dashboard, a SQL version of the model and the automated checks. The table below shows where it saved the most time.
 - **How I checked it:** every number is computed in three independent ways (Python, SQL and the dashboard's own code) and automated checks confirm they agree; every sentence on the dashboard is tested against the numbers beside it under all 1,344 filter combinations; I recomputed the headline figures from the raw files myself; and I ran mock reviews as an interviewer and as the Head of Investor Relations.
 - **Where I corrected or challenged it:** 20 documented cases below. Two examples: an early recommendation to follow up Tier 1 firms within 30 days was downgraded to a service standard to test, because firms met within 30 days opened new deals no more often than firms met later (row 14); and "deals opened after events closed less often, 13% versus 24%" was corrected to 13% versus 19% once deals of similar age were compared (row 16).
 
