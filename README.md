@@ -154,7 +154,7 @@ Full log with evidence: [`docs/data_quality.md`](docs/data_quality.md).
 ## Taking this to production
 
 - **Source data:** add a "source event" field to opportunities, log meetings for all firms, and record actual attendance at the door.
-- **Pipeline:** move the `sql/` model into the warehouse (it is standard SQL; only date arithmetic differs by engine), schedule it after each refresh of the CRM (client database), and keep `run_sql.py`, `check_dashboard.py` and `check_narrative.py` as CI tests.
+- **Pipeline:** move the `sql/` model into the warehouse (it is standard SQL; only date arithmetic differs by engine), schedule it after each refresh of the client database, and keep `run_sql.py`, `check_dashboard.py` and `check_narrative.py` as CI tests.
 - **Front end:** the static HTML suits a take-home and offline review. In production the same model would feed the firm's BI tool, with row-level security for coverage teams.
 - **Measurement design:** before the next event, set up a comparison of invited firms with similar firms not invited (matched by tier, segment and region), so next year's readout can speak to cause.
 
