@@ -4,6 +4,63 @@
 
 **Short answer:** Three events cost $1.2M and reached 78% of our investor firms. More attending firms were met after the events (43% → 60%), but most of that rise matches the season: firms at other events rose as much over the same dates. Only after the London dinner did contact beat the season, and that rests on a small comparison group. We cannot detect that the events created new pipeline, and today's data cannot show it either way. What to act on: Tier 1 follow-up is slow (10 of 13 not met within 60 days of an event; 4 with live deals still have no meeting logged), Berlin, the most expensive event, was followed by less contact (partly because the team's follow-up went to London attendees), and one unverified $650M deal is 55% of committed capital.
 
+## How this answers the brief
+
+### What metrics and KPIs are most meaningful
+
+A funnel from reach to capital, where each stage answers one question: **Reach** (did we get the right firms in the room?) → **Follow-up** (did attendance turn into conversations, quickly?) → **Pipeline** (did conversations become deals?) → **Outcome** (did deals become capital?) → **Efficiency** (was it worth the money?).
+
+The headline metrics are the ones that hold up against a fair comparison:
+- follow-up rate against the same firms' rate before the event (43% → 60%);
+- Tier 1 firms not met within 60 days of an event (10 of 13);
+- change in firms opening a new deal, against firms at other events (+6 vs +11 points);
+- commit rate of deals of similar age (13% vs 19%);
+- cost per extra firm met beyond the seasonal rise (London $23K; New York and Berlin none).
+
+Follow-up is the leading indicator because it is the one IR controls directly. Two obvious metrics were rejected: cost per firm followed up (it counts firms we would have met anyway) and raw pipeline dollars (target sizes, not likely outcomes).
+→ [`docs/metric_definitions.md`](docs/metric_definitions.md) · dashboard Methods tab
+
+### How to measure or associate event-related outcomes
+
+An outcome counts for an event if it happens within 60 days after an event the firm attended. The median first follow-up comes 29 days after an event, and 60 days captures 79% of them. When two events' windows overlap, the most recent event gets the credit; only 2 of 30 new deals are affected, and other credit rules change no conclusion.
+
+Each claim is then tested against a fair comparison: the same firms before the event, firms at a different event over the same dates (to separate the event from the season), deals of similar age, each event's mix of investor types, and bootstrap 95% ranges. Everything is reported as association, not cause: today no meeting or deal can be tied to the event that drove it, and invited firms are pre-selected.
+→ dashboard "What it led to" tab (the table "What the data can and cannot show") · Methods tab
+
+### How the underlying data should be modeled
+
+A star schema: dimension tables for events, firms and deals; fact tables for attendance (one row per firm per event), meetings, and deal stages (the first date each stage was reached); and one analysis table, firm × event, at 30, 60 and 90-day windows and two attendance definitions, which every chart and metric reads from. Cleaning happens once, with each decision logged. The model is written in SQL and in Python and checked to agree.
+
+In production the SQL moves into the warehouse. Adding a "source event" field to deals and logging meetings for every firm would let the same model measure cause, not just association.
+→ [`sql/`](sql/) · [`src/build_model.py`](src/build_model.py) · [`docs/data_quality.md`](docs/data_quality.md) · Methods tab data-model diagram
+
+### How leadership should explore the information
+
+Top-down, in the order a leader asks questions. The Summary gives the three answers and the recommendations; tabs 1 to 3 hold the evidence behind each answer; the Firm explorer shows what happened after each event for any firm.
+
+- Every underlined number opens the firms behind it, so any figure can be traced to names.
+- Every term has a hover definition.
+- Filters (window, attendance definition, investor type, tier, region, the $650M deal) let a leader check whether a finding holds for the slice they care about, and the takeaways rewrite to match.
+- Recommendations stay on the full data, so they do not shift with filters.
+
+For a five-minute conversation, the three-slide readout carries the same story.
+→ [`dashboard/index.html`](dashboard/index.html) · [How to review](#how-to-review-no-install)
+
+### What insights and actions can be derived
+
+- Contact rose after the events, mostly in line with the season; only London beat it, on a 9-firm comparison group.
+- New pipeline did not rise more than for firms at other events, and deals opened after events did not close more often.
+- Tier 1 follow-up is slow: 10 of 13 were not met within 60 days of an event, and 4 with live deals still have no meeting logged.
+- Berlin, the most expensive event, was followed by less contact, partly because the team's follow-up went to London attendees.
+- One unverified $650M deal is 55% of committed capital.
+
+**Actions:**
+1. Make events measurable and verify the $650M deal before the next budget.
+2. Set a 30-day Tier 1 follow-up standard and test it, starting with the call list.
+3. Review Berlin and its follow-up, and test two more dinners before shifting spend.
+
+→ [`docs/readout.pdf`](docs/readout.pdf) · dashboard Summary tab · call list on the "What to learn" tab
+
 ## Deliverables
 
 | | Where | What it is |
