@@ -51,7 +51,7 @@ For a five-minute conversation, the three-slide readout carries the same story.
 ### What insights and actions can be derived
 
 - Meetings rose after the events, but almost as much at similar firms that were not there; only London added more, and that rests on a comparison with 9 firms.
-- None of four checks shows that events changed deals: new deals (+6 points against +12 for firms at other events), deals already open (50% moved forward against 55%), and commitments (13% against 19% for deals of similar age).
+- None of four checks shows a clear benefit from events: meetings (+54% against +62% at similar firms not at the event), new deals (+6 points against +12 for firms at other events), deals already open (50% moved forward against 55%), and commitments (13% against 19% for deals of similar age).
 - Family offices commit far more often: 6 of 14 of their deals at least 120 days old committed, against 6 of 57 for all other investors. They had 23% of event places and gave 70% of committed capital. This is the clearest pattern in the data, but it is one year and one of many comparisons, so it is something to test.
 - 34 deals worth $1.40B are recorded at the investor's investment committee, but only 2 of the 39 deals that reached that stage committed. The deals are stuck or the records are out of date; 9 of 14 commitments skipped due diligence, which points to loose records.
 - Tier 1 follow-up is slow (10 of 13 not met within 60 days), but faster follow-up shows no effect on deals (33% against 33%).

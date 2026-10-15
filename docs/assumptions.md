@@ -6,7 +6,7 @@ Default settings: data as of 14 October 2026; results over the 60 days after eac
 
 ## Recommendation 1: keep event spending flat and run the next events as a measured test
 
-**Evidence.** None of four checks shows that events changed deals:
+**Evidence.** None of four checks shows a clear benefit from events:
 
 | Check | Attending firms | Comparison | Where |
 |---|---|---|---|
