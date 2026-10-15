@@ -4,7 +4,7 @@
 
 **Question:** What happened following our investor events, what business outcomes are associated with them, and what should we learn for future events?
 
-**Short answer:** Three events cost $1.2M and reached 78% of our investor firms. More attending firms were met after the events (43% → 60%), but most of that rise matches the season: firms at other events rose as much over the same dates. Only after the London dinner did contact beat the season, and that rests on a small comparison group. We cannot detect that the events created new pipeline, and today's data cannot show it either way. What to act on: Tier 1 follow-up is slow (10 of 13 not met within 60 days of an event; 4 with live deals still have no meeting logged), Berlin, the most expensive event, was followed by less contact (partly because the team's follow-up went to London attendees), and one unverified $650M deal is 55% of committed capital.
+**Short answer:** Three events cost $1.2M and 78% of our investor firms attended. Meetings rose after the events (43% → 60% of attending firms met with us), but mostly because of the season: firms at other events rose almost as much over the same dates (26% → 41%). Only the London dinner added more, and that rests on a small comparison. We cannot yet show that events bring in new deals: attending firms opened no more new deals than firms at other events, and those deals did not close more often. What to act on: Tier 1 follow-up is slow (10 of 13 not met within 60 days of an event; 4 with open deals still have no logged meeting), we met fewer of Berlin's firms after it than before although it cost the most (partly because the team's follow-up went to London attendees), and one $650M deal we have not verified is 55% of committed capital.
 
 ## How this answers the brief
 
@@ -15,7 +15,7 @@ A funnel from reach to capital, where each stage answers one question: **Reach**
 The headline metrics are the ones that hold up against a fair comparison:
 - follow-up rate against the same firms' rate before the event (43% → 60%);
 - Tier 1 firms not met within 60 days of an event (10 of 13);
-- change in firms opening a new deal, against firms at other events (+6 vs +11 points);
+- change in firms opening a new deal, against firms at other events (27% → 33% vs 32% → 44%: +6 vs +12 points);
 - commit rate of deals of similar age (13% vs 19%);
 - cost per extra firm met beyond the seasonal rise (London $23K; New York and Berlin none).
 
@@ -50,10 +50,10 @@ For a five-minute conversation, the three-slide readout carries the same story.
 
 ### What insights and actions can be derived
 
-- Contact rose after the events, mostly in line with the season; only London beat it, on a 9-firm comparison group.
+- Meetings rose after the events, mostly because of the season; only London added more, and that rests on a comparison with 9 firms.
 - New pipeline did not rise more than for firms at other events, and deals opened after events did not close more often.
 - Tier 1 follow-up is slow: 10 of 13 were not met within 60 days of an event, and 4 with live deals still have no meeting logged.
-- Berlin, the most expensive event, was followed by less contact, partly because the team's follow-up went to London attendees.
+- We met fewer of Berlin's firms after it than before, although it was the most expensive event; partly because the team's follow-up went to London attendees.
 - One unverified $650M deal is 55% of committed capital.
 
 **Actions:**
@@ -70,7 +70,7 @@ For a five-minute conversation, the three-slide readout carries the same story.
 | 1. Interactive analytics | [`dashboard/index.html`](dashboard/index.html) · [live page](https://wvrisb.github.io/TheCarlyleGroup/dashboard/) · [screenshots](docs/screenshots/) | Six tabs organised around the three questions: Summary, What happened, What it led to, What to learn, Firm explorer, Methods and data. Filters for window, attendance definition, segment, tier, region and the $650M deal |
 | 2. Analysis and data model | [`src/`](src/) · [`sql/`](sql/) · [`output/`](output/) · [`docs/metric_definitions.md`](docs/metric_definitions.md) · [`docs/data_quality.md`](docs/data_quality.md) | Python pipeline; the same model and KPIs in SQL (staging → firm × event table → KPI tables), checked against Python; model tables as CSV; every metric definition and data-quality decision |
 | 3. Executive readout | [`docs/readout.pdf`](docs/readout.pdf) · [speaker notes](docs/readout_notes.md) | Three slides: the answer and three decisions, the evidence, and what to do this week and before the next event. The notes hold the talking points and backup answers to likely questions |
-| 4. AI usage | [`AI_USAGE.md`](AI_USAGE.md) | Where AI helped, how output was validated, and seventeen documented corrections |
+| 4. AI usage | [`AI_USAGE.md`](AI_USAGE.md) | Where AI helped, how output was validated, and eighteen documented corrections |
 
 ### Analysis and data model: where each piece lives
 
@@ -143,7 +143,7 @@ Full log with evidence: [`docs/data_quality.md`](docs/data_quality.md).
 - Three events: every event comparison is directional, and both key bootstrap ranges include zero.
 - Meetings are logged only for firms that attended an event, so firms never invited cannot be compared on meetings, and "no meeting logged" may not mean "no contact".
 - The meetings comparison group is firms that attended a different event and had no event of their own within the window. Firms in their own post-event period were removed because their "before" meetings were inflated by follow-up, which made our events look better. With them removed, the overall rise in meetings matches the season (+54% vs +62%); only London beats it (+158% vs +33%), and London's comparison group is 9 firms, so read it as directional.
-- Event efficiency is a signal, not a ranking: each event's comparison group is small (9 firms for London and Berlin), so the season-adjusted cost per extra firm met changes with the window. Berlin's drop in contact is the one event finding that holds at every window.
+- Event efficiency is a signal, not a ranking: each event's comparison group is small (9 firms for London and Berlin), so the season-adjusted cost per extra firm met changes with the window. Berlin's drop in meetings is the one event finding that holds at every window.
 - Meetings are under-logged: 4 of 37 attending firms whose deals moved past the first stage have no meeting logged at all, so the call list should be checked against the CRM.
 - Meetings and deals share only a firm ID, so a meeting cannot be tied to the deal it drove.
 

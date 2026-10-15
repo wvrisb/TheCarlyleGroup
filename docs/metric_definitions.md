@@ -35,7 +35,7 @@ Code: `src/build_model.py` (firm × event table), `src/analysis.py` (insights), 
 | Follow-up | Meeting growth vs comparison group | Meetings in the window after ÷ before, minus 1: attending firms vs comparison group | +54% vs +62% overall; London +158% vs +33% |
 | Pipeline | New deals after an event | Opportunities created within the window after an event the firm attended (credited per the rule above) | 30 ($1.40B target) |
 | Pipeline | Existing deals moved forward | Opportunities created before the event that reached a new stage (not Declined) within the window | 23 |
-| Pipeline | Change in firms opening a deal | Share of firm-event pairs with a new opportunity, after minus before, by group | attending +6 pts · firms at other events +11 · never invited −3 |
+| Pipeline | Change in firms opening a deal | Share of firm-event pairs with a new opportunity, after minus before, by group. Changes are shown as the difference of the rounded percentages, so they match the shares beside them | attending 27% → 33% (+6 pts) · firms at other events 32% → 44% (+12) · never invited −3 |
 | Pipeline | Live deals moved forward | Among attending pairs with a live deal: share where a deal moved to a later stage, followed up vs not | 59% vs 50% (17 vs 14) |
 | Outcome | Event-sourced deals committed | New deals after an event whose current stage is Committed (as of 14 Oct) | 3 ($250M; one is the low-confidence O9998) |
 | Outcome | Commit rate, deals of similar age (headline) | Share of deals 120 to 240 days old now Committed, by origin. Deals already open before a firm's first event are older (median 237 days vs 125), so comparing similar ages keeps age from driving the gap | after an event 13% (2 of 16) · already open before 19% (3 of 16) |
