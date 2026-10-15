@@ -1,0 +1,107 @@
+opportunity_id,firm_id,fund_name,created_date,amount_usd,max_stage_ord,current_stage,current_stage_date,flag_outlier,flag_low_confidence,flag_skipped_diligence,flag_future_stage_removed
+O0001,F026,Fund Beta,2026-07-06,40000000.0,4,IC / Documentation,2026-08-29,False,False,False,False
+O0002,F057,Fund Beta,2026-04-04,75000000.0,5,Committed,2026-05-19,False,False,True,False
+O0003,F037,Secondaries Strategy,2026-06-09,25000000.0,5,Committed,2026-07-19,False,False,True,False
+O0004,F007,Fund Beta,2026-04-09,75000000.0,5,Declined,2026-06-14,False,False,False,False
+O0005,F006,Fund Beta,2026-07-02,150000000.0,4,IC / Documentation,2026-09-17,False,False,False,False
+O0006,F054,Secondaries Strategy,2026-05-02,5000000.0,5,Committed,2026-06-25,False,False,True,False
+O0007,F010,Fund Alpha,2026-03-05,10000000.0,5,Declined,2026-07-09,False,False,False,False
+O0008,F036,Credit Strategy,2026-08-06,15000000.0,3,Due Diligence,2026-09-22,False,False,False,False
+O0009,F029,Fund Beta,2026-05-09,75000000.0,2,Follow-up / VDR,2026-06-22,False,False,False,False
+O0010,F029,Credit Strategy,2026-07-15,150000000.0,5,Declined,2026-10-14,False,False,False,False
+O0011,F024,Secondaries Strategy,2026-01-24,75000000.0,5,Committed,2026-03-17,False,False,False,False
+O0012,F004,Credit Strategy,2026-07-12,100000000.0,4,IC / Documentation,2026-09-01,False,False,False,False
+O0013,F047,Fund Beta,2026-06-27,2500000.0,2,Follow-up / VDR,2026-07-31,False,False,False,False
+O0014,F059,Fund Beta,2026-07-23,5000000.0,2,Follow-up / VDR,2026-09-01,False,False,False,False
+O0015,F011,Fund Gamma,2026-03-24,150000000.0,4,IC / Documentation,2026-05-25,False,False,False,False
+O0016,F017,Fund Beta,2026-06-07,100000000.0,3,Due Diligence,2026-07-04,False,False,False,False
+O0017,F041,Credit Strategy,2026-03-13,650000000.0,5,Committed,2026-05-16,True,False,True,False
+O0018,F041,Credit Strategy,2026-08-08,25000000.0,3,Due Diligence,2026-10-05,False,False,False,False
+O0019,F035,Fund Gamma,2026-06-11,40000000.0,3,Due Diligence,2026-07-29,False,False,False,False
+O0020,F049,Fund Beta,2026-01-21,75000000.0,2,Follow-up / VDR,2026-02-24,False,False,False,False
+O0021,F034,Secondaries Strategy,2026-03-06,15000000.0,4,IC / Documentation,2026-05-21,False,False,False,False
+O0022,F019,Credit Strategy,2026-06-07,40000000.0,3,Due Diligence,2026-07-12,False,False,False,False
+O0023,F042,Fund Alpha,2026-01-12,1500000.0,5,Committed,2026-02-27,False,False,True,False
+O0024,F027,Secondaries Strategy,2026-05-30,15000000.0,2,Follow-up / VDR,2026-07-09,False,False,False,False
+O0025,F011,Fund Beta,2026-02-04,1500000.0,5,Declined,2026-04-17,False,False,False,False
+O0026,F052,Fund Alpha,2026-03-09,1500000.0,4,IC / Documentation,2026-06-04,False,False,False,False
+O0027,F039,Fund Beta,2026-05-13,75000000.0,5,Declined,2026-05-29,False,False,False,False
+O0028,F012,Fund Alpha,2026-03-02,5000000.0,4,IC / Documentation,2026-04-30,False,False,False,False
+O0029,F010,Secondaries Strategy,2026-04-16,10000000.0,4,IC / Documentation,2026-07-14,False,False,False,False
+O0030,F012,Fund Alpha,2026-05-11,15000000.0,3,Due Diligence,2026-07-14,False,False,False,False
+O0031,F035,Credit Strategy,2026-01-02,40000000.0,4,IC / Documentation,2026-03-22,False,False,False,False
+O0032,F015,Fund Beta,2026-01-27,15000000.0,4,IC / Documentation,2026-04-15,False,False,False,False
+O0033,F017,Fund Gamma,2026-07-02,1500000.0,4,IC / Documentation,2026-10-10,False,False,False,False
+O0034,F017,Fund Alpha,2026-03-17,10000000.0,4,IC / Documentation,2026-04-26,False,False,False,False
+O0035,F011,Fund Beta,2026-07-11,25000000.0,4,IC / Documentation,2026-09-17,False,False,False,False
+O0036,F043,Credit Strategy,2026-08-04,100000000.0,3,Due Diligence,2026-09-26,False,False,False,False
+O0037,F028,Secondaries Strategy,2026-07-05,10000000.0,4,IC / Documentation,2026-09-25,False,False,False,True
+O0038,F003,Fund Alpha,2026-01-07,2500000.0,5,Committed,2026-03-16,False,False,False,False
+O0039,F045,Fund Alpha,2026-06-14,1500000.0,4,IC / Documentation,2026-08-28,False,False,False,False
+O0040,F053,Credit Strategy,2026-05-17,2500000.0,5,Committed,2026-06-14,False,False,True,False
+O0041,F053,Credit Strategy,2026-07-12,15000000.0,2,Follow-up / VDR,2026-08-19,False,False,False,False
+O0042,F014,Fund Gamma,2026-03-17,25000000.0,3,Due Diligence,2026-04-20,False,False,False,False
+O0043,F004,Fund Gamma,2026-07-03,25000000.0,4,IC / Documentation,2026-09-20,False,False,False,False
+O0044,F002,Fund Alpha,2026-07-21,40000000.0,3,Due Diligence,2026-09-12,False,False,False,False
+O0045,F004,Fund Beta,2026-05-18,150000000.0,4,IC / Documentation,2026-07-11,False,False,False,False
+O0046,F034,Fund Alpha,2026-02-21,15000000.0,2,Follow-up / VDR,2026-03-21,False,False,False,False
+O0047,F051,Credit Strategy,2026-07-31,5000000.0,3,Due Diligence,2026-09-26,False,False,False,False
+O0048,F019,Fund Beta,2026-07-28,10000000.0,3,Due Diligence,2026-09-28,False,False,False,True
+O0049,F041,Fund Alpha,2026-03-25,25000000.0,3,Due Diligence,2026-05-16,False,False,False,False
+O0050,F042,Fund Beta,2026-01-07,25000000.0,5,Committed,2026-04-03,False,False,False,False
+O0051,F030,Secondaries Strategy,2026-02-02,100000000.0,4,IC / Documentation,2026-04-27,False,False,False,False
+O0052,F021,Credit Strategy,2026-05-14,5000000.0,4,IC / Documentation,2026-07-25,False,False,False,False
+O0053,F050,Fund Beta,2026-03-07,150000000.0,2,Follow-up / VDR,2026-04-20,False,False,False,False
+O0054,F016,Fund Gamma,2026-05-10,10000000.0,3,Due Diligence,2026-07-09,False,False,False,False
+O0055,F016,Secondaries Strategy,2026-07-05,25000000.0,3,Due Diligence,2026-08-11,False,False,False,False
+O0056,F017,Fund Beta,2026-07-06,2500000.0,4,IC / Documentation,2026-08-20,False,False,False,False
+O0057,F047,Fund Gamma,2026-03-18,40000000.0,2,Follow-up / VDR,2026-04-20,False,False,False,False
+O0058,F057,Fund Alpha,2026-04-10,75000000.0,2,Follow-up / VDR,2026-05-28,False,False,False,False
+O0059,F033,Credit Strategy,2026-06-11,15000000.0,2,Follow-up / VDR,2026-07-18,False,False,False,False
+O0060,F001,Credit Strategy,2026-07-09,10000000.0,4,IC / Documentation,2026-10-11,False,False,False,False
+O0061,F043,Fund Beta,2026-07-04,150000000.0,4,IC / Documentation,2026-09-12,False,False,False,False
+O0062,F041,Credit Strategy,2026-06-29,2500000.0,2,Follow-up / VDR,2026-08-12,False,False,False,False
+O0063,F011,Credit Strategy,2026-03-06,40000000.0,3,Due Diligence,2026-05-08,False,False,False,False
+O0064,F060,Fund Gamma,2026-08-12,5000000.0,4,IC / Documentation,2026-10-02,False,False,False,False
+O0065,F014,Secondaries Strategy,2026-02-11,10000000.0,3,Due Diligence,2026-04-16,False,False,False,False
+O0066,F031,Fund Gamma,2026-05-12,1500000.0,3,Due Diligence,2026-07-16,False,False,False,False
+O0067,F044,Secondaries Strategy,2026-02-17,40000000.0,4,IC / Documentation,2026-05-04,False,False,False,False
+O0068,F017,Credit Strategy,2026-03-12,40000000.0,2,Follow-up / VDR,2026-04-06,False,False,False,False
+O0069,F041,Secondaries Strategy,2026-06-28,25000000.0,3,Due Diligence,2026-08-21,False,False,False,False
+O0070,F034,Credit Strategy,2026-02-26,40000000.0,5,Committed,2026-04-30,False,False,True,False
+O0071,F031,Fund Beta,2026-06-14,100000000.0,4,IC / Documentation,2026-08-29,False,False,False,False
+O0072,F051,Credit Strategy,2026-07-28,40000000.0,3,Due Diligence,2026-10-12,False,False,False,True
+O0073,F023,Fund Gamma,2026-07-20,10000000.0,4,IC / Documentation,2026-10-11,False,False,False,False
+O0074,F001,Fund Gamma,2026-07-26,15000000.0,2,Follow-up / VDR,2026-08-24,False,False,False,False
+O0075,F028,Fund Gamma,2026-06-09,2500000.0,5,Declined,2026-08-02,False,False,False,False
+O0076,F051,Fund Gamma,2026-02-05,100000000.0,4,IC / Documentation,2026-03-24,False,False,False,False
+O0077,F042,Secondaries Strategy,2026-03-17,15000000.0,2,Follow-up / VDR,2026-04-07,False,False,False,False
+O0078,F029,Fund Beta,2026-03-30,5000000.0,4,IC / Documentation,2026-06-24,False,False,False,False
+O0079,F051,Fund Gamma,2026-01-24,100000000.0,2,Follow-up / VDR,2026-03-03,False,False,False,False
+O0080,F048,Fund Alpha,2026-08-03,75000000.0,3,Due Diligence,2026-09-15,False,False,False,False
+O0081,F031,Fund Alpha,2026-05-07,100000000.0,3,Due Diligence,2026-07-02,False,False,False,False
+O0082,F011,Fund Alpha,2026-05-19,150000000.0,2,Follow-up / VDR,2026-06-22,False,False,False,False
+O0083,F032,Credit Strategy,2026-06-20,15000000.0,3,Due Diligence,2026-08-10,False,False,False,False
+O0084,F024,Fund Alpha,2026-06-12,1500000.0,4,IC / Documentation,2026-09-19,False,False,False,False
+O0085,F033,Fund Beta,2026-05-04,75000000.0,2,Follow-up / VDR,2026-06-18,False,False,False,False
+O0086,F022,Fund Gamma,2026-01-25,25000000.0,3,Due Diligence,2026-04-07,False,False,False,False
+O0087,F019,Credit Strategy,2026-04-22,25000000.0,3,Due Diligence,2026-05-26,False,False,False,False
+O0088,F032,Secondaries Strategy,2026-04-14,25000000.0,4,IC / Documentation,2026-06-26,False,False,False,False
+O0089,F022,Fund Gamma,2026-02-19,25000000.0,2,Follow-up / VDR,2026-03-23,False,False,False,False
+O0090,F003,Credit Strategy,2026-04-13,100000000.0,5,Committed,2026-05-26,False,False,False,False
+O0091,F053,Fund Alpha,2026-05-02,150000000.0,5,Committed,2026-08-21,False,False,False,False
+O0092,F014,Fund Beta,2026-01-11,75000000.0,2,Follow-up / VDR,2026-01-27,False,False,False,False
+O0093,F007,Fund Gamma,2026-06-17,1500000.0,4,IC / Documentation,2026-08-31,False,False,False,False
+O0094,F020,Fund Alpha,2026-02-17,40000000.0,3,Due Diligence,2026-04-24,False,False,False,False
+O0095,F059,Secondaries Strategy,2026-01-14,75000000.0,3,Due Diligence,2026-03-22,False,False,False,False
+O0096,F045,Fund Alpha,2026-04-14,75000000.0,2,Follow-up / VDR,2026-05-25,False,False,False,False
+O0097,F043,Credit Strategy,2026-02-09,75000000.0,3,Due Diligence,2026-04-02,False,False,False,False
+O0098,F010,Credit Strategy,2026-06-10,1500000.0,5,Committed,2026-08-08,False,False,True,False
+O0099,F056,Credit Strategy,2026-02-01,5000000.0,2,Follow-up / VDR,2026-03-24,False,False,False,False
+O0100,F047,Fund Alpha,2026-07-10,5000000.0,3,Due Diligence,2026-09-30,False,False,False,False
+O0101,F047,Fund Gamma,2026-07-14,2500000.0,4,IC / Documentation,2026-10-14,False,False,False,False
+O0102,F017,Fund Alpha,2026-01-14,1500000.0,2,Follow-up / VDR,2026-03-06,False,False,False,False
+O0103,F006,Fund Gamma,2026-04-10,15000000.0,4,IC / Documentation,2026-06-09,False,False,False,False
+O0104,F037,Credit Strategy,2026-07-06,75000000.0,4,IC / Documentation,2026-09-07,False,False,False,False
+O0105,F011,Credit Strategy,2026-06-11,40000000.0,3,Due Diligence,2026-08-12,False,False,False,False
+O9998,F008,Fund Beta,2026-06-18,25000000.0,5,Committed,2026-06-28,False,True,True,False

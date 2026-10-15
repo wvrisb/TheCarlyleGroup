@@ -1,0 +1,1802 @@
+{
+ "30": {
+  "window_days": 30,
+  "att_def": "confirmed",
+  "followup_rate": 0.38571428571428573,
+  "baseline_meeting_rate": 0.34285714285714286,
+  "placebo": [
+   {
+    "event_id": "E001",
+    "group": "attended",
+    "pre": 8,
+    "post": 11
+   },
+   {
+    "event_id": "E001",
+    "group": "other_event",
+    "pre": 1,
+    "post": 2
+   },
+   {
+    "event_id": "E002",
+    "group": "attended",
+    "pre": 9,
+    "post": 17
+   },
+   {
+    "event_id": "E002",
+    "group": "other_event",
+    "pre": 7,
+    "post": 10
+   },
+   {
+    "event_id": "E003",
+    "group": "attended",
+    "pre": 13,
+    "post": 8
+   },
+   {
+    "event_id": "E003",
+    "group": "other_event",
+    "pre": 12,
+    "post": 16
+   }
+  ],
+  "placebo_total": {
+   "attended": {
+    "pre": 30,
+    "post": 36
+   },
+   "other_event": {
+    "pre": 20,
+    "post": 28
+   }
+  },
+  "new_deal_did": [
+   {
+    "group": "attended",
+    "n": 70,
+    "pre": 0.14285714285714285,
+    "post": 0.24285714285714285,
+    "change": 0.1
+   },
+   {
+    "group": "never_invited",
+    "n": 30,
+    "pre": 0.36666666666666664,
+    "post": 0.36666666666666664,
+    "change": 0.0
+   },
+   {
+    "group": "other_event",
+    "n": 71,
+    "pre": 0.18309859154929578,
+    "post": 0.15492957746478872,
+    "change": -0.02816901408450706
+   },
+   {
+    "group": "tentative_only",
+    "n": 9,
+    "pre": 0.2222222222222222,
+    "post": 0.3333333333333333,
+    "change": 0.1111111111111111
+   }
+  ],
+  "live_deal_followup": {
+   "not_followed_up": {
+    "n": 18,
+    "advanced_rate": 0.5555555555555556
+   },
+   "followed_up": {
+    "n": 13,
+    "advanced_rate": 0.5384615384615384
+   }
+  },
+  "tier1": {
+   "attendances": 21,
+   "missed_attendances": 15,
+   "firms": 13,
+   "missed_firms": 11
+  },
+  "uninvited_tier1": [
+   "F004",
+   "F052",
+   "F054"
+  ],
+  "tier_by_institutional": [
+   {
+    "tier": "Tier 1",
+    "inst": false,
+    "size": 9,
+    "mean": 0.4444444444444444
+   },
+   {
+    "tier": "Tier 1",
+    "inst": true,
+    "size": 12,
+    "mean": 0.16666666666666666
+   },
+   {
+    "tier": "Tier 2",
+    "inst": false,
+    "size": 24,
+    "mean": 0.4583333333333333
+   },
+   {
+    "tier": "Tier 2",
+    "inst": true,
+    "size": 7,
+    "mean": 0.42857142857142855
+   },
+   {
+    "tier": "Tier 3",
+    "inst": false,
+    "size": 13,
+    "mean": 0.23076923076923078
+   },
+   {
+    "tier": "Tier 3",
+    "inst": true,
+    "size": 5,
+    "mean": 0.8
+   }
+  ],
+  "event_vs_mix": {
+   "E001": {
+    "actual": 0.34615384615384615,
+    "expected_from_mix": 0.3808170995670995,
+    "n": 26
+   },
+   "E002": {
+    "actual": 0.44,
+    "expected_from_mix": 0.3993290043290043,
+    "n": 25
+   },
+   "E003": {
+    "actual": 0.3684210526315789,
+    "expected_from_mix": 0.3745015948963317,
+    "n": 19
+   }
+  },
+  "commitments_by_segment": [
+   {
+    "seg": "Asset Manager",
+    "count": 3,
+    "sum": 51500000.0
+   },
+   {
+    "seg": "Family Office",
+    "count": 6,
+    "sum": 370000000.0
+   },
+   {
+    "seg": "Foundation",
+    "count": 1,
+    "sum": 650000000.0
+   },
+   {
+    "seg": "Insurance",
+    "count": 1,
+    "sum": 1500000.0
+   },
+   {
+    "seg": "Pension",
+    "count": 1,
+    "sum": 5000000.0
+   },
+   {
+    "seg": "Sovereign Wealth",
+    "count": 2,
+    "sum": 100000000.0
+   }
+  ],
+  "first_meeting_lag": {
+   "n": 53,
+   "of_pairs": 70,
+   "median": 29.0,
+   "within": {
+    "30": 0.5094339622641509,
+    "60": 0.7924528301886793,
+    "90": 0.9622641509433962
+   }
+  },
+  "attribution": {
+   "credited": 20.0,
+   "in_multiple_windows": 0,
+   "by_rule": {
+    "last": {
+     "E001": 8.0,
+     "E002": 6.0,
+     "E003": 6.0
+    },
+    "first": {
+     "E001": 8.0,
+     "E002": 6.0,
+     "E003": 6.0
+    },
+    "split": {
+     "E001": 8.0,
+     "E002": 6.0,
+     "E003": 6.0
+    }
+   }
+  },
+  "funnel_groups": [
+   {
+    "group": "did_not_attend",
+    "n": 30,
+    "committed": 3,
+    "median_age": 151.0,
+    "mature_n": 21,
+    "mature_commit_rate": 0.14285714285714285
+   },
+   {
+    "group": "event",
+    "n": 20,
+    "committed": 2,
+    "median_age": 127.0,
+    "mature_n": 12,
+    "mature_commit_rate": 0.08333333333333333
+   },
+   {
+    "group": "existing_before",
+    "n": 29,
+    "committed": 7,
+    "median_age": 237.0,
+    "mature_n": 29,
+    "mature_commit_rate": 0.2413793103448276
+   },
+   {
+    "group": "later_unlinked",
+    "n": 27,
+    "committed": 2,
+    "median_age": 94.0,
+    "mature_n": 10,
+    "mature_commit_rate": 0.2
+   }
+  ],
+  "call_list": [
+   {
+    "firm_id": "F031",
+    "tier": "Tier 1",
+    "segment": "Foundation",
+    "events": [
+     "E003"
+    ],
+    "open_deals": 3,
+    "open_usd": 201500000.0,
+    "furthest_stage_ord": 4,
+    "priority": 1
+   },
+   {
+    "firm_id": "F006",
+    "tier": "Tier 1",
+    "segment": "Asset Manager",
+    "events": [
+     "E001"
+    ],
+    "open_deals": 2,
+    "open_usd": 165000000.0,
+    "furthest_stage_ord": 4,
+    "priority": 1
+   },
+   {
+    "firm_id": "F030",
+    "tier": "Tier 1",
+    "segment": "Sovereign Wealth",
+    "events": [
+     "E002"
+    ],
+    "open_deals": 1,
+    "open_usd": 100000000.0,
+    "furthest_stage_ord": 4,
+    "priority": 1
+   },
+   {
+    "firm_id": "F059",
+    "tier": "Tier 1",
+    "segment": "Foundation",
+    "events": [
+     "E001"
+    ],
+    "open_deals": 2,
+    "open_usd": 80000000.0,
+    "furthest_stage_ord": 3,
+    "priority": 1
+   },
+   {
+    "firm_id": "F045",
+    "tier": "Tier 1",
+    "segment": "Insurance",
+    "events": [
+     "E001"
+    ],
+    "open_deals": 2,
+    "open_usd": 76500000.0,
+    "furthest_stage_ord": 4,
+    "priority": 1
+   },
+   {
+    "firm_id": "F022",
+    "tier": "Tier 1",
+    "segment": "Foundation",
+    "events": [
+     "E001",
+     "E002",
+     "E003"
+    ],
+    "open_deals": 2,
+    "open_usd": 50000000.0,
+    "furthest_stage_ord": 3,
+    "priority": 1
+   },
+   {
+    "firm_id": "F002",
+    "tier": "Tier 1",
+    "segment": "Pension",
+    "events": [
+     "E001"
+    ],
+    "open_deals": 1,
+    "open_usd": 40000000.0,
+    "furthest_stage_ord": 3,
+    "priority": 1
+   },
+   {
+    "firm_id": "F026",
+    "tier": "Tier 1",
+    "segment": "Foundation",
+    "events": [
+     "E003"
+    ],
+    "open_deals": 1,
+    "open_usd": 40000000.0,
+    "furthest_stage_ord": 4,
+    "priority": 1
+   },
+   {
+    "firm_id": "F044",
+    "tier": "Tier 1",
+    "segment": "Insurance",
+    "events": [
+     "E001",
+     "E003"
+    ],
+    "open_deals": 1,
+    "open_usd": 40000000.0,
+    "furthest_stage_ord": 4,
+    "priority": 1
+   },
+   {
+    "firm_id": "F036",
+    "tier": "Tier 1",
+    "segment": "Insurance",
+    "events": [
+     "E001"
+    ],
+    "open_deals": 1,
+    "open_usd": 15000000.0,
+    "furthest_stage_ord": 3,
+    "priority": 1
+   },
+   {
+    "firm_id": "F029",
+    "tier": "Tier 2",
+    "segment": "Sovereign Wealth",
+    "events": [
+     "E001"
+    ],
+    "open_deals": 2,
+    "open_usd": 80000000.0,
+    "furthest_stage_ord": 4,
+    "priority": 1
+   },
+   {
+    "firm_id": "F019",
+    "tier": "Tier 2",
+    "segment": "Foundation",
+    "events": [
+     "E002"
+    ],
+    "open_deals": 3,
+    "open_usd": 75000000.0,
+    "furthest_stage_ord": 3,
+    "priority": 1
+   },
+   {
+    "firm_id": "F034",
+    "tier": "Tier 2",
+    "segment": "Family Office",
+    "events": [
+     "E002"
+    ],
+    "open_deals": 2,
+    "open_usd": 30000000.0,
+    "furthest_stage_ord": 4,
+    "priority": 1
+   },
+   {
+    "firm_id": "F010",
+    "tier": "Tier 2",
+    "segment": "Insurance",
+    "events": [
+     "E003"
+    ],
+    "open_deals": 1,
+    "open_usd": 10000000.0,
+    "furthest_stage_ord": 4,
+    "priority": 1
+   },
+   {
+    "firm_id": "F023",
+    "tier": "Tier 2",
+    "segment": "Family Office",
+    "events": [
+     "E001"
+    ],
+    "open_deals": 1,
+    "open_usd": 10000000.0,
+    "furthest_stage_ord": 4,
+    "priority": 1
+   },
+   {
+    "firm_id": "F060",
+    "tier": "Tier 2",
+    "segment": "Sovereign Wealth",
+    "events": [
+     "E002"
+    ],
+    "open_deals": 1,
+    "open_usd": 5000000.0,
+    "furthest_stage_ord": 4,
+    "priority": 1
+   },
+   {
+    "firm_id": "F024",
+    "tier": "Tier 2",
+    "segment": "Sovereign Wealth",
+    "events": [
+     "E002"
+    ],
+    "open_deals": 1,
+    "open_usd": 1500000.0,
+    "furthest_stage_ord": 4,
+    "priority": 1
+   },
+   {
+    "firm_id": "F017",
+    "tier": "Tier 3",
+    "segment": "Insurance",
+    "events": [
+     "E003"
+    ],
+    "open_deals": 6,
+    "open_usd": 155500000.0,
+    "furthest_stage_ord": 4,
+    "priority": 1
+   },
+   {
+    "firm_id": "F047",
+    "tier": "Tier 3",
+    "segment": "Pension",
+    "events": [
+     "E001",
+     "E002"
+    ],
+    "open_deals": 4,
+    "open_usd": 50000000.0,
+    "furthest_stage_ord": 4,
+    "priority": 1
+   },
+   {
+    "firm_id": "F016",
+    "tier": "Tier 3",
+    "segment": "Asset Manager",
+    "events": [
+     "E003"
+    ],
+    "open_deals": 2,
+    "open_usd": 35000000.0,
+    "furthest_stage_ord": 3,
+    "priority": 1
+   },
+   {
+    "firm_id": "F001",
+    "tier": "Tier 3",
+    "segment": "Family Office",
+    "events": [
+     "E001",
+     "E003"
+    ],
+    "open_deals": 2,
+    "open_usd": 25000000.0,
+    "furthest_stage_ord": 4,
+    "priority": 1
+   },
+   {
+    "firm_id": "F046",
+    "tier": "Tier 1",
+    "segment": "Pension",
+    "events": [
+     "E001",
+     "E002"
+    ],
+    "open_deals": 0,
+    "open_usd": 0.0,
+    "furthest_stage_ord": 0,
+    "priority": 2
+   },
+   {
+    "firm_id": "F050",
+    "tier": "Tier 2",
+    "segment": "Family Office",
+    "events": [
+     "E003"
+    ],
+    "open_deals": 1,
+    "open_usd": 150000000.0,
+    "furthest_stage_ord": 2,
+    "priority": 2
+   },
+   {
+    "firm_id": "F057",
+    "tier": "Tier 2",
+    "segment": "Family Office",
+    "events": [
+     "E001",
+     "E002"
+    ],
+    "open_deals": 1,
+    "open_usd": 75000000.0,
+    "furthest_stage_ord": 2,
+    "priority": 2
+   },
+   {
+    "firm_id": "F033",
+    "tier": "Tier 3",
+    "segment": "Family Office",
+    "events": [
+     "E002"
+    ],
+    "open_deals": 2,
+    "open_usd": 90000000.0,
+    "furthest_stage_ord": 2,
+    "priority": 2
+   },
+   {
+    "firm_id": "F027",
+    "tier": "Tier 3",
+    "segment": "Asset Manager",
+    "events": [
+     "E001"
+    ],
+    "open_deals": 1,
+    "open_usd": 15000000.0,
+    "furthest_stage_ord": 2,
+    "priority": 2
+   },
+   {
+    "firm_id": "F056",
+    "tier": "Tier 3",
+    "segment": "Family Office",
+    "events": [
+     "E002"
+    ],
+    "open_deals": 1,
+    "open_usd": 5000000.0,
+    "furthest_stage_ord": 2,
+    "priority": 2
+   },
+   {
+    "firm_id": "F003",
+    "tier": "Tier 2",
+    "segment": "Family Office",
+    "events": [
+     "E003"
+    ],
+    "open_deals": 0,
+    "open_usd": 0.0,
+    "furthest_stage_ord": 0,
+    "priority": 3
+   },
+   {
+    "firm_id": "F008",
+    "tier": "Tier 2",
+    "segment": "Asset Manager",
+    "events": [
+     "E002"
+    ],
+    "open_deals": 0,
+    "open_usd": 0.0,
+    "furthest_stage_ord": 0,
+    "priority": 3
+   },
+   {
+    "firm_id": "F013",
+    "tier": "Tier 2",
+    "segment": "Pension",
+    "events": [
+     "E001",
+     "E003"
+    ],
+    "open_deals": 0,
+    "open_usd": 0.0,
+    "furthest_stage_ord": 0,
+    "priority": 3
+   },
+   {
+    "firm_id": "F039",
+    "tier": "Tier 2",
+    "segment": "Family Office",
+    "events": [
+     "E001"
+    ],
+    "open_deals": 0,
+    "open_usd": 0.0,
+    "furthest_stage_ord": 0,
+    "priority": 3
+   },
+   {
+    "firm_id": "F055",
+    "tier": "Tier 2",
+    "segment": "Insurance",
+    "events": [
+     "E001"
+    ],
+    "open_deals": 0,
+    "open_usd": 0.0,
+    "furthest_stage_ord": 0,
+    "priority": 3
+   },
+   {
+    "firm_id": "F058",
+    "tier": "Tier 2",
+    "segment": "Insurance",
+    "events": [
+     "E003"
+    ],
+    "open_deals": 0,
+    "open_usd": 0.0,
+    "furthest_stage_ord": 0,
+    "priority": 3
+   },
+   {
+    "firm_id": "F009",
+    "tier": "Tier 3",
+    "segment": "Asset Manager",
+    "events": [
+     "E002"
+    ],
+    "open_deals": 0,
+    "open_usd": 0.0,
+    "furthest_stage_ord": 0,
+    "priority": 3
+   },
+   {
+    "firm_id": "F025",
+    "tier": "Tier 3",
+    "segment": "Pension",
+    "events": [
+     "E002"
+    ],
+    "open_deals": 0,
+    "open_usd": 0.0,
+    "furthest_stage_ord": 0,
+    "priority": 3
+   }
+  ],
+  "call_list_summary": {
+   "firms": 35,
+   "with_live_deals": 26,
+   "live_usd": 1620000000.0,
+   "priority1": 21
+  },
+  "incremental_followup": {
+   "E001": {
+    "met_after": 9,
+    "met_before": 7,
+    "extra_firms": 2,
+    "cost_per_extra_firm": 210000.0
+   },
+   "E002": {
+    "met_after": 11,
+    "met_before": 8,
+    "extra_firms": 3,
+    "cost_per_extra_firm": 61666.666666666664
+   },
+   "E003": {
+    "met_after": 7,
+    "met_before": 9,
+    "extra_firms": -2,
+    "cost_per_extra_firm": null
+   }
+  },
+  "ci_meeting_growth_gap": {
+   "point": -0.19999999999999996,
+   "lo": -1.2794577205882351,
+   "hi": 0.770778509735031
+  },
+  "ci_new_deal_gap": {
+   "point": 0.12816901408450707,
+   "lo": -0.04266096579476863,
+   "hi": 0.2991951710261569
+  }
+ },
+ "60": {
+  "window_days": 60,
+  "att_def": "confirmed",
+  "followup_rate": 0.6,
+  "baseline_meeting_rate": 0.42857142857142855,
+  "placebo": [
+   {
+    "event_id": "E001",
+    "group": "attended",
+    "pre": 10,
+    "post": 21
+   },
+   {
+    "event_id": "E001",
+    "group": "other_event",
+    "pre": 2,
+    "post": 8
+   },
+   {
+    "event_id": "E002",
+    "group": "attended",
+    "pre": 12,
+    "post": 31
+   },
+   {
+    "event_id": "E002",
+    "group": "other_event",
+    "pre": 15,
+    "post": 18
+   },
+   {
+    "event_id": "E003",
+    "group": "attended",
+    "pre": 19,
+    "post": 11
+   },
+   {
+    "event_id": "E003",
+    "group": "other_event",
+    "pre": 21,
+    "post": 20
+   }
+  ],
+  "placebo_total": {
+   "attended": {
+    "pre": 41,
+    "post": 63
+   },
+   "other_event": {
+    "pre": 38,
+    "post": 46
+   }
+  },
+  "new_deal_did": [
+   {
+    "group": "attended",
+    "n": 70,
+    "pre": 0.2714285714285714,
+    "post": 0.32857142857142857,
+    "change": 0.05714285714285716
+   },
+   {
+    "group": "never_invited",
+    "n": 30,
+    "pre": 0.5,
+    "post": 0.4666666666666667,
+    "change": -0.033333333333333326
+   },
+   {
+    "group": "other_event",
+    "n": 71,
+    "pre": 0.323943661971831,
+    "post": 0.43661971830985913,
+    "change": 0.11267605633802813
+   },
+   {
+    "group": "tentative_only",
+    "n": 9,
+    "pre": 0.3333333333333333,
+    "post": 0.4444444444444444,
+    "change": 0.1111111111111111
+   }
+  ],
+  "live_deal_followup": {
+   "not_followed_up": {
+    "n": 14,
+    "advanced_rate": 0.5
+   },
+   "followed_up": {
+    "n": 17,
+    "advanced_rate": 0.5882352941176471
+   }
+  },
+  "tier1": {
+   "attendances": 21,
+   "missed_attendances": 13,
+   "firms": 13,
+   "missed_firms": 10
+  },
+  "uninvited_tier1": [
+   "F004",
+   "F052",
+   "F054"
+  ],
+  "tier_by_institutional": [
+   {
+    "tier": "Tier 1",
+    "inst": false,
+    "size": 9,
+    "mean": 0.6666666666666666
+   },
+   {
+    "tier": "Tier 1",
+    "inst": true,
+    "size": 12,
+    "mean": 0.16666666666666666
+   },
+   {
+    "tier": "Tier 2",
+    "inst": false,
+    "size": 24,
+    "mean": 0.75
+   },
+   {
+    "tier": "Tier 2",
+    "inst": true,
+    "size": 7,
+    "mean": 0.5714285714285714
+   },
+   {
+    "tier": "Tier 3",
+    "inst": false,
+    "size": 13,
+    "mean": 0.6153846153846154
+   },
+   {
+    "tier": "Tier 3",
+    "inst": true,
+    "size": 5,
+    "mean": 0.8
+   }
+  ],
+  "event_vs_mix": {
+   "E001": {
+    "actual": 0.5769230769230769,
+    "expected_from_mix": 0.5825424575424575,
+    "n": 26
+   },
+   "E002": {
+    "actual": 0.72,
+    "expected_from_mix": 0.6235497835497835,
+    "n": 25
+   },
+   "E003": {
+    "actual": 0.47368421052631576,
+    "expected_from_mix": 0.5929027113237638,
+    "n": 19
+   }
+  },
+  "commitments_by_segment": [
+   {
+    "seg": "Asset Manager",
+    "count": 3,
+    "sum": 51500000.0
+   },
+   {
+    "seg": "Family Office",
+    "count": 6,
+    "sum": 370000000.0
+   },
+   {
+    "seg": "Foundation",
+    "count": 1,
+    "sum": 650000000.0
+   },
+   {
+    "seg": "Insurance",
+    "count": 1,
+    "sum": 1500000.0
+   },
+   {
+    "seg": "Pension",
+    "count": 1,
+    "sum": 5000000.0
+   },
+   {
+    "seg": "Sovereign Wealth",
+    "count": 2,
+    "sum": 100000000.0
+   }
+  ],
+  "first_meeting_lag": {
+   "n": 53,
+   "of_pairs": 70,
+   "median": 29.0,
+   "within": {
+    "30": 0.5094339622641509,
+    "60": 0.7924528301886793,
+    "90": 0.9622641509433962
+   }
+  },
+  "attribution": {
+   "credited": 30.0,
+   "in_multiple_windows": 2,
+   "by_rule": {
+    "last": {
+     "E001": 12.0,
+     "E002": 10.0,
+     "E003": 8.0
+    },
+    "first": {
+     "E001": 12.0,
+     "E002": 12.0,
+     "E003": 6.0
+    },
+    "split": {
+     "E001": 12.0,
+     "E002": 11.0,
+     "E003": 7.0
+    }
+   }
+  },
+  "funnel_groups": [
+   {
+    "group": "did_not_attend",
+    "n": 30,
+    "committed": 3,
+    "median_age": 151.0,
+    "mature_n": 21,
+    "mature_commit_rate": 0.14285714285714285
+   },
+   {
+    "group": "event",
+    "n": 30,
+    "committed": 3,
+    "median_age": 124.5,
+    "mature_n": 16,
+    "mature_commit_rate": 0.125
+   },
+   {
+    "group": "existing_before",
+    "n": 29,
+    "committed": 7,
+    "median_age": 237.0,
+    "mature_n": 29,
+    "mature_commit_rate": 0.2413793103448276
+   },
+   {
+    "group": "later_unlinked",
+    "n": 17,
+    "committed": 1,
+    "median_age": 86.0,
+    "mature_n": 6,
+    "mature_commit_rate": 0.16666666666666666
+   }
+  ],
+  "call_list": [
+   {
+    "firm_id": "F031",
+    "tier": "Tier 1",
+    "segment": "Foundation",
+    "events": [
+     "E003"
+    ],
+    "open_deals": 3,
+    "open_usd": 201500000.0,
+    "furthest_stage_ord": 4,
+    "priority": 1
+   },
+   {
+    "firm_id": "F006",
+    "tier": "Tier 1",
+    "segment": "Asset Manager",
+    "events": [
+     "E001"
+    ],
+    "open_deals": 2,
+    "open_usd": 165000000.0,
+    "furthest_stage_ord": 4,
+    "priority": 1
+   },
+   {
+    "firm_id": "F030",
+    "tier": "Tier 1",
+    "segment": "Sovereign Wealth",
+    "events": [
+     "E002"
+    ],
+    "open_deals": 1,
+    "open_usd": 100000000.0,
+    "furthest_stage_ord": 4,
+    "priority": 1
+   },
+   {
+    "firm_id": "F059",
+    "tier": "Tier 1",
+    "segment": "Foundation",
+    "events": [
+     "E001"
+    ],
+    "open_deals": 2,
+    "open_usd": 80000000.0,
+    "furthest_stage_ord": 3,
+    "priority": 1
+   },
+   {
+    "firm_id": "F045",
+    "tier": "Tier 1",
+    "segment": "Insurance",
+    "events": [
+     "E001"
+    ],
+    "open_deals": 2,
+    "open_usd": 76500000.0,
+    "furthest_stage_ord": 4,
+    "priority": 1
+   },
+   {
+    "firm_id": "F022",
+    "tier": "Tier 1",
+    "segment": "Foundation",
+    "events": [
+     "E001",
+     "E002",
+     "E003"
+    ],
+    "open_deals": 2,
+    "open_usd": 50000000.0,
+    "furthest_stage_ord": 3,
+    "priority": 1
+   },
+   {
+    "firm_id": "F002",
+    "tier": "Tier 1",
+    "segment": "Pension",
+    "events": [
+     "E001"
+    ],
+    "open_deals": 1,
+    "open_usd": 40000000.0,
+    "furthest_stage_ord": 3,
+    "priority": 1
+   },
+   {
+    "firm_id": "F026",
+    "tier": "Tier 1",
+    "segment": "Foundation",
+    "events": [
+     "E003"
+    ],
+    "open_deals": 1,
+    "open_usd": 40000000.0,
+    "furthest_stage_ord": 4,
+    "priority": 1
+   },
+   {
+    "firm_id": "F044",
+    "tier": "Tier 1",
+    "segment": "Insurance",
+    "events": [
+     "E001",
+     "E003"
+    ],
+    "open_deals": 1,
+    "open_usd": 40000000.0,
+    "furthest_stage_ord": 4,
+    "priority": 1
+   },
+   {
+    "firm_id": "F036",
+    "tier": "Tier 1",
+    "segment": "Insurance",
+    "events": [
+     "E001"
+    ],
+    "open_deals": 1,
+    "open_usd": 15000000.0,
+    "furthest_stage_ord": 3,
+    "priority": 1
+   },
+   {
+    "firm_id": "F029",
+    "tier": "Tier 2",
+    "segment": "Sovereign Wealth",
+    "events": [
+     "E001"
+    ],
+    "open_deals": 2,
+    "open_usd": 80000000.0,
+    "furthest_stage_ord": 4,
+    "priority": 1
+   },
+   {
+    "firm_id": "F019",
+    "tier": "Tier 2",
+    "segment": "Foundation",
+    "events": [
+     "E002"
+    ],
+    "open_deals": 3,
+    "open_usd": 75000000.0,
+    "furthest_stage_ord": 3,
+    "priority": 1
+   },
+   {
+    "firm_id": "F060",
+    "tier": "Tier 2",
+    "segment": "Sovereign Wealth",
+    "events": [
+     "E002"
+    ],
+    "open_deals": 1,
+    "open_usd": 5000000.0,
+    "furthest_stage_ord": 4,
+    "priority": 1
+   },
+   {
+    "firm_id": "F017",
+    "tier": "Tier 3",
+    "segment": "Insurance",
+    "events": [
+     "E003"
+    ],
+    "open_deals": 6,
+    "open_usd": 155500000.0,
+    "furthest_stage_ord": 4,
+    "priority": 1
+   },
+   {
+    "firm_id": "F047",
+    "tier": "Tier 3",
+    "segment": "Pension",
+    "events": [
+     "E002"
+    ],
+    "open_deals": 4,
+    "open_usd": 50000000.0,
+    "furthest_stage_ord": 4,
+    "priority": 1
+   },
+   {
+    "firm_id": "F016",
+    "tier": "Tier 3",
+    "segment": "Asset Manager",
+    "events": [
+     "E003"
+    ],
+    "open_deals": 2,
+    "open_usd": 35000000.0,
+    "furthest_stage_ord": 3,
+    "priority": 1
+   },
+   {
+    "firm_id": "F001",
+    "tier": "Tier 3",
+    "segment": "Family Office",
+    "events": [
+     "E003"
+    ],
+    "open_deals": 2,
+    "open_usd": 25000000.0,
+    "furthest_stage_ord": 4,
+    "priority": 1
+   },
+   {
+    "firm_id": "F050",
+    "tier": "Tier 2",
+    "segment": "Family Office",
+    "events": [
+     "E003"
+    ],
+    "open_deals": 1,
+    "open_usd": 150000000.0,
+    "furthest_stage_ord": 2,
+    "priority": 2
+   },
+   {
+    "firm_id": "F057",
+    "tier": "Tier 2",
+    "segment": "Family Office",
+    "events": [
+     "E001"
+    ],
+    "open_deals": 1,
+    "open_usd": 75000000.0,
+    "furthest_stage_ord": 2,
+    "priority": 2
+   },
+   {
+    "firm_id": "F056",
+    "tier": "Tier 3",
+    "segment": "Family Office",
+    "events": [
+     "E002"
+    ],
+    "open_deals": 1,
+    "open_usd": 5000000.0,
+    "furthest_stage_ord": 2,
+    "priority": 2
+   },
+   {
+    "firm_id": "F013",
+    "tier": "Tier 2",
+    "segment": "Pension",
+    "events": [
+     "E001",
+     "E003"
+    ],
+    "open_deals": 0,
+    "open_usd": 0.0,
+    "furthest_stage_ord": 0,
+    "priority": 3
+   },
+   {
+    "firm_id": "F055",
+    "tier": "Tier 2",
+    "segment": "Insurance",
+    "events": [
+     "E001"
+    ],
+    "open_deals": 0,
+    "open_usd": 0.0,
+    "furthest_stage_ord": 0,
+    "priority": 3
+   },
+   {
+    "firm_id": "F058",
+    "tier": "Tier 2",
+    "segment": "Insurance",
+    "events": [
+     "E003"
+    ],
+    "open_deals": 0,
+    "open_usd": 0.0,
+    "furthest_stage_ord": 0,
+    "priority": 3
+   },
+   {
+    "firm_id": "F009",
+    "tier": "Tier 3",
+    "segment": "Asset Manager",
+    "events": [
+     "E002"
+    ],
+    "open_deals": 0,
+    "open_usd": 0.0,
+    "furthest_stage_ord": 0,
+    "priority": 3
+   }
+  ],
+  "call_list_summary": {
+   "firms": 24,
+   "with_live_deals": 20,
+   "live_usd": 1463500000.0,
+   "priority1": 17
+  },
+  "incremental_followup": {
+   "E001": {
+    "met_after": 15,
+    "met_before": 9,
+    "extra_firms": 6,
+    "cost_per_extra_firm": 70000.0
+   },
+   "E002": {
+    "met_after": 18,
+    "met_before": 10,
+    "extra_firms": 8,
+    "cost_per_extra_firm": 23125.0
+   },
+   "E003": {
+    "met_after": 9,
+    "met_before": 11,
+    "extra_firms": -2,
+    "cost_per_extra_firm": null
+   }
+  },
+  "ci_meeting_growth_gap": {
+   "point": 0.3260590500641849,
+   "lo": -0.4330841258946955,
+   "hi": 1.2130080916783041
+  },
+  "ci_new_deal_gap": {
+   "point": -0.05553319919517097,
+   "lo": -0.255804828973843,
+   "hi": 0.1569416498993964
+  }
+ },
+ "90": {
+  "window_days": 90,
+  "att_def": "confirmed",
+  "followup_rate": 0.7285714285714285,
+  "baseline_meeting_rate": 0.5142857142857142,
+  "placebo": [
+   {
+    "event_id": "E001",
+    "group": "attended",
+    "pre": 14,
+    "post": 37
+   },
+   {
+    "event_id": "E001",
+    "group": "other_event",
+    "pre": 2,
+    "post": 18
+   },
+   {
+    "event_id": "E002",
+    "group": "attended",
+    "pre": 20,
+    "post": 35
+   },
+   {
+    "event_id": "E002",
+    "group": "other_event",
+    "pre": 19,
+    "post": 21
+   },
+   {
+    "event_id": "E003",
+    "group": "attended",
+    "pre": 23,
+    "post": 15
+   },
+   {
+    "event_id": "E003",
+    "group": "other_event",
+    "pre": 30,
+    "post": 21
+   }
+  ],
+  "placebo_total": {
+   "attended": {
+    "pre": 57,
+    "post": 87
+   },
+   "other_event": {
+    "pre": 51,
+    "post": 60
+   }
+  },
+  "new_deal_did": [
+   {
+    "group": "attended",
+    "n": 70,
+    "pre": 0.34285714285714286,
+    "post": 0.38571428571428573,
+    "change": 0.04285714285714287
+   },
+   {
+    "group": "never_invited",
+    "n": 30,
+    "pre": 0.6,
+    "post": 0.6,
+    "change": 0.0
+   },
+   {
+    "group": "other_event",
+    "n": 71,
+    "pre": 0.4084507042253521,
+    "post": 0.49295774647887325,
+    "change": 0.08450704225352113
+   },
+   {
+    "group": "tentative_only",
+    "n": 9,
+    "pre": 0.5555555555555556,
+    "post": 0.4444444444444444,
+    "change": -0.11111111111111116
+   }
+  ],
+  "live_deal_followup": {
+   "not_followed_up": {
+    "n": 10,
+    "advanced_rate": 0.4
+   },
+   "followed_up": {
+    "n": 21,
+    "advanced_rate": 0.6190476190476191
+   }
+  },
+  "tier1": {
+   "attendances": 21,
+   "missed_attendances": 6,
+   "firms": 13,
+   "missed_firms": 4
+  },
+  "uninvited_tier1": [
+   "F004",
+   "F052",
+   "F054"
+  ],
+  "tier_by_institutional": [
+   {
+    "tier": "Tier 1",
+    "inst": false,
+    "size": 9,
+    "mean": 1.0
+   },
+   {
+    "tier": "Tier 1",
+    "inst": true,
+    "size": 12,
+    "mean": 0.5
+   },
+   {
+    "tier": "Tier 2",
+    "inst": false,
+    "size": 24,
+    "mean": 0.7916666666666666
+   },
+   {
+    "tier": "Tier 2",
+    "inst": true,
+    "size": 7,
+    "mean": 0.7142857142857143
+   },
+   {
+    "tier": "Tier 3",
+    "inst": false,
+    "size": 13,
+    "mean": 0.6153846153846154
+   },
+   {
+    "tier": "Tier 3",
+    "inst": true,
+    "size": 5,
+    "mean": 0.8
+   }
+  ],
+  "event_vs_mix": {
+   "E001": {
+    "actual": 0.8076923076923077,
+    "expected_from_mix": 0.7221528471528471,
+    "n": 26
+   },
+   "E002": {
+    "actual": 0.76,
+    "expected_from_mix": 0.7474458874458874,
+    "n": 25
+   },
+   "E003": {
+    "actual": 0.5789473684210527,
+    "expected_from_mix": 0.7125199362041468,
+    "n": 19
+   }
+  },
+  "commitments_by_segment": [
+   {
+    "seg": "Asset Manager",
+    "count": 3,
+    "sum": 51500000.0
+   },
+   {
+    "seg": "Family Office",
+    "count": 6,
+    "sum": 370000000.0
+   },
+   {
+    "seg": "Foundation",
+    "count": 1,
+    "sum": 650000000.0
+   },
+   {
+    "seg": "Insurance",
+    "count": 1,
+    "sum": 1500000.0
+   },
+   {
+    "seg": "Pension",
+    "count": 1,
+    "sum": 5000000.0
+   },
+   {
+    "seg": "Sovereign Wealth",
+    "count": 2,
+    "sum": 100000000.0
+   }
+  ],
+  "first_meeting_lag": {
+   "n": 53,
+   "of_pairs": 70,
+   "median": 29.0,
+   "within": {
+    "30": 0.5094339622641509,
+    "60": 0.7924528301886793,
+    "90": 0.9622641509433962
+   }
+  },
+  "attribution": {
+   "credited": 37.0,
+   "in_multiple_windows": 3,
+   "by_rule": {
+    "last": {
+     "E001": 16.0,
+     "E002": 13.0,
+     "E003": 8.0
+    },
+    "first": {
+     "E001": 17.0,
+     "E002": 14.0,
+     "E003": 6.0
+    },
+    "split": {
+     "E001": 16.5,
+     "E002": 13.5,
+     "E003": 7.0
+    }
+   }
+  },
+  "funnel_groups": [
+   {
+    "group": "did_not_attend",
+    "n": 30,
+    "committed": 3,
+    "median_age": 151.0,
+    "mature_n": 21,
+    "mature_commit_rate": 0.14285714285714285
+   },
+   {
+    "group": "event",
+    "n": 37,
+    "committed": 4,
+    "median_age": 125.0,
+    "mature_n": 20,
+    "mature_commit_rate": 0.15
+   },
+   {
+    "group": "existing_before",
+    "n": 29,
+    "committed": 7,
+    "median_age": 237.0,
+    "mature_n": 29,
+    "mature_commit_rate": 0.2413793103448276
+   },
+   {
+    "group": "later_unlinked",
+    "n": 10,
+    "committed": 0,
+    "median_age": 84.5,
+    "mature_n": 2,
+    "mature_commit_rate": 0.0
+   }
+  ],
+  "call_list": [
+   {
+    "firm_id": "F045",
+    "tier": "Tier 1",
+    "segment": "Insurance",
+    "events": [
+     "E001"
+    ],
+    "open_deals": 2,
+    "open_usd": 76500000.0,
+    "furthest_stage_ord": 4,
+    "priority": 1
+   },
+   {
+    "firm_id": "F022",
+    "tier": "Tier 1",
+    "segment": "Foundation",
+    "events": [
+     "E001",
+     "E002",
+     "E003"
+    ],
+    "open_deals": 2,
+    "open_usd": 50000000.0,
+    "furthest_stage_ord": 3,
+    "priority": 1
+   },
+   {
+    "firm_id": "F026",
+    "tier": "Tier 1",
+    "segment": "Foundation",
+    "events": [
+     "E003"
+    ],
+    "open_deals": 1,
+    "open_usd": 40000000.0,
+    "furthest_stage_ord": 4,
+    "priority": 1
+   },
+   {
+    "firm_id": "F044",
+    "tier": "Tier 1",
+    "segment": "Insurance",
+    "events": [
+     "E003"
+    ],
+    "open_deals": 1,
+    "open_usd": 40000000.0,
+    "furthest_stage_ord": 4,
+    "priority": 1
+   },
+   {
+    "firm_id": "F019",
+    "tier": "Tier 2",
+    "segment": "Foundation",
+    "events": [
+     "E002"
+    ],
+    "open_deals": 3,
+    "open_usd": 75000000.0,
+    "furthest_stage_ord": 3,
+    "priority": 1
+   },
+   {
+    "firm_id": "F060",
+    "tier": "Tier 2",
+    "segment": "Sovereign Wealth",
+    "events": [
+     "E002"
+    ],
+    "open_deals": 1,
+    "open_usd": 5000000.0,
+    "furthest_stage_ord": 4,
+    "priority": 1
+   },
+   {
+    "firm_id": "F017",
+    "tier": "Tier 3",
+    "segment": "Insurance",
+    "events": [
+     "E003"
+    ],
+    "open_deals": 6,
+    "open_usd": 155500000.0,
+    "furthest_stage_ord": 4,
+    "priority": 1
+   },
+   {
+    "firm_id": "F047",
+    "tier": "Tier 3",
+    "segment": "Pension",
+    "events": [
+     "E002"
+    ],
+    "open_deals": 4,
+    "open_usd": 50000000.0,
+    "furthest_stage_ord": 4,
+    "priority": 1
+   },
+   {
+    "firm_id": "F016",
+    "tier": "Tier 3",
+    "segment": "Asset Manager",
+    "events": [
+     "E003"
+    ],
+    "open_deals": 2,
+    "open_usd": 35000000.0,
+    "furthest_stage_ord": 3,
+    "priority": 1
+   },
+   {
+    "firm_id": "F001",
+    "tier": "Tier 3",
+    "segment": "Family Office",
+    "events": [
+     "E003"
+    ],
+    "open_deals": 2,
+    "open_usd": 25000000.0,
+    "furthest_stage_ord": 4,
+    "priority": 1
+   },
+   {
+    "firm_id": "F050",
+    "tier": "Tier 2",
+    "segment": "Family Office",
+    "events": [
+     "E003"
+    ],
+    "open_deals": 1,
+    "open_usd": 150000000.0,
+    "furthest_stage_ord": 2,
+    "priority": 2
+   },
+   {
+    "firm_id": "F057",
+    "tier": "Tier 2",
+    "segment": "Family Office",
+    "events": [
+     "E001"
+    ],
+    "open_deals": 1,
+    "open_usd": 75000000.0,
+    "furthest_stage_ord": 2,
+    "priority": 2
+   },
+   {
+    "firm_id": "F056",
+    "tier": "Tier 3",
+    "segment": "Family Office",
+    "events": [
+     "E002"
+    ],
+    "open_deals": 1,
+    "open_usd": 5000000.0,
+    "furthest_stage_ord": 2,
+    "priority": 2
+   },
+   {
+    "firm_id": "F013",
+    "tier": "Tier 2",
+    "segment": "Pension",
+    "events": [
+     "E001",
+     "E003"
+    ],
+    "open_deals": 0,
+    "open_usd": 0.0,
+    "furthest_stage_ord": 0,
+    "priority": 3
+   },
+   {
+    "firm_id": "F055",
+    "tier": "Tier 2",
+    "segment": "Insurance",
+    "events": [
+     "E001"
+    ],
+    "open_deals": 0,
+    "open_usd": 0.0,
+    "furthest_stage_ord": 0,
+    "priority": 3
+   },
+   {
+    "firm_id": "F009",
+    "tier": "Tier 3",
+    "segment": "Asset Manager",
+    "events": [
+     "E002"
+    ],
+    "open_deals": 0,
+    "open_usd": 0.0,
+    "furthest_stage_ord": 0,
+    "priority": 3
+   }
+  ],
+  "call_list_summary": {
+   "firms": 16,
+   "with_live_deals": 13,
+   "live_usd": 782000000.0,
+   "priority1": 10
+  },
+  "incremental_followup": {
+   "E001": {
+    "met_after": 21,
+    "met_before": 11,
+    "extra_firms": 10,
+    "cost_per_extra_firm": 42000.0
+   },
+   "E002": {
+    "met_after": 19,
+    "met_before": 13,
+    "extra_firms": 6,
+    "cost_per_extra_firm": 30833.333333333332
+   },
+   "E003": {
+    "met_after": 11,
+    "met_before": 12,
+    "extra_firms": -1,
+    "cost_per_extra_firm": null
+   }
+  },
+  "ci_meeting_growth_gap": {
+   "point": 0.34984520123839014,
+   "lo": -0.3403437610463061,
+   "hi": 1.1095082883218468
+  },
+  "ci_new_deal_gap": {
+   "point": -0.041649899396378254,
+   "lo": -0.2549295774647887,
+   "hi": 0.1845120724346076
+  }
+ }
+}

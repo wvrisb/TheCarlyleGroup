@@ -1,0 +1,4 @@
+pandas>=2.0
+numpy>=1.24
+# validation scripts only (src/check_*.py); then run: playwright install chromium
+playwright>=1.40

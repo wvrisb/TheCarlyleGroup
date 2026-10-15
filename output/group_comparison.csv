@@ -1,0 +1,145 @@
+att_def,window_days,event_id,attendance_group,priority,firms,firms_with_new_opp,new_opps,new_opp_usd
+confirmed,30,E001,Attended (Confirmed),Tier 1,9,1,1,15000000.0
+confirmed,30,E001,Attended (Confirmed),Tier 2,12,3,4,230000000.0
+confirmed,30,E001,Attended (Confirmed),Tier 3,5,2,3,90000000.0
+confirmed,30,E001,Not on list,Tier 1,7,0,0,0.0
+confirmed,30,E001,Not on list,Tier 2,14,2,3,690000000.0
+confirmed,30,E001,Not on list,Tier 3,9,1,1,150000000.0
+confirmed,30,E001,Tentative only,Tier 1,1,0,0,0.0
+confirmed,30,E001,Tentative only,Tier 2,2,1,1,25000000.0
+confirmed,30,E001,Tentative only,Tier 3,1,0,0,0.0
+confirmed,30,E002,Attended (Confirmed),Tier 1,6,0,0,0.0
+confirmed,30,E002,Attended (Confirmed),Tier 2,12,4,4,68000000.0
+confirmed,30,E002,Attended (Confirmed),Tier 3,7,2,2,115000000.0
+confirmed,30,E002,Not on list,Tier 1,9,3,3,116500000.0
+confirmed,30,E002,Not on list,Tier 2,16,2,2,4000000.0
+confirmed,30,E002,Not on list,Tier 3,8,4,4,120000000.0
+confirmed,30,E002,Tentative only,Tier 1,2,0,0,0.0
+confirmed,30,E003,Attended (Confirmed),Tier 1,6,2,2,190000000.0
+confirmed,30,E003,Attended (Confirmed),Tier 2,7,0,0,0.0
+confirmed,30,E003,Attended (Confirmed),Tier 3,6,3,4,39000000.0
+confirmed,30,E003,Not on list,Tier 1,10,2,3,140000000.0
+confirmed,30,E003,Not on list,Tier 2,19,7,8,379000000.0
+confirmed,30,E003,Not on list,Tier 3,9,3,5,110000000.0
+confirmed,30,E003,Tentative only,Tier 1,1,0,0,0.0
+confirmed,30,E003,Tentative only,Tier 2,2,0,0,0.0
+confirmed,60,E001,Attended (Confirmed),Tier 1,9,3,3,190000000.0
+confirmed,60,E001,Attended (Confirmed),Tier 2,12,4,6,455000000.0
+confirmed,60,E001,Attended (Confirmed),Tier 3,5,2,3,90000000.0
+confirmed,60,E001,Not on list,Tier 1,7,1,1,5000000.0
+confirmed,60,E001,Not on list,Tier 2,14,6,7,840000000.0
+confirmed,60,E001,Not on list,Tier 3,9,3,3,235000000.0
+confirmed,60,E001,Tentative only,Tier 1,1,1,1,25000000.0
+confirmed,60,E001,Tentative only,Tier 2,2,1,1,25000000.0
+confirmed,60,E001,Tentative only,Tier 3,1,0,0,0.0
+confirmed,60,E002,Attended (Confirmed),Tier 1,6,0,0,0.0
+confirmed,60,E002,Attended (Confirmed),Tier 2,12,5,5,218000000.0
+confirmed,60,E002,Attended (Confirmed),Tier 3,7,3,7,129000000.0
+confirmed,60,E002,Not on list,Tier 1,9,5,6,281500000.0
+confirmed,60,E002,Not on list,Tier 2,16,6,8,216500000.0
+confirmed,60,E002,Not on list,Tier 3,8,6,8,255000000.0
+confirmed,60,E002,Tentative only,Tier 1,2,1,1,150000000.0
+confirmed,60,E003,Attended (Confirmed),Tier 1,6,2,2,190000000.0
+confirmed,60,E003,Attended (Confirmed),Tier 2,7,0,0,0.0
+confirmed,60,E003,Attended (Confirmed),Tier 3,6,4,6,129000000.0
+confirmed,60,E003,Not on list,Tier 1,10,4,5,160000000.0
+confirmed,60,E003,Not on list,Tier 2,19,11,15,574000000.0
+confirmed,60,E003,Not on list,Tier 3,9,3,5,110000000.0
+confirmed,60,E003,Tentative only,Tier 1,1,1,1,40000000.0
+confirmed,60,E003,Tentative only,Tier 2,2,0,0,0.0
+confirmed,90,E001,Attended (Confirmed),Tier 1,9,3,4,191500000.0
+confirmed,90,E001,Attended (Confirmed),Tier 2,12,5,8,532500000.0
+confirmed,90,E001,Attended (Confirmed),Tier 3,5,3,5,205000000.0
+confirmed,90,E001,Not on list,Tier 1,7,2,2,155000000.0
+confirmed,90,E001,Not on list,Tier 2,14,7,10,884000000.0
+confirmed,90,E001,Not on list,Tier 3,9,5,6,415000000.0
+confirmed,90,E001,Tentative only,Tier 1,1,1,1,25000000.0
+confirmed,90,E001,Tentative only,Tier 2,2,1,1,25000000.0
+confirmed,90,E001,Tentative only,Tier 3,1,0,0,0.0
+confirmed,90,E002,Attended (Confirmed),Tier 1,6,1,1,40000000.0
+confirmed,90,E002,Attended (Confirmed),Tier 2,12,6,7,233000000.0
+confirmed,90,E002,Attended (Confirmed),Tier 3,7,3,7,129000000.0
+confirmed,90,E002,Not on list,Tier 1,9,6,7,286500000.0
+confirmed,90,E002,Not on list,Tier 2,16,7,12,386500000.0
+confirmed,90,E002,Not on list,Tier 3,8,7,10,345000000.0
+confirmed,90,E002,Tentative only,Tier 1,2,2,2,165000000.0
+confirmed,90,E003,Attended (Confirmed),Tier 1,6,2,2,190000000.0
+confirmed,90,E003,Attended (Confirmed),Tier 2,7,0,0,0.0
+confirmed,90,E003,Attended (Confirmed),Tier 3,6,4,6,129000000.0
+confirmed,90,E003,Not on list,Tier 1,10,4,5,160000000.0
+confirmed,90,E003,Not on list,Tier 2,19,11,15,574000000.0
+confirmed,90,E003,Not on list,Tier 3,9,3,5,110000000.0
+confirmed,90,E003,Tentative only,Tier 1,1,1,1,40000000.0
+confirmed,90,E003,Tentative only,Tier 2,2,0,0,0.0
+incl_tentative,30,E001,Attended (Confirmed),Tier 1,9,1,1,15000000.0
+incl_tentative,30,E001,Attended (Confirmed),Tier 2,12,3,4,230000000.0
+incl_tentative,30,E001,Attended (Confirmed),Tier 3,5,2,3,90000000.0
+incl_tentative,30,E001,Not on list,Tier 1,7,0,0,0.0
+incl_tentative,30,E001,Not on list,Tier 2,14,2,3,690000000.0
+incl_tentative,30,E001,Not on list,Tier 3,9,1,1,150000000.0
+incl_tentative,30,E001,Tentative only,Tier 1,1,0,0,0.0
+incl_tentative,30,E001,Tentative only,Tier 2,2,1,1,25000000.0
+incl_tentative,30,E001,Tentative only,Tier 3,1,0,0,0.0
+incl_tentative,30,E002,Attended (Confirmed),Tier 1,6,0,0,0.0
+incl_tentative,30,E002,Attended (Confirmed),Tier 2,12,4,4,68000000.0
+incl_tentative,30,E002,Attended (Confirmed),Tier 3,7,2,2,115000000.0
+incl_tentative,30,E002,Not on list,Tier 1,9,3,3,116500000.0
+incl_tentative,30,E002,Not on list,Tier 2,16,2,2,4000000.0
+incl_tentative,30,E002,Not on list,Tier 3,8,4,4,120000000.0
+incl_tentative,30,E002,Tentative only,Tier 1,2,0,0,0.0
+incl_tentative,30,E003,Attended (Confirmed),Tier 1,6,2,2,190000000.0
+incl_tentative,30,E003,Attended (Confirmed),Tier 2,7,0,0,0.0
+incl_tentative,30,E003,Attended (Confirmed),Tier 3,6,3,4,39000000.0
+incl_tentative,30,E003,Not on list,Tier 1,10,2,3,140000000.0
+incl_tentative,30,E003,Not on list,Tier 2,19,7,8,379000000.0
+incl_tentative,30,E003,Not on list,Tier 3,9,3,5,110000000.0
+incl_tentative,30,E003,Tentative only,Tier 1,1,0,0,0.0
+incl_tentative,30,E003,Tentative only,Tier 2,2,0,0,0.0
+incl_tentative,60,E001,Attended (Confirmed),Tier 1,9,3,3,190000000.0
+incl_tentative,60,E001,Attended (Confirmed),Tier 2,12,4,6,455000000.0
+incl_tentative,60,E001,Attended (Confirmed),Tier 3,5,2,3,90000000.0
+incl_tentative,60,E001,Not on list,Tier 1,7,1,1,5000000.0
+incl_tentative,60,E001,Not on list,Tier 2,14,6,7,840000000.0
+incl_tentative,60,E001,Not on list,Tier 3,9,3,3,235000000.0
+incl_tentative,60,E001,Tentative only,Tier 1,1,1,1,25000000.0
+incl_tentative,60,E001,Tentative only,Tier 2,2,1,1,25000000.0
+incl_tentative,60,E001,Tentative only,Tier 3,1,0,0,0.0
+incl_tentative,60,E002,Attended (Confirmed),Tier 1,6,0,0,0.0
+incl_tentative,60,E002,Attended (Confirmed),Tier 2,12,5,5,218000000.0
+incl_tentative,60,E002,Attended (Confirmed),Tier 3,7,3,7,129000000.0
+incl_tentative,60,E002,Not on list,Tier 1,9,5,6,281500000.0
+incl_tentative,60,E002,Not on list,Tier 2,16,6,8,216500000.0
+incl_tentative,60,E002,Not on list,Tier 3,8,6,8,255000000.0
+incl_tentative,60,E002,Tentative only,Tier 1,2,1,1,150000000.0
+incl_tentative,60,E003,Attended (Confirmed),Tier 1,6,2,2,190000000.0
+incl_tentative,60,E003,Attended (Confirmed),Tier 2,7,0,0,0.0
+incl_tentative,60,E003,Attended (Confirmed),Tier 3,6,4,6,129000000.0
+incl_tentative,60,E003,Not on list,Tier 1,10,4,5,160000000.0
+incl_tentative,60,E003,Not on list,Tier 2,19,11,15,574000000.0
+incl_tentative,60,E003,Not on list,Tier 3,9,3,5,110000000.0
+incl_tentative,60,E003,Tentative only,Tier 1,1,1,1,40000000.0
+incl_tentative,60,E003,Tentative only,Tier 2,2,0,0,0.0
+incl_tentative,90,E001,Attended (Confirmed),Tier 1,9,3,4,191500000.0
+incl_tentative,90,E001,Attended (Confirmed),Tier 2,12,5,8,532500000.0
+incl_tentative,90,E001,Attended (Confirmed),Tier 3,5,3,5,205000000.0
+incl_tentative,90,E001,Not on list,Tier 1,7,2,2,155000000.0
+incl_tentative,90,E001,Not on list,Tier 2,14,7,10,884000000.0
+incl_tentative,90,E001,Not on list,Tier 3,9,5,6,415000000.0
+incl_tentative,90,E001,Tentative only,Tier 1,1,1,1,25000000.0
+incl_tentative,90,E001,Tentative only,Tier 2,2,1,1,25000000.0
+incl_tentative,90,E001,Tentative only,Tier 3,1,0,0,0.0
+incl_tentative,90,E002,Attended (Confirmed),Tier 1,6,1,1,40000000.0
+incl_tentative,90,E002,Attended (Confirmed),Tier 2,12,6,7,233000000.0
+incl_tentative,90,E002,Attended (Confirmed),Tier 3,7,3,7,129000000.0
+incl_tentative,90,E002,Not on list,Tier 1,9,6,7,286500000.0
+incl_tentative,90,E002,Not on list,Tier 2,16,7,12,386500000.0
+incl_tentative,90,E002,Not on list,Tier 3,8,7,10,345000000.0
+incl_tentative,90,E002,Tentative only,Tier 1,2,2,2,165000000.0
+incl_tentative,90,E003,Attended (Confirmed),Tier 1,6,2,2,190000000.0
+incl_tentative,90,E003,Attended (Confirmed),Tier 2,7,0,0,0.0
+incl_tentative,90,E003,Attended (Confirmed),Tier 3,6,4,6,129000000.0
+incl_tentative,90,E003,Not on list,Tier 1,10,4,5,160000000.0
+incl_tentative,90,E003,Not on list,Tier 2,19,11,15,574000000.0
+incl_tentative,90,E003,Not on list,Tier 3,9,3,5,110000000.0
+incl_tentative,90,E003,Tentative only,Tier 1,1,1,1,40000000.0
+incl_tentative,90,E003,Tentative only,Tier 2,2,0,0,0.0
