@@ -116,7 +116,7 @@ python src/build_dashboard.py  # embeds the data into dashboard/template.html ->
 python src/run_sql.py          # runs sql/*.sql on SQLite (built into Python) and checks every KPI against the Python output
 
 # validation (needs: playwright install chromium)
-python src/check_dashboard.py  # dashboard figures == Python figures (26 checks)
+python src/check_dashboard.py  # dashboard figures == Python figures (30 checks)
 python src/check_narrative.py  # every tab's text under all 1,344 filter combinations
 python src/capture_screenshots.py  # optional: refresh docs/screenshots/
 ```

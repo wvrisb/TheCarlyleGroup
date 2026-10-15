@@ -41,7 +41,7 @@ Statistical ranges (bootstrap, 5,000 resamples) for the first two checks both in
 
 ## Recommendation 3: call the firms with open deals and no meeting since their event
 
-**Evidence.** 14 firms have had no logged meeting since their event; 12 of them have open deals worth $707M, 4 of them Tier 1. Tier 1 firms are followed up most slowly: 10 of 13 were not met within 60 days of an event they attended (4 of 13 still not met by 90 days).
+**Evidence.** 14 firms have had no logged meeting since their event (meetings are logged to 7 September 2026); 12 of them have open deals worth $707M, 4 of them Tier 1. Tier 1 firms are followed up most slowly: 10 of 13 were not met within 60 days of an event they attended (4 of 13 still not met by 90 days).
 
 **Assumptions.**
 - No logged meeting does not always mean we did not meet: some meetings are not logged, so the list should be checked against the client database before calling.

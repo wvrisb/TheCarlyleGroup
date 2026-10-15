@@ -58,7 +58,7 @@ Both ranges include zero. The firm order is fixed before resampling, so the rang
 
 ## Priority call list
 
-Attending firms with no meeting within the window after an event they attended, one row per firm (24 firms at default). Firms with **no meeting logged since** their most recent missed event, as of 14 Oct, come first (14 firms; 12 with open deals worth $707M, 4 of them Tier 1): these are the calls. Firms met later than the window follow (10 firms): slow follow-up, no call needed now. Within each group:
+Attending firms with no meeting within the window after an event they attended, one row per firm (24 firms at default). Firms with **no meeting logged since** their most recent missed event (meetings are logged to 7 September 2026) come first (14 firms; 12 with open deals worth $707M, 4 of them Tier 1): these are the calls. Firms met later than the window follow (10 firms): slow follow-up, no call needed now. Within each group:
 **Priority 1** open deal in due diligence or at investment committee · **Priority 2** earlier-stage open deal, or a Tier 1 firm · **Priority 3** no open deal; then by tier, then open deal size. Investor type is shown but not used to rank, since foundations and insurers commit less often but are also followed up less.
 
 Check against the client database before calling: 4 of 37 attending firms whose deals moved past the first stage have no meeting logged at all.
