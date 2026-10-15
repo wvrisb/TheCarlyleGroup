@@ -35,7 +35,7 @@ I used Claude (Anthropic) throughout, as a pair analyst: it proposed options, wr
 | 7 | "Foundations, insurers and pensions are followed up least at every tier" | AI self-review | False at Tier 3; Tier 1 pension funds were mostly met | Narrowed to Tier 1 foundations and insurers |
 | 8 | Takeaways written as fixed sentences | Me (toggled to 30 days and saw a contradiction) | The automated test found five more errors under other filters, incl. a recommendation contradicting its own numbers | All text computed from the screen; recommendations pinned to full data; test suite added |
 | 9 | Cost per firm followed up as the efficiency headline | Mock interviewer review | It counts firms we would have met anyway | Headline changed to cost per extra firm met (London $23K, New York $70K, Berlin none) |
-| 10 | "Contact rose beyond the season" | Mock interviewer review | Some comparison-group firms were in their own post-event period; using only firms with no event within 60 days, the overall difference disappears, while London's lift remains | [Decision: state as kept / revised — see README limitations] |
+| 10 | "Contact rose beyond the season" | Mock interviewer review | Some comparison-group firms were in their own post-event period; using only firms with no event within 60 days, the overall difference disappears, while London's lift remains | Revised: comparison group restricted to firms with no event of their own within the window; headline changed to "beyond the season only after London"; the original comparison is kept in Methods for transparency |
 
 ## What I kept for my own judgment
 

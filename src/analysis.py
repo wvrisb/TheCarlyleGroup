@@ -47,17 +47,24 @@ def analyse(m, w=60, att_def="confirmed"):
     out["followup_rate"] = a.fu.mean()
     out["baseline_meeting_rate"] = (a.meetings_pre > 0).mean()
 
-    # 2. placebo: meetings around event X for firms that attended X vs firms that attended another event only
+    # 2. comparison group for seasonality: meetings around event X for firms that attended X vs firms that
+    #    attended another event. "clean" = that firm had no attended event of its own within the window of X,
+    #    so its own event's follow-up cannot inflate its "before" count. "overlap" = the rest (kept for the
+    #    robustness note). The headline comparison uses attended vs clean.
+    own = attended.assign(d=attended.event_id.map(ev.event_date)).groupby("firm_id").d.apply(list)
     rows = []
     for e in ev.index:
         d0 = ev.event_date[e]
         for fid in ever:
             mm = meet[meet.firm_id == fid].meeting_date
-            rows.append(dict(event_id=e, group="attended" if (e, fid) in pairs else "other_event",
-                             pre=int(((mm < d0) & (mm >= d0 - W)).sum()), post=int(((mm >= d0) & (mm <= d0 + W)).sum())))
+            if (e, fid) in pairs: grp = "attended"
+            else: grp = "clean" if all(abs((x - d0).days) > w for x in own[fid]) else "overlap"
+            rows.append(dict(event_id=e, group=grp, pre=int(((mm < d0) & (mm >= d0 - W)).sum()), post=int(((mm >= d0) & (mm <= d0 + W)).sum())))
     pl = pd.DataFrame(rows)
     out["placebo"] = pl.groupby(["event_id", "group"])[["pre", "post"]].sum().reset_index().to_dict("records")
     out["placebo_total"] = pl.groupby("group")[["pre", "post"]].sum().to_dict("index")
+    tot = pl[pl.group != "attended"][["pre", "post"]].sum()
+    out["placebo_total"]["other_event_all"] = {"pre": int(tot.pre), "post": int(tot.post)}   # original comparison, for the robustness note
 
     # 3. new-deal rate before vs after, by group (difference-in-differences)
     grp = lambda r: "attended" if r.attended else "other_event" if r.firm_id in ever else "never_invited" if r.firm_id not in on_list else "tentative_only"
@@ -150,7 +157,7 @@ def analyse(m, w=60, att_def="confirmed"):
 
     # 12. uncertainty: bootstrap 95% ranges (resampling firm-event pairs, 5,000 draws, fixed seed)
     rng = np.random.default_rng(7)
-    A, O = pl[pl.group == "attended"][["pre", "post"]].values, pl[pl.group == "other_event"][["pre", "post"]].values
+    A, O = pl[pl.group == "attended"][["pre", "post"]].values, pl[pl.group == "clean"][["pre", "post"]].values
     def growth_gap(a_, o_):
         return a_[:, 1].sum() / a_[:, 0].sum() - o_[:, 1].sum() / o_[:, 0].sum() if a_[:, 0].sum() and o_[:, 0].sum() else np.nan
     draws = [growth_gap(A[rng.integers(0, len(A), len(A))], O[rng.integers(0, len(O), len(O))]) for _ in range(5000)]

@@ -238,7 +238,7 @@ const GLOSS = {
   outlier: ["The $650M deal", "One commitment (O0017) is 55% of all committed capital, 6.5x the firm's history, and skipped diligence. It is kept but unverified; this toggle shows totals with and without it. The firm never attended an event."],
   selfbase: ["Before vs after", "Compares the same attending firms in equal windows before and after the event, so each firm is its own baseline."],
   mix: ["Expected from investor mix", "The follow-up rate an event would have had if each attending firm were followed up at the average rate for its investor type (all events combined). Above it means the event did better than its mix of investors explains."],
-  comp: ["Comparison group", "For each event: firms that attended one of the other two events but not this one. Their meetings are logged (only attending firms have meeting records) and they are measured over the same dates, so they show what happened from the time of year alone."],
+  comp: ["Comparison group", "For each event: firms that attended one of the other events, but not this one, and had no event of their own within {w} days of it. Their meetings are logged (only attending firms have meeting records) and they are measured over the same dates, so they show what the time of year alone does. Firms whose own event fell inside the window are left out, because their own follow-up meetings would inflate their \"before\" count. Used for meetings only; the new-deal comparison uses all firms at other events, since deals are not affected in the same way."],
   never: ["Never invited", "Firms that appear on no attendee list for any event — the closest thing to a comparison group."],
 };
 
@@ -414,13 +414,18 @@ const share = (a, f) => a.length ? a.filter(f).length / a.length : null;
 const pts = v => v == null ? "–" : `${v >= 0 ? "+" : "−"}${Math.abs(Math.round(v * 100))} pts`;
 const growth = (a, b) => a ? `${b >= a ? "+" : "−"}${Math.abs(Math.round((b - a) / a * 100))}%` : "–";
 function placebo() {
-  const att = attendedPairs(), ever = [...new Set(att.map(a => a.firm_id))].filter(firmOK), set = new Set(att.map(a => a.event_id + "|" + a.firm_id));
-  const per = EVS.map(e => { const d0 = day(evById[e].event_date), r = { eid: e, att: { pre: 0, post: 0 }, oth: { pre: 0, post: 0 } };
-    for (const f of ever) { const g = set.has(e + "|" + f) ? r.att : r.oth;
+  const att = attendedPairs(), set = new Set(att.map(a => a.event_id + "|" + a.firm_id)), own = {};
+  att.forEach(a => (own[a.firm_id] ||= []).push(day(evById[a.event_id].event_date)));
+  const firms = Object.keys(own).filter(firmOK), z = () => ({ pre: 0, post: 0 });
+  // comparison group = firms that attended a different event AND had no event of their own within the window of this one
+  // ("clean"); firms whose own event falls inside the window ("overlap") are excluded, because their own follow-up
+  // inflates their "before" count. The original all-firms comparison is kept as othAll for the robustness note.
+  const per = EVS.map(e => { const d0 = day(evById[e].event_date), r = { eid: e, att: z(), oth: z(), ovl: z() };
+    for (const f of firms) { const g = set.has(e + "|" + f) ? r.att : own[f].every(t => Math.abs(t - d0) / DAY > S.w) ? r.oth : r.ovl;
       for (const t of meetsByFirm[f] || []) { const dd = (t - d0) / DAY; if (dd < 0 && dd >= -S.w) g.pre++; else if (dd >= 0 && dd <= S.w) g.post++; } }
-    return r; });
+    r.othAll = { pre: r.oth.pre + r.ovl.pre, post: r.oth.post + r.ovl.post }; return r; });
   const sum = k => ({ pre: per.reduce((s, r) => s + r[k].pre, 0), post: per.reduce((s, r) => s + r[k].post, 0) });
-  return { per, att: sum("att"), oth: sum("oth") };
+  return { per, att: sum("att"), oth: sum("oth"), ovl: sum("ovl"), othAll: sum("othAll") };
 }
 function didGroups() {
   const ever = everAttended(), g = { attended: [], other: [], never: [], tent: [] };
@@ -498,16 +503,18 @@ const gr = (a, b) => a ? (b - a) / a : null;
 const SEG_PL = { "Family Office": "family offices", "Asset Manager": "asset managers", "Foundation": "foundations", "Insurance": "insurers", "Pension": "pension funds", "Sovereign Wealth": "sovereign wealth funds" };
 const listAnd = a => a.length <= 1 ? (a[0] || "") : `${a.slice(0, -1).join(", ")} and ${a[a.length - 1]}`;
 const N = {
-  placeboLift: P => { const a = gr(P.att.pre, P.att.post), o = gr(P.oth.pre, P.oth.post); return a != null && a > (o ?? 0) + 0.1; },
-  placeboTitle: P => N.placeboLift(P) ? "Attending firms gained more meetings than a comparison group over the same dates" : "Attending firms did not clearly gain more meetings than a comparison group over the same dates",
+  placeboLift: P => { const a = gr(P.att.pre, P.att.post), o = gr(P.oth.pre, P.oth.post); return a != null && o != null && P.oth.pre >= 5 && a > o + 0.1; },
+  eventLift: r => { const a = gr(r.att.pre, r.att.post), o = gr(r.oth.pre, r.oth.post);
+    if (!r.att.pre && !r.att.post) return "none"; if (r.att.post <= r.att.pre) return "fell"; if (r.oth.pre < 5) return "thin"; return a > o + 0.2 ? "lift" : "season"; },
+  liftEvents: P => P.per.filter(r => N.eventLift(r) === "lift").map(r => EV_NAME[r.eid]),
+  contact: P => N.placeboLift(P) ? "all" : N.liftEvents(P).length ? "some" : "none",
+  placeboTitle: P => { const c = N.contact(P), l = N.liftEvents(P);
+    return c === "all" ? "Attending firms gained more meetings than a comparison group over the same dates" : c === "some" ? `Contact rose beyond the season only after ${listAnd(l)}` : "Attending firms did not gain more meetings than the season explains"; },
   placebo: P => {
     if (!P.att.pre && !P.att.post) return "Too few logged meetings in this view to compare.";
-    const head = `Across all three events (bottom row), meetings with attending firms changed ${growth(P.att.pre, P.att.post)} while the comparison group changed ${growth(P.oth.pre, P.oth.post)} over the same dates, so the change ${N.placeboLift(P) ? "is more than the time of year explains" : "is not clearly more than the time of year"}.`;
-    const per = P.per.map(r => { const n = EV_NAME[r.eid], a = gr(r.att.pre, r.att.post), o = gr(r.oth.pre, r.oth.post);
-      if (!r.att.pre && !r.att.post) return null;
-      if (r.att.post <= r.att.pre) return `around ${n}, meetings with attending firms did not rise`;
-      if (r.oth.pre >= 5 && a > o + 0.2) return `${n} shows a clear lift (${r.att.pre} → ${r.att.post} vs ${r.oth.pre} → ${r.oth.post})`;
-      return `after ${n} the comparison group rose too, so that rise looks at least partly seasonal`; }).filter(Boolean);
+    const head = P.oth.pre ? `Across all three events (bottom row), meetings with attending firms changed ${growth(P.att.pre, P.att.post)} while the comparison group changed ${growth(P.oth.pre, P.oth.post)} over the same dates, so overall the rise ${N.placeboLift(P) ? "is more than the time of year explains" : P.oth.pre < 5 ? "cannot be separated from the time of year (too few comparison meetings)" : "is about what the time of year alone would produce"}.` : "There are no comparison firms in this view, so the rise cannot be separated from the time of year.";
+    const per = P.per.map(r => { const n = EV_NAME[r.eid], k = N.eventLift(r);
+      return k === "none" ? null : k === "fell" ? `around ${n}, meetings with attending firms did not rise` : k === "lift" ? `${n} shows a clear lift (${r.att.pre} → ${r.att.post} vs ${r.oth.pre} → ${r.oth.post})` : k === "thin" ? `around ${n} the comparison group is too small to judge (${pl(r.oth.pre, "meeting")} before)` : `after ${n} the comparison group rose about as much, so that rise looks seasonal`; }).filter(Boolean);
     return head + (per.length ? ` ${cap1(per.join("; "))}.` : "");
   },
   lowTier: () => { const t = byDim("priority").filter(x => x.n); return t.length > 1 ? [...t].sort((a, b) => a.fu - b.fu)[0] : null; },
@@ -529,18 +536,18 @@ const N = {
     const cov = ["Coverage A", "Coverage B", "Coverage C"].reduce((s, k) => ({ b: s.b + ((mix.who[k] || {}).before || 0), a: s.a + ((mix.who[k] || {}).after || 0) }), { b: 0, a: 0 });
     return `Fundraising meetings went from ${f.before} to ${f.after} and relationship meetings from ${r.before} to ${r.after}. Coverage teams went from ${cov.b} to ${pl(cov.a, "meeting")}, Senior Partners from ${sp.before} to ${sp.after}. ${sp.after <= sp.before ? "Senior Partners did not step up after events, which is a lever for faster Tier 1 follow-up." : "Senior Partners did increase their involvement after events in this view."}`; },
   evidence: ev => { const eng = ev.slice(0, 2).filter(r => r[3] === "yes").length, pip = ev.slice(2).filter(r => r[3] === "yes").length;
-    const a = eng === 2 ? "Events are associated with more contact, beyond the seasonal trend." : eng === 1 ? "The evidence on contact is mixed in this view." : "In this view, events are not clearly associated with more contact.";
+    const a = eng === 2 ? "Events are associated with more contact, beyond the seasonal trend." : ev[0][3] === "mixed" && ev[1][3] === "yes" ? `More attending firms were met after events, but the rise in meetings beat the season only after ${listAnd(ev[0][5] || [])}.` : eng === 1 ? "The evidence on contact is mixed in this view." : "In this view, events are not clearly associated with more contact.";
     const b = pip === 0 ? "None of the three pipeline tests shows a detectable benefit: the pipeline effect is unproven, not disproven, which is why recommendation 1 is to make events measurable." : `${pip} of the 3 pipeline tests shows a benefit in this view; check whether it holds at other windows (Methods and data tab).`;
     return `${a} ${b}`; },
   didLift: (dA, dO) => dA != null && dO != null && dA > dO + 0.05,
-  didTitle: (dA, dO) => N.didLift(dA, dO) ? "Attending firms opened more new deals than the comparison group" : "Attending firms did not open more new deals than the comparison group",
+  didTitle: (dA, dO) => N.didLift(dA, dO) ? "Attending firms opened more new deals than firms at other events" : "Attending firms did not open more new deals than firms at other events",
   did: (G, dA, dO) => {
     const cross = [30, 60, 90].map(w => withWindow(w, () => { const g = didGroups(); return [w, N.didLift(g.attended.post - g.attended.pre, g.other.post - g.other.pre)]; }));
     const yes = cross.filter(([, l]) => l).map(([w]) => w);
     const never = G.never.n ? (G.never.pre > (G.attended.pre ?? 0) + 0.1 ? ` Firms never invited were already far more active before (${fmtPct(G.never.pre)} vs ${fmtPct(G.attended.pre)}), so comparing their ${fmtPct(G.never.post)} with attendees' ${fmtPct(G.attended.post)} would mislead.` : ` Firms never invited went from ${fmtPct(G.never.pre)} to ${fmtPct(G.never.post)}.`) : "";
-    const here = N.didLift(dA, dO) ? `At ${S.w} days attending firms did open deals more often than the comparison group.` : `At ${S.w} days there is no detectable lift.`;
+    const here = N.didLift(dA, dO) ? `At ${S.w} days attending firms did open deals more often than firms at other events.` : `At ${S.w} days there is no detectable lift.`;
     const across = yes.length === 3 ? " The lift appears at every window." : yes.length ? ` A lift appears only at ${listAnd(yes.map(String))} days, which fits events bringing some deals forward in time rather than creating extra ones (see the Methods and data tab).` : " No window shows a lift.";
-    return `Attending firms went from ${fmtPct(G.attended.pre)} to ${fmtPct(G.attended.post)} (${pts(dA)}). The comparison group, firms that went to one of the other events instead, measured over the same dates, changed ${pts(dO)}.${never} ${here}${across}`;
+    return `Attending firms went from ${fmtPct(G.attended.pre)} to ${fmtPct(G.attended.post)} (${pts(dA)}). Firms that went to one of the other events instead, measured over the same dates, changed ${pts(dO)}.${never} ${here}${across}`;
   },
   live: L => { const cross = [30, 60, 90].map(w => [w, withWindow(w, liveFollow)]), gap = (L.y ?? 0) - (L.n ?? 0);
     if (!L.yN || !L.nN) return "Too few firms with a live deal in this view to compare.";
@@ -574,7 +581,7 @@ const N = {
     const tot = Object.values(comSeg).reduce((s, v) => s + v.usdEx, 0), fu = segs.find(x => x.k === t[0]);
     return `${cap1(SEG_PL[t[0]])} account for ${fmtUsd(t[1])} of the ${fmtUsd(tot)} committed outside the unverified $650M deal (${fmtPct(tot ? t[1] / tot : null)})${fu ? `, and ${fmtPct(fu.fu)} of their event attendances were followed up` : ""}.${t[0] === "Family Office" ? " They are the clearest case for continued event investment." : ""}`; },
   sens: rows => { const allUp = rows.every(r => r.fu > r.base), sameBest = new Set(rows.map(r => r.best)).size === 1, liftW = rows.filter(r => r.lift).map(r => r.w);
-    return `${allUp ? "At every window more attending firms were met after the event than before." : "The follow-up gain over the before-event baseline does not hold at every window in this view."} ${sameBest ? `${rows[0].best} has the lowest cost per extra firm met at every window.` : "The most efficient event changes with the window in this view."} ${rows[0].t1 !== rows[2].t1 ? `Tier 1 firms not met falls from ${rows[0].t1} at 30 days to ${rows[2].t1} at 90, so that gap is about speed.` : ""} ${liftW.length === 0 ? "No window shows attending firms opening more new deals than the comparison group." : liftW.length === 3 ? "Every window shows attending firms opening more new deals than the comparison group." : `Attending firms open more new deals than the comparison group only at ${listAnd(liftW.map(String))} days, which fits events bringing some deals forward rather than creating extra ones.`}`; },
+    return `${allUp ? "At every window more attending firms were met after the event than before." : "The follow-up gain over the before-event baseline does not hold at every window in this view."} ${sameBest ? `${rows[0].best} has the lowest cost per extra firm met at every window.` : "The most efficient event changes with the window in this view."} ${rows[0].t1 !== rows[2].t1 ? `Tier 1 firms not met falls from ${rows[0].t1} at 30 days to ${rows[2].t1} at 90, so that gap is about speed.` : ""} ${liftW.length === 0 ? "No window shows attending firms opening more new deals than firms at other events." : liftW.length === 3 ? "Every window shows attending firms opening more new deals than firms at other events." : `Attending firms open more new deals than firms at other events only at ${listAnd(liftW.map(String))} days, which fits events bringing some deals forward rather than creating extra ones.`}`; },
 };
 
 /* ================= SUMMARY ================= */
@@ -589,12 +596,12 @@ function renderSummary() {
       el("div", { class: "facts" }, facts.map(([v, k]) => el("div", { class: "fact" }, el("div", { class: "v" }, v), el("div", { class: "k", text: k })))), goto("See the evidence", tab)));
   document.getElementById("summary").replaceChildren(
     eventStrip(),
-    lede("The short answer", `Three events cost ${fmtUsd(T.spend)}. They reached ${fmtPct(T.book ? T.firms / T.book : null)} of the firms in view and ${lift ? "lifted contact with attending firms beyond the seasonal pickup" : "were followed by more meetings, though not clearly beyond the seasonal pickup"}. ${dLift ? "In this view attending firms also opened more new deals than the comparison group, but this does not hold at every window." : "We cannot detect that they created new pipeline, and today's data cannot show it either way."} The levers we control are event format and the speed of follow-up${lo && lo.k === "Tier 1" ? ", especially with Tier 1 firms" : ""}.`),
+    lede("The short answer", `Three events cost ${fmtUsd(T.spend)}. They reached ${fmtPct(T.book ? T.firms / T.book : null)} of the firms in view and ${lift ? "lifted contact with attending firms beyond the seasonal pickup" : N.liftEvents(P).length ? `were followed by more meetings; the rise beat the seasonal pickup only after ${listAnd(N.liftEvents(P))}` : "were followed by more meetings, but no more than the seasonal pickup"}. ${dLift ? "In this view attending firms also opened more new deals than the comparison group, but this does not hold at every window." : "We cannot detect that they created new pipeline, and today's data cannot show it either way."} The levers we control are event format and the speed of follow-up${lo && lo.k === "Tier 1" ? ", especially with Tier 1 firms" : ""}.`),
     el("div", { class: "grid" },
-      ans("1", "What happened after our events?", `We reached ${fmtPct(T.book ? T.firms / T.book : null)} of our investors and ${lift ? "met more of them afterwards, beyond the seasonal rise" : "met more of them afterwards, though not clearly beyond the seasonal rise"}.${lo ? ` ${lo.k} firms were followed up slowest.` : ""}`,
-        [numlink(`${pl(T.firms, "firm")}`, { cond: "attended", label: "Firms that attended any event" }), ` attended at least one event (${fmtPct(T.book ? T.firms / T.book : null)} of the firms in view). Within ${S.w} days we met ${fmtPct(fu)} of attending firms, up from ${fmtPct(base)} that had a meeting in the ${S.w} days before. Meetings with attending firms rose ${P.att.pre} → ${P.att.post} (${growth(P.att.pre, P.att.post)}), against ${P.oth.pre} → ${P.oth.post} (${growth(P.oth.pre, P.oth.post)}) for firms that attended a different event over the same dates, so the rise ${lift ? "is more than seasonal" : "is not clearly more than seasonal"}. But `,
+      ans("1", "What happened after our events?", `We reached ${fmtPct(T.book ? T.firms / T.book : null)} of our investors and ${lift ? "met more of them afterwards, beyond the seasonal rise" : N.liftEvents(P).length ? `met more of them afterwards, but beyond the seasonal rise only after ${listAnd(N.liftEvents(P))}` : "met more of them afterwards, though no more than the seasonal rise"}.${lo ? ` ${lo.k} firms were followed up slowest.` : ""}`,
+        [numlink(`${pl(T.firms, "firm")}`, { cond: "attended", label: "Firms that attended any event" }), ` attended at least one event (${fmtPct(T.book ? T.firms / T.book : null)} of the firms in view). Within ${S.w} days we met ${fmtPct(fu)} of attending firms, up from ${fmtPct(base)} that had a meeting in the ${S.w} days before. Meetings with attending firms rose ${P.att.pre} → ${P.att.post} (${growth(P.att.pre, P.att.post)}), against ${P.oth.pre} → ${P.oth.post} (${growth(P.oth.pre, P.oth.post)}) for a comparison group of firms at a different event over the same dates, so overall the rise ${lift ? "is more than seasonal" : "is about what the season alone produces"}${(() => { const r = P.per.find(x => N.eventLift(x) === "lift"); return r && !lift ? `; ${EV_NAME[r.eid]} is the exception (${r.att.pre} → ${r.att.post} vs ${r.oth.pre} → ${r.oth.post})` : ""; })()}. But `,
           numlink(`${t1.missFirms} of ${t1.firms} Tier 1 firms`, { cond: "missed", tier: "Tier 1", label: "Tier 1 firms not met within the window after an event" }), ` were not met within ${S.w} days of at least one event they attended.`],
-        [[`${fmtPct(base)} → ${fmtPct(fu)}`, "attending firms with a meeting, before → after"], [`${growth(P.att.pre, P.att.post)} vs ${growth(P.oth.pre, P.oth.post)}`, "meeting growth: attending firms vs other firms"], [`${t1.missFirms} of ${t1.firms}`, `Tier 1 firms not met within ${S.w} days`]], "happened"),
+        [[`${fmtPct(base)} → ${fmtPct(fu)}`, "attending firms with a meeting, before → after"], [`${growth(P.att.pre, P.att.post)} vs ${growth(P.oth.pre, P.oth.post)}`, "meeting growth: attending firms vs comparison group"], [`${t1.missFirms} of ${t1.firms}`, `Tier 1 firms not met within ${S.w} days`]], "happened"),
       ans("2", "What business outcomes are associated with them?", `Deals did follow the events, but ${dLift ? "the new-deal lift seen in this view does not hold at every window" : "we cannot detect that events created new pipeline"}.`,
         ["After events, ", numlink(`${T.srcN} new deals`, { cond: "sourced", label: "Firms with a new opportunity after an event" }), ` were opened with attending firms and ${T.advN} other, already-open deals moved to a later stage. `,
           numlink(`${T.evCom} event-sourced deals`, { cond: "committed", label: "Firms whose event-sourced deal has committed" }), ` have committed ${fmtUsd(T.evComUsd)} so far. But measured against their own starting point, attending firms went from ${fmtPct(G.attended.pre)} to ${fmtPct(G.attended.post)} opening a new deal, while firms that attended a different event went from ${fmtPct(G.other.pre)} to ${fmtPct(G.other.post)}${dLift ? ", a smaller rise" : ", as much or more"}. Firms never invited were already more active beforehand (${fmtPct(G.never.pre)}), so they are not a fair comparison. All of this is association, not cause.`],
@@ -647,10 +654,10 @@ function renderHappened() {
       tile(["Firms ", term("followed up", "followed")], fmtPct(T.att ? T.fu / T.att : null), `${T.fu} of ${pl(T.att, "attendance")} · ${fmtPct(base)} had a meeting in the ${S.w} days before`),
       tile("Tier 1 firms not met in time", numlink(`${t1.missFirms} of ${t1.firms}`, { cond: "missed", tier: "Tier 1", label: "Tier 1 firms not met within the window after an event" }), `${t1.missAtt} of ${t1.att} Tier 1 attendances`)),
     el("div", { class: "grid g2" },
-      card(N.placeboTitle(P), ["Meetings in the ", term(`${S.w} days`, "window"), " before vs after each event, for firms that attended it and for the ", term("comparison group", "comp"), " (firms that went to one of the other two events instead)."],
+      card(N.placeboTitle(P), ["Meetings in the ", term(`${S.w} days`, "window"), " before vs after each event, for firms that attended it and for the ", term("comparison group", "comp"), ` (firms that went to one of the other events instead and had no event of their own within ${S.w} days).`],
         el("div", { style: "overflow-x:auto" }, el("table", {}, el("thead", {},
-            el("tr", {}, el("th", { text: "" }), el("th", { class: "n", colspan: 2, text: "Firms that attended" }), el("th", { class: "n", colspan: 2, text: "Comparison group" })),
-            el("tr", {}, el("th", { text: "Event" }), ["Meetings before → after", "Change", "Meetings before → after", "Change"].map(h => el("th", { class: "n", text: h })))),
+            el("tr", {}, el("th", { text: "" }), el("th", { class: "n", colspan: 2, text: "Meetings: firms that attended" }), el("th", { class: "n", colspan: 2, text: "Meetings: comparison group" })),
+            el("tr", {}, el("th", { text: "Event" }), ["Before → after", "Change", "Before → after", "Change"].map(h => el("th", { class: "n", text: h })))),
           el("tbody", {}, P.per.map(r => el("tr", {}, el("td", { style: "white-space:nowrap" }, el("span", { class: "swatch", style: `background:${EV_COLOR[r.eid]}` }), EV_NAME[r.eid]),
             el("td", { class: "n", text: `${r.att.pre} → ${r.att.post}` }), el("td", { class: "n", text: growth(r.att.pre, r.att.post) }),
             el("td", { class: "n", text: `${r.oth.pre} → ${r.oth.post}` }), el("td", { class: "n", text: r.oth.pre < 5 ? `${growth(r.oth.pre, r.oth.post)}*` : growth(r.oth.pre, r.oth.post) })))),
@@ -697,9 +704,12 @@ function renderOutcomes() {
   const gA = (P.att.post - P.att.pre) / (P.att.pre || 1), gO = (P.oth.post - P.oth.pre) / (P.oth.pre || 1);
   const dA = G.attended.post - G.attended.pre, dO = G.other.post - G.other.pre, dN = G.never.post - G.never.pre;
   const ev = [
-    ["Did attending firms get more meetings than usual for the time of year?", `Change in meetings from the ${S.w} days before an event to the ${S.w} days after: attending firms vs the comparison group (firms that went to a different event), same dates`, `${growth(P.att.pre, P.att.post)} vs ${growth(P.oth.pre, P.oth.post)}`, gA > gO + 0.1 ? "yes" : "mixed", gA > gO + 0.1 ? "Yes" : "Unclear"],
+    (() => { const c = N.contact(P), l = N.liftEvents(P), lon = P.per.find(r => N.eventLift(r) === "lift");
+      return ["Did attending firms get more meetings than usual for the time of year?", `Change in meetings from the ${S.w} days before an event to the ${S.w} days after: attending firms vs the comparison group (firms at a different event with no event of their own within ${S.w} days), same dates`,
+        `${growth(P.att.pre, P.att.post)} vs ${growth(P.oth.pre, P.oth.post)} overall${lon ? `; ${EV_NAME[lon.eid]} ${growth(lon.att.pre, lon.att.post)} vs ${growth(lon.oth.pre, lon.oth.post)}` : ""}`,
+        c === "all" ? "yes" : c === "some" ? "mixed" : "no", c === "all" ? "Yes" : c === "some" ? `Only after ${listAnd(l)}` : "No", l]; })(),
     ["Did we meet more of the attending firms than before?", `Share of attending firms with at least one meeting: ${S.w} days before vs ${S.w} days after the event`, `${fmtPct(base)} → ${fmtPct(T.att ? T.fu / T.att : null)}`, "yes", "Yes"],
-    ["Did attending firms open more new deals than usual?", `Share of firms opening a new deal, ${S.w} days after the event minus ${S.w} days before. Results for: attending firms · comparison group · firms never invited`, `${pts(dA)} · ${pts(dO)} · ${pts(dN)}`, dA > dO + 0.05 ? "yes" : "no", dA > dO + 0.05 ? "Yes" : "Not detectable"],
+    ["Did attending firms open more new deals than usual?", `Share of firms opening a new deal, ${S.w} days after the event minus ${S.w} days before. Results for: attending firms · firms at other events · firms never invited`, `${pts(dA)} · ${pts(dO)} · ${pts(dN)}`, dA > dO + 0.05 ? "yes" : "no", dA > dO + 0.05 ? "Yes" : "Not detectable"],
     ["Did following up help live deals move forward?", `Attending firms that already had an open deal: share where a deal reached a later stage within ${S.w} days, followed up vs not`, `${fmtPct(L.y)} vs ${fmtPct(L.n)} (${L.yN} vs ${pl(L.nN, "firm")})`, "mixed", "Unclear"],
     ["Did deals opened after events turn into commitments more often?", `Deals at least ${MATURE_DAYS} days old (time to close): share committed. Opened after an event vs already open before the firm's first event`, `${fmtPct(mEv.rate)} vs ${fmtPct(mBefore.rate)}`, mEv.rate > mBefore.rate ? "yes" : "no", mEv.rate > mBefore.rate ? "Yes" : "No"],
   ];
@@ -713,12 +723,12 @@ function renderOutcomes() {
       tile(["All ", term("commitments", "committed"), " to 14 Oct"], fmtUsd(T.comAllUsd), [`${pl(T.comAll, "deal")} · `, S.out ? term("incl. $650M deal", "outlier") : "excl. $650M deal", " · +$20M future-dated"])),
     card("What the data can and cannot show", "Each row tests one possible benefit of the events against a fair comparison, so the reader does not have to take the headline numbers on trust.",
       el("div", { style: "overflow-x:auto" }, evidenceTable(ev)),
-      isDefault() ? el("p", { class: "cap", style: "margin:10px 0 0", text: `How precise: with 3 events, the gap in meeting growth between attending firms and the comparison group is ${ciTxt(D.ci.ci_meeting_growth_gap, pp)}, and the gap in new deals is ${ciTxt(D.ci.ci_new_deal_gap, pp)}. Both ranges include zero, so neither difference is statistically clear. Details in the Methods and data tab.` }) : null,
+      isDefault() ? el("p", { class: "cap", style: "margin:10px 0 0", text: `How precise: with 3 events, the gap in meeting growth between attending firms and the comparison group is ${ciTxt(D.ci.ci_meeting_growth_gap, pp)}, and the gap in new deals against firms at other events is ${ciTxt(D.ci.ci_new_deal_gap, pp)}. Both ranges include zero, so neither difference is statistically clear. Details in the Methods and data tab.` }) : null,
       whatMeans(N.evidence(ev))),
     el("div", { class: "grid g2 mt" },
-      card(N.didTitle(dA, dO), ["Share of firms that opened a ", term("new deal", "sourced"), ` in the ${S.w} days before vs after each event date, all three events combined. `, term("Comparison group", "comp"), " = firms that went to a different event."],
+      card(N.didTitle(dA, dO), ["Share of firms that opened a ", term("new deal", "sourced"), ` in the ${S.w} days before vs after each event date, all three events combined. `, "\"At other events\" = firms that went to a different event instead."],
         legend(DID),
-        cols([["attended", "Attended"], ["other", "Comparison group"], ["never", "Never invited"]].map(([k, l]) => ({ label: `${l} (${G[k].n})`, pre: G[k].pre || 0, post: G[k].post || 0 })), DID, { fmt: fmtPct, max: 1, height: 230 }),
+        cols([["attended", "Attended"], ["other", "At other events"], ["never", "Never invited"]].map(([k, l]) => ({ label: `${l} (${G[k].n})`, pre: G[k].pre || 0, post: G[k].post || 0 })), DID, { fmt: fmtPct, max: 1, height: 230 }),
         whatMeans(N.did(G, dA, dO))),
       card("Firms with a live deal: did following up help it move?", `Attending firms that already had an open deal on the event date. Share where a deal moved to a later stage within ${S.w} days.`,
         hbars([{ label: "Followed up", value: L.y || 0, color: "var(--seq-mid)", suffix: `of ${pl(L.yN, "firm")}` }, { label: "Not followed up", value: L.n || 0, color: "var(--seq-light)", suffix: `of ${pl(L.nN, "firm")}` }], { fmt: fmtPct, max: 1 }),
@@ -956,11 +966,17 @@ function renderMethods() {
         el("p", { text: "30 and 90 days stay available as checks. The table on the right shows which findings depend on the choice." })),
       card("Do the findings hold at other windows?", "Each finding recomputed at 30, 60 and 90 days, with the current filters.", el("div", { style: "overflow-x:auto" }, sensTbl),
         whatMeans(N.sens(sens)))),
+    (() => { const P = placebo(), row = (l, g, note) => el("tr", {}, el("td", {}, l), el("td", { class: "n", text: `${g.pre} → ${g.post}` }), el("td", { class: "n", text: growth(g.pre, g.post) }), el("td", { text: note }));
+      return el("div", { class: "methods mt" }, card("Why the meetings comparison leaves some firms out", `The comparison group is firms that went to a different event. Some of them had their own event within ${S.w} days of the one being measured, for example London attendees measured around Berlin, 26 days later. Their "before" period then contains their own event's follow-up meetings, which inflates "before" and makes their change look flat. That made events look better than they were.`,
+        el("div", { style: "overflow-x:auto" }, el("table", {}, el("thead", {}, el("tr", {}, ["Group (all three events)", "Meetings before → after", "Change", "Use"].map((h, i) => el("th", { class: i === 1 || i === 2 ? "n" : null, text: h })))),
+          el("tbody", {}, row(el("b", { text: "Attended the event" }), P.att, "Measured"), row(el("b", { text: "Comparison group used: no event of their own within the window" }), P.oth, "Used as the seasonal benchmark"),
+            row("Left out: their own event fell inside the window", P.ovl, "Excluded: before-period inflated by their own event"), row("Original comparison (both together)", P.othAll, "Earlier version; kept here for transparency")))),
+        whatMeans(`With the original comparison, attending firms' meetings looked like they beat the season overall (${growth(P.att.pre, P.att.post)} vs ${growth(P.othAll.pre, P.othAll.post)}). With the fair comparison, the overall rise matches the season (${growth(P.att.pre, P.att.post)} vs ${growth(P.oth.pre, P.oth.post)}), and only ${N.liftEvents(P).length ? listAnd(N.liftEvents(P)) : "no event"} shows a clear lift. The comparison group is small (${pl(P.oth.pre, "meeting")} before), so this is directional too.`))); })(),
     el("div", { class: "methods mt" }, card("How certain are the comparisons?", "Bootstrap 95% ranges: the data were resampled 5,000 times by firm and event, on all firms at the default settings (src/analysis.py).",
       el("table", {}, el("thead", {}, el("tr", {}, ["Comparison", "Estimate", "95% range", "Reading"].map((h, i) => el("th", { class: i && i < 3 ? "n" : null, text: h })))),
         el("tbody", {},
-          el("tr", {}, el("td", { text: "Meeting growth: attending firms minus comparison group" }), el("td", { class: "n", text: pp(D.ci.ci_meeting_growth_gap.point) }), el("td", { class: "n", text: `${pp(D.ci.ci_meeting_growth_gap.lo)} to ${pp(D.ci.ci_meeting_growth_gap.hi)}` }), el("td", { text: "Positive, but the range includes zero" })),
-          el("tr", {}, el("td", { text: "Change in firms opening a new deal: attending firms minus comparison group" }), el("td", { class: "n", text: pp(D.ci.ci_new_deal_gap.point) }), el("td", { class: "n", text: `${pp(D.ci.ci_new_deal_gap.lo)} to ${pp(D.ci.ci_new_deal_gap.hi)}` }), el("td", { text: "Consistent with no effect, or a modest one either way" })))),
+          el("tr", {}, el("td", { text: "Meeting growth: attending firms minus comparison group (all three events)" }), el("td", { class: "n", text: pp(D.ci.ci_meeting_growth_gap.point) }), el("td", { class: "n", text: `${pp(D.ci.ci_meeting_growth_gap.lo)} to ${pp(D.ci.ci_meeting_growth_gap.hi)}` }), el("td", { text: D.ci.ci_meeting_growth_gap.lo < 0 && D.ci.ci_meeting_growth_gap.hi > 0 ? "Range includes zero: no clear difference overall" : "Range excludes zero" })),
+          el("tr", {}, el("td", { text: "Change in firms opening a new deal: attending firms minus firms at other events" }), el("td", { class: "n", text: pp(D.ci.ci_new_deal_gap.point) }), el("td", { class: "n", text: `${pp(D.ci.ci_new_deal_gap.lo)} to ${pp(D.ci.ci_new_deal_gap.hi)}` }), el("td", { text: "Consistent with no effect, or a modest one either way" })))),
       whatMeans("With three events and about 70 firm-event attendances, none of the comparisons is statistically clear. The findings are directional: strong enough to decide what to test and measure next, not to prove what events cause."))),
     el("div", { class: "methods mt" }, card("Data model", "Three steps from raw files to the one table every chart reads from.", dataModel())),
     el("div", { class: "methods mt" },

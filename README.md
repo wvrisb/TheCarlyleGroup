@@ -2,7 +2,7 @@
 
 **Question:** What happened following our investor events, what business outcomes are associated with them, and what should we learn for future events?
 
-**Short answer:** Three events cost $1.2M and reached 78% of our investor firms. Contact with attending firms rose after the events, most clearly after the London dinner. We cannot detect that the events created new pipeline, and today's data cannot show it either way. The levers we control are event format (London bought the most extra contact per dollar) and the speed of follow-up with Tier 1 firms (10 of 13 were not met within 60 days of an event). One unverified $650M deal is 55% of committed capital.
+**Short answer:** Three events cost $1.2M and reached 78% of our investor firms. Contact with attending firms rose after the events, but only after the London dinner did it clearly beat the usual seasonal rise. We cannot detect that the events created new pipeline, and today's data cannot show it either way. The levers we control are event format (London bought the most extra contact per dollar) and the speed of follow-up with Tier 1 firms (10 of 13 were not met within 60 days of an event). One unverified $650M deal is 55% of committed capital.
 
 ## Deliverables
 
@@ -39,6 +39,7 @@ python src/build_dashboard.py  # embeds the data into dashboard/template.html ->
 # validation (needs: playwright install chromium)
 python src/check_dashboard.py  # dashboard figures == Python figures (18 checks)
 python src/check_narrative.py  # every tab's text under all 1,344 filter combinations
+python src/capture_screenshots.py  # optional: refresh docs/screenshots/
 ```
 
 ## Approach
@@ -64,7 +65,7 @@ Full log with evidence: [`docs/data_quality.md`](docs/data_quality.md).
 
 - Three events: every event comparison is directional, and both key bootstrap ranges include zero.
 - Meetings are logged only for firms that attended an event, so firms never invited cannot be compared on meetings, and "no meeting logged" may not mean "no contact".
-- The meetings comparison group is firms that attended a different event; some were in their own post-event period, which tends to make events look better. [Update once the decision on this is final.]
+- The meetings comparison group is firms that attended a different event and had no event of their own within the window. Firms in their own post-event period were removed because their "before" meetings were inflated by follow-up, which made our events look better. With them removed, the overall rise in meetings matches the season (+54% vs +62%); only London clearly beats it (+158% vs +33%). The comparison group is small (13 → 21 meetings), so read it as directional.
 - Meetings and deals share only a firm ID, so a meeting cannot be tied to the deal it drove.
 
 ## Taking this to production

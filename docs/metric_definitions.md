@@ -13,7 +13,7 @@ Code: `src/build_model.py` (firm × event table), `src/analysis.py` (insights), 
 | **Window** | The days after an event in which outcomes are linked to it: 60 by default, 30 and 90 as checks. "Before" uses the same number of days ending the day before the event. The event day itself counts as "after". |
 | **Why 60 days** | Measured from each event, the median attending firm's first meeting came 29 days later; 60 days captures 79% of first follow-ups (30 days: 51%; 90 days: 96%). London and Berlin were 26 days apart, so 90 days mixes events. A typical deal commits about 53 days after it opens. |
 | **Credit rule** | When an outcome falls in the windows of two events a firm attended, it is credited to the most recent one. Only 2 of 30 new deals are affected; first-touch or split credit changes no conclusion. |
-| **Comparison group** | For each event: firms that attended one of the other two events but not this one. Their meetings are logged (only attending firms have meeting records) and they are measured over the same dates, so they show what the time of year alone does. |
+| **Comparison group** | For each event: firms that attended one of the other two events but not this one, and had no event of their own within the window. Their meetings are logged (only attending firms have meeting records) and they are measured over the same dates, so they show what the time of year alone does. Firms whose own event fell inside the window are left out, because their own follow-up inflates the "before" period. Used for meetings only; the new-deal comparison uses all firms at other events. |
 | **Never invited** | Firms on no attendee list for any event (10 firms). Used only for deal outcomes, since their meetings are not logged. |
 | **Live deal** | A deal opened before the event date that had not committed or been declined by then. |
 | **Mature deal** | A deal opened at least 120 days before 14 Oct 2026, so it has had time to commit. |
@@ -30,7 +30,7 @@ Code: `src/build_model.py` (firm × event table), `src/analysis.py` (insights), 
 | Follow-up | Before-event baseline | Same pairs with at least one meeting in the window before the event | 43% |
 | Follow-up | Average days to first meeting | Mean days from event to the firm's first meeting within the window | NY 27 · London 19 · Berlin 23 |
 | Follow-up | Tier 1 firms not met in time | Distinct Tier 1 firms with at least one attended event and no meeting within the window after it | 10 of 13 (30 days: 11 · 90 days: 4) |
-| Follow-up | Meeting growth vs comparison group | Meetings in the window after ÷ before, minus 1: attending firms vs comparison group | +54% vs +21% |
+| Follow-up | Meeting growth vs comparison group | Meetings in the window after ÷ before, minus 1: attending firms vs comparison group | +54% vs +62% overall; London +158% vs +33% |
 | Pipeline | New deals after an event | Opportunities created within the window after an event the firm attended (credited per the rule above) | 30 ($1.40B target) |
 | Pipeline | Existing deals moved forward | Opportunities created before the event that reached a new stage (not Declined) within the window | 23 |
 | Pipeline | Change in firms opening a deal | Share of firm-event pairs with a new opportunity, after minus before, by group | attending +6 pts · comparison +11 · never invited −3 |
@@ -47,8 +47,8 @@ Bootstrap 95% ranges (5,000 resamples of firm-event pairs, `src/analysis.py`):
 
 | Comparison | Estimate | 95% range |
 |---|---|---|
-| Meeting growth: attending minus comparison group | +33 pts | −43 to +124 pts |
-| Change in firms opening a deal: attending minus comparison group | −6 pts | −26 to +16 pts |
+| Meeting growth: attending minus comparison group | −8 pts | −188 to +102 pts |
+| Change in firms opening a deal: attending minus firms at other events | −6 pts | −26 to +16 pts |
 
 Both ranges include zero. With three events, every finding is directional: enough to decide what to test and measure next, not to prove what events cause.
 

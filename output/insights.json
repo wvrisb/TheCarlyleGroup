@@ -13,7 +13,7 @@
    },
    {
     "event_id": "E001",
-    "group": "other_event",
+    "group": "clean",
     "pre": 1,
     "post": 2
    },
@@ -25,9 +25,15 @@
    },
    {
     "event_id": "E002",
-    "group": "other_event",
-    "pre": 7,
-    "post": 10
+    "group": "clean",
+    "pre": 1,
+    "post": 5
+   },
+   {
+    "event_id": "E002",
+    "group": "overlap",
+    "pre": 6,
+    "post": 5
    },
    {
     "event_id": "E003",
@@ -37,9 +43,15 @@
    },
    {
     "event_id": "E003",
-    "group": "other_event",
-    "pre": 12,
-    "post": 16
+    "group": "clean",
+    "pre": 4,
+    "post": 4
+   },
+   {
+    "event_id": "E003",
+    "group": "overlap",
+    "pre": 8,
+    "post": 12
    }
   ],
   "placebo_total": {
@@ -47,7 +59,15 @@
     "pre": 30,
     "post": 36
    },
-   "other_event": {
+   "clean": {
+    "pre": 6,
+    "post": 11
+   },
+   "overlap": {
+    "pre": 14,
+    "post": 17
+   },
+   "other_event_all": {
     "pre": 20,
     "post": 28
    }
@@ -712,14 +732,14 @@
    }
   },
   "ci_meeting_growth_gap": {
-   "point": -0.19999999999999996,
-   "lo": -1.2794577205882351,
-   "hi": 0.770778509735031
+   "point": -0.6333333333333333,
+   "lo": -5.362619047619048,
+   "hi": 0.7421666666666665
   },
   "ci_new_deal_gap": {
    "point": 0.12816901408450707,
-   "lo": -0.04266096579476863,
-   "hi": 0.2991951710261569
+   "lo": -0.055130784708249475,
+   "hi": 0.2987927565392354
   }
  },
  "60": {
@@ -736,7 +756,7 @@
    },
    {
     "event_id": "E001",
-    "group": "other_event",
+    "group": "clean",
     "pre": 2,
     "post": 8
    },
@@ -748,9 +768,15 @@
    },
    {
     "event_id": "E002",
-    "group": "other_event",
-    "pre": 15,
-    "post": 18
+    "group": "clean",
+    "pre": 6,
+    "post": 8
+   },
+   {
+    "event_id": "E002",
+    "group": "overlap",
+    "pre": 9,
+    "post": 10
    },
    {
     "event_id": "E003",
@@ -760,9 +786,15 @@
    },
    {
     "event_id": "E003",
-    "group": "other_event",
-    "pre": 21,
-    "post": 20
+    "group": "clean",
+    "pre": 5,
+    "post": 5
+   },
+   {
+    "event_id": "E003",
+    "group": "overlap",
+    "pre": 16,
+    "post": 15
    }
   ],
   "placebo_total": {
@@ -770,7 +802,15 @@
     "pre": 41,
     "post": 63
    },
-   "other_event": {
+   "clean": {
+    "pre": 13,
+    "post": 21
+   },
+   "overlap": {
+    "pre": 25,
+    "post": 25
+   },
+   "other_event_all": {
     "pre": 38,
     "post": 46
    }
@@ -1299,14 +1339,14 @@
    }
   },
   "ci_meeting_growth_gap": {
-   "point": 0.3260590500641849,
-   "lo": -0.4330841258946955,
-   "hi": 1.2130080916783041
+   "point": -0.07879924953095685,
+   "lo": -1.8775566893424034,
+   "hi": 1.049507389162561
   },
   "ci_new_deal_gap": {
    "point": -0.05553319919517097,
-   "lo": -0.255804828973843,
-   "hi": 0.1569416498993964
+   "lo": -0.2686167002012073,
+   "hi": 0.15674044265593562
   }
  },
  "90": {
@@ -1323,9 +1363,15 @@
    },
    {
     "event_id": "E001",
-    "group": "other_event",
+    "group": "clean",
     "pre": 2,
-    "post": 18
+    "post": 8
+   },
+   {
+    "event_id": "E001",
+    "group": "overlap",
+    "pre": 0,
+    "post": 10
    },
    {
     "event_id": "E002",
@@ -1335,7 +1381,7 @@
    },
    {
     "event_id": "E002",
-    "group": "other_event",
+    "group": "overlap",
     "pre": 19,
     "post": 21
    },
@@ -1347,9 +1393,15 @@
    },
    {
     "event_id": "E003",
-    "group": "other_event",
-    "pre": 30,
-    "post": 21
+    "group": "clean",
+    "pre": 11,
+    "post": 6
+   },
+   {
+    "event_id": "E003",
+    "group": "overlap",
+    "pre": 19,
+    "post": 15
    }
   ],
   "placebo_total": {
@@ -1357,7 +1409,15 @@
     "pre": 57,
     "post": 87
    },
-   "other_event": {
+   "clean": {
+    "pre": 13,
+    "post": 14
+   },
+   "overlap": {
+    "pre": 38,
+    "post": 46
+   },
+   "other_event_all": {
     "pre": 51,
     "post": 60
    }
@@ -1789,14 +1849,14 @@
    }
   },
   "ci_meeting_growth_gap": {
-   "point": 0.34984520123839014,
-   "lo": -0.3403437610463061,
-   "hi": 1.1095082883218468
+   "point": 0.4493927125506074,
+   "lo": -0.897741718027735,
+   "hi": 1.3761775362318824
   },
   "ci_new_deal_gap": {
    "point": -0.041649899396378254,
-   "lo": -0.2549295774647887,
-   "hi": 0.1845120724346076
+   "lo": -0.26861167002012065,
+   "hi": 0.18551810865191143
   }
  }
 }
