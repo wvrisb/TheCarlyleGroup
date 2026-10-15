@@ -65,6 +65,7 @@ nav.tabs button[aria-selected="true"] { color: var(--ink); border-bottom-color: 
 
 .lede { margin: 0 0 18px; } .lede p { color: var(--ink-2); margin: 4px 0 0; max-width: 820px; }
 .grid { display: grid; gap: 16px; }
+.grid > * { min-width: 0; }
 .g2 { grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); }
 .g3 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
 .mt { margin-top: 16px; }
@@ -232,6 +233,7 @@ const GLOSS = {
   advanced: ["Existing deal moved forward", "A deal that already existed before the event reached a later stage (e.g. into due diligence) within {w} days after the event."],
   committed: ["Committed", "The investor has committed capital, dated on or before 14 Oct 2026. Two deals ($20M) show commitments dated 20 and 28 Oct; those are future-dated, so they are treated as expected, not committed."],
   cpx: ["Cost per extra firm met", "Event cost divided by the EXTRA attending firms we met: firms met within {w} days after the event minus firms met in the {w} days before. It removes firms we would have met anyway. Lower is better; an event that met no more firms after than before has no value."],
+  cpxs: ["Cost per extra firm met, beyond the season", "Event cost divided by the extra attending firms we met beyond what the time of year explains. Extra firms = firms met within {w} days after the event minus firms met in the {w} days before. From that we subtract the rise the comparison group saw over the same dates (attending firms × the change in the share of comparison firms met). Needs at least 5 comparison firms. Lower is better; an event with no extra firms beyond the season has no value here."],
   cpf: ["Cost per firm followed up", "Event cost divided by the number of attending firms we met again within {w} days. Lower is better."],
   tier: ["Priority tier", "IR's own Tier 1–3 label for each firm. The data does not define it, and Tier 1 firms are not larger by past commitments, so read it as 'IR's stated priority'."],
   pipeline: ["Pipeline $", "The target size of an opportunity. It is not weighted by likelihood of closing, so treat it as scale, not expected value."],
@@ -294,6 +296,19 @@ function oppOrigin(o) {
     if (c >= d0 && c <= d0 + S.w * DAY && (!best || d0 > day(best.event_date))) best = e; }
   return best ? best.event_id : att.length ? "attendee_other" : "non_attendee";
 }
+// season adjustment for "extra firms met": how the share of comparison-group firms (attended a different event, no event of
+// their own within the window) with a meeting changed over the same dates as this event
+function seasonAdj(eid) {
+  const att = attendedPairs(), own = {}, d0 = day(evById[eid].event_date);
+  att.forEach(a => (own[a.firm_id] ||= []).push(day(evById[a.event_id].event_date)));
+  const here = new Set(att.filter(a => a.event_id === eid).map(a => a.firm_id));
+  const clean = Object.keys(own).filter(f => firmOK(f) && !here.has(f) && own[f].every(t => Math.abs(t - d0) / DAY > S.w));
+  const has = (f, pre) => (meetsByFirm[f] || []).some(t => { const dd = (t - d0) / DAY; return pre ? dd < 0 && dd >= -S.w : dd >= 0 && dd <= S.w; });
+  return { cN: clean.length, cB: share(clean, f => has(f, true)), cA: share(clean, f => has(f, false)) };
+}
+const firmsN = v => `${sgn1(v)} ${Math.round(Math.abs(v) * 10) / 10 === 1 ? "firm" : "firms"}`;
+const about = v => { const r = Math.round(v); return Math.abs(v - r) < 0.05 ? String(r) : `about ${r}`; };
+const sgn1 = v => v == null ? "–" : Math.abs(v) < 0.05 ? "0" : `${v >= 0 ? "+" : "−"}${(Math.round(Math.abs(v) * 10) / 10).toString()}`;
 function eventStats(eid) {
   const rows = attRows(eid), e = evById[eid], n = rows.length, fu = rows.filter(r => r.meetings_post > 0);
   const sum = f => rows.reduce((s, r) => s + (typeof f === "function" ? f(r) : r[f]), 0);
@@ -307,7 +322,12 @@ function eventStats(eid) {
     comN: sCom.length, comUsd: sCom.reduce((s, o) => s + o.amount_usd, 0), comLow: sCom.some(o => o.flag_low_confidence),
     cpf: fu.length ? e.cost_usd / fu.length : null, cpa: n ? e.cost_usd / n : null,
     metBefore: rows.filter(r => r.meetings_pre > 0).length, extra: fu.length - rows.filter(r => r.meetings_pre > 0).length,
-    cpx: (fu.length - rows.filter(r => r.meetings_pre > 0).length) > 0 ? e.cost_usd / (fu.length - rows.filter(r => r.meetings_pre > 0).length) : null };
+    cpx: (fu.length - rows.filter(r => r.meetings_pre > 0).length) > 0 ? e.cost_usd / (fu.length - rows.filter(r => r.meetings_pre > 0).length) : null,
+    ...seasonCalc(seasonAdj(eid), n, fu.length - rows.filter(r => r.meetings_pre > 0).length, e.cost_usd) };
+}
+function seasonCalc(sa, n, extra, cost) {
+  const exp = sa.cN >= 5 ? n * (sa.cA - sa.cB) : null, net = exp == null ? null : extra - exp;
+  return { ...sa, exp, net, cpxNet: net != null && net >= 1 ? cost / net : null };
 }
 function totals() {
   const st = EVS.map(eventStats), rows = attRows(), opps = oppsVisible(), committed = opps.filter(o => o.current_stage === "Committed");
@@ -487,9 +507,16 @@ function callList() {
     const pr = top >= 3 ? 1 : (od.length || f.priority === "Tier 1") ? 2 : 3;
     const why = top === 4 ? "Live deal at IC" : top === 3 ? "Live deal in due diligence" : od.length ? "Live deal, early stage" : f.priority === "Tier 1" ? "Tier 1, no live deal" : "No live deal";
     const ms = meetsByFirm[fid] || [], lastM = ms.length ? Math.max(...ms) : null;
-    return { fid, f, evs: evs.sort(), od: od.length, usd: od.reduce((s, o) => s + o.amount_usd, 0), top, pr, why, lastM };
-  }).sort((a, b) => a.pr - b.pr || a.f.priority.localeCompare(b.f.priority) || b.usd - a.usd);
+    const lastEv = Math.max(...evs.map(e => day(evById[e].event_date))), since = ms.filter(t => t > lastEv), metSince = since.length ? Math.min(...since) : null;
+    return { fid, f, evs: evs.sort(), od: od.length, usd: od.reduce((s, o) => s + o.amount_usd, 0), top, pr, why, lastM, metSince };
+  }).sort((a, b) => (a.metSince != null) - (b.metSince != null) || a.pr - b.pr || a.f.priority.localeCompare(b.f.priority) || b.usd - a.usd);
 }
+// attending firms whose deal moved past the first stage but with no meeting logged at all: a sign that some contact is not recorded
+function loggingGap() { const ever = everAttended(), prog = [...new Set(D.opps.filter(o => o.max_stage_ord >= 2 && ever.has(o.firm_id) && firmOK(o.firm_id)).map(o => o.firm_id))];
+  return { n: prog.length, none: prog.filter(f => !(meetsByFirm[f] || []).length).length }; }
+// does faster follow-up go with better deal outcomes? attendances met within 30 days vs later or never (association only)
+function speedOutcome() { const rows = attRows(), y = rows.filter(r => r.days_to_first_meeting != null && r.days_to_first_meeting <= 30), n = rows.filter(r => !(r.days_to_first_meeting != null && r.days_to_first_meeting <= 30));
+  return { yN: y.length, nN: n.length, yOpen: share(y, r => r.opps_created_post > 0), nOpen: share(n, r => r.opps_created_post > 0), yAdv: share(y, r => r.opps_advanced_post > 0), nAdv: share(n, r => r.opps_advanced_post > 0) }; }
 const isDefault = () => ["w", "def", "seg", "tier", "region", "out"].every(k => S[k] === DEFAULTS[k]);
 const ciTxt = (c, f) => `${f(c.point)} (95% range ${f(c.lo)} to ${f(c.hi)})`;
 const pp = v => `${v >= 0 ? "+" : "−"}${Math.abs(Math.round(v * 100))} pts`;
@@ -514,7 +541,8 @@ const N = {
     if (!P.att.pre && !P.att.post) return "Too few logged meetings in this view to compare.";
     const head = P.oth.pre ? `Across all three events (bottom row), meetings with attending firms changed ${growth(P.att.pre, P.att.post)} while the comparison group changed ${growth(P.oth.pre, P.oth.post)} over the same dates, so overall the rise ${N.placeboLift(P) ? "is more than the time of year explains" : P.oth.pre < 5 ? "cannot be separated from the time of year (too few comparison meetings)" : "is about what the time of year alone would produce"}.` : "There are no comparison firms in this view, so the rise cannot be separated from the time of year.";
     const per = P.per.map(r => { const n = EV_NAME[r.eid], k = N.eventLift(r);
-      return k === "none" ? null : k === "fell" ? `around ${n}, meetings with attending firms did not rise` : k === "lift" ? `${n} shows a clear lift (${r.att.pre} → ${r.att.post} vs ${r.oth.pre} → ${r.oth.post})` : k === "thin" ? `around ${n} the comparison group is too small to judge (${pl(r.oth.pre, "meeting")} before)` : `after ${n} the comparison group rose about as much, so that rise looks seasonal`; }).filter(Boolean);
+      return k === "none" ? null : k === "fell" ? `around ${n}, meetings with attending firms did not rise` : k === "lift" ? `${n} shows a lift (${r.att.pre} → ${r.att.post} vs ${r.oth.pre} → ${r.oth.post})` : k === "thin" ? (() => { const sa = seasonAdj(r.eid), at = attRows().filter(x => x.event_id === r.eid), aB = share(at, x => x.meetings_pre > 0), aA = share(at, x => x.meetings_post > 0);
+        return sa.cN >= 5 && aB != null ? `around ${n} the comparison group had too few meetings before (${r.oth.pre}) to compare growth rates; counting firms instead, the share of comparison firms met rose ${fmtPct(sa.cB)} → ${fmtPct(sa.cA)} against ${fmtPct(aB)} → ${fmtPct(aA)} for attending firms, so ${(aA - aB) > (sa.cA - sa.cB) + 0.1 ? "attending firms did gain more" : "that rise looks largely seasonal"}` : `around ${n} the comparison group is too small to judge (${pl(r.oth.pre, "meeting")} before)`; })() : `after ${n} the comparison group rose about as much, so that rise looks seasonal`; }).filter(Boolean);
     return head + (per.length ? ` ${cap1(per.join("; "))}.` : "");
   },
   lowTier: () => { const t = byDim("priority").filter(x => x.n); return t.length > 1 ? [...t].sort((a, b) => a.fu - b.fu)[0] : null; },
@@ -558,12 +586,16 @@ const N = {
     const v = e.rate > b.rate + 0.05 ? "In this view, deals opened after events did turn into commitments more often." : e.rate < b.rate - 0.05 ? "So events did not bring in deals that are more likely to close; if anything, they closed less often." : "So events did not bring in deals that are more likely to close.";
     return `Do deals that start after an event turn into commitments more often? A deal typically commits about two months after it opens, so this compares only deals at least four months old. Of those, ${ec} of ${pl(e.n, "deal")} opened after an event are committed (${fmtPct(e.rate)}), against ${bc} of ${pl(b.n, "deal")} that were already in progress before the firm's first event (${fmtPct(b.rate)}). ${v}${S.out && oppsVisible().some(o => o.flag_outlier) ? " The single largest commitment, the unverified $650M deal, came from a firm that never attended." : ""}`;
   },
-  score: (st, mix) => { const ok = st.filter(x => x.cpx != null), none = st.filter(x => x.n && x.cpx == null); if (!ok.length) return "No event met more attending firms after than before in this view, so cost per extra firm cannot be compared.";
-    const s = [...ok].sort((a, b) => a.cpx - b.cpx), best = s[0];
+  score: (st, mix) => {
+    const live = st.filter(x => x.n), ok = live.filter(x => x.cpxNet != null), noAdj = live.filter(x => x.net == null), none = live.filter(x => x.net != null && x.cpxNet == null);
     const m = st.map(x => { const v = mix[x.eid]; if (v.actual == null || v.expected == null) return null; const d = v.actual - v.expected;
       return Math.abs(d) < 0.05 ? `${EV_NAME[x.eid]} matched its prediction (${fmtPct(v.actual)})` : `${EV_NAME[x.eid]} ${d > 0 ? "beat" : "fell short of"} it (${fmtPct(v.actual)} vs ${fmtPct(v.expected)})`; }).filter(Boolean);
-    const most = [...st].sort((a, b) => b.srcN - a.srcN)[0];
-    return `${EV_NAME[best.eid]} was the most efficient: ${fmtUsd(best.cpx)} per extra firm met (firms met after the event minus those met before)${s.length > 1 ? `, against ${listAnd(s.slice(1).map(x => `${fmtUsd(x.cpx)} for ${EV_NAME[x.eid]}`))}` : ""}.${none.length ? ` ${listAnd(none.map(x => EV_NAME[x.eid]))} met no more attending firms after the event than before, so it bought no extra contact.` : ""} Compared with the follow-up rate its mix of investor types would predict, ${listAnd(m)}. ${EV_NAME[most.eid]} opened the most new deals (${most.srcN}).`; },
+    const most = [...st].sort((a, b) => b.srcN - a.srcN)[0], s = [...ok].sort((a, b) => a.cpxNet - b.cpxNet), best = s[0];
+    const head = !live.length ? "No attending firms in this view." : !ok.length ? (noAdj.length === live.length ? "Too few comparison firms in this view to separate any event's extra contact from the season." : "No event met more attending firms than the season explains in this view, so cost per extra firm cannot be compared.")
+      : `${s.length === 1 ? `${EV_NAME[best.eid]} was the only event that met more attending firms than the season explains` : `${EV_NAME[best.eid]} was the most efficient`}: ${fmtUsd(best.cpxNet)} per extra firm met beyond the season (${firmsN(best.net)}; the comparison group is ${pl(best.cN, "firm")}, so treat this as a signal)${s.length > 1 ? `, against ${listAnd(s.slice(1).map(x => `${fmtUsd(x.cpxNet)} for ${EV_NAME[x.eid]}`))}` : ""}.`;
+    const noneTxt = none.length ? ` ${none.map(x => `${EV_NAME[x.eid]} met ${x.extra >= 0 ? `${pl(x.extra, "more firm")} after than before, ${x.extra <= x.exp ? "no more than" : "only slightly more than"} the season alone predicts (${about(x.exp)})` : `${pl(-x.extra, "fewer firm")} after than before`}.`).join(" ")} ${none.length === 1 ? "It" : none.length === 2 ? "Neither" : "None of them"} bought extra contact beyond the season.` : "";
+    const adjTxt = ok.length && noAdj.length ? ` ${listAnd(noAdj.map(x => EV_NAME[x.eid]))} could not be adjusted (fewer than 5 comparison firms).` : "";
+    return `${head}${noneTxt}${adjTxt}${m.length ? ` Compared with the follow-up rate its mix of investor types would predict, ${listAnd(m)}.` : ""}${most && most.srcN ? ` ${EV_NAME[most.eid]} opened the most new deals (${most.srcN}).` : ""}`; },
   tier: tiers => { const t = tiers.filter(x => x.n); if (!t.length) return "No attending firms in this view."; if (t.length === 1) return `Only ${t[0].k} firms are in this view (${fmtPct(t[0].fu)} followed up); clear the tier filter to compare tiers.`; const lo = [...t].sort((a, b) => a.fu - b.fu)[0];
     return `${lo.k} firms are followed up least (${fmtPct(lo.fu)})${lo.k === "Tier 1" ? ", the opposite of what a priority label should mean." : "."}`; },
   seg: segs => { const s = [...segs].filter(x => x.n).sort((a, b) => b.fu - a.fu); if (s.length < 2) return "Too few investor types in this view to compare.";
@@ -573,15 +605,15 @@ const N = {
   instTitle: TI => { const g = N.instGap(TI); return !g ? "Follow-up by tier and investor type" : g.gap ? "The Tier 1 gap sits with foundations and insurers" : "Tier 1 foundations and insurers are not followed up less in this view"; },
   inst: TI => { const g = N.instGap(TI); if (!g) return "Not enough Tier 1 firms of both kinds in this view to compare.";
     const t3 = TI["Tier 3"], rev = t3 && t3.inst.length && t3.other.length && share(t3.inst, x => x) > share(t3.other, x => x);
-    return g.gap ? `Tier 1 foundations and insurers are the gap: ${g.k} of ${pl(g.n, "attendance")} followed up (${fmtPct(g.a)}), against ${fmtPct(g.b)} for other Tier 1 firms, including pension funds.${rev ? " At Tier 3 the pattern reverses," : ""} So this is about how Tier 1 foundations and insurers are covered (for example, Senior Partner involvement), not about investor type in general. Groups are small.`
+    return g.gap ? `Tier 1 foundations and insurers are the gap: ${g.k} of ${pl(g.n, "attendance")} followed up (${fmtPct(g.a)}), against ${fmtPct(g.b)} for other Tier 1 firms, including pension funds.${rev ? " At Tier 3 the pattern reverses." : ""} So this is about how Tier 1 foundations and insurers are covered (for example, Senior Partner involvement), not about investor type in general. Groups are small.`
       : `Tier 1 foundations and insurers were followed up at ${fmtPct(g.a)} against ${fmtPct(g.b)} for other Tier 1 firms, so there is no clear gap in this view.`; },
   topSeg: comSeg => { const e = Object.entries(comSeg).map(([s, v]) => [s, v.usdEx]).sort((a, b) => b[1] - a[1]); return e.length && e[0][1] ? e[0] : null; },
   segComTitle: comSeg => { const t = N.topSeg(comSeg), n = Object.keys(comSeg).length; return t && n > 1 ? `${cap1(SEG_PL[t[0]])} hold the most committed capital outside the $650M deal` : "Commitments by investor type"; },
   segCom: (comSeg, segs) => { const t = N.topSeg(comSeg); if (!t) return "No commitments in this view.";
     const tot = Object.values(comSeg).reduce((s, v) => s + v.usdEx, 0), fu = segs.find(x => x.k === t[0]);
-    return `${cap1(SEG_PL[t[0]])} account for ${fmtUsd(t[1])} of the ${fmtUsd(tot)} committed outside the unverified $650M deal (${fmtPct(tot ? t[1] / tot : null)})${fu ? `, and ${fmtPct(fu.fu)} of their event attendances were followed up` : ""}.${t[0] === "Family Office" ? " They are the clearest case for continued event investment." : ""}`; },
+    return `${cap1(SEG_PL[t[0]])} account for ${fmtUsd(t[1])} of the ${fmtUsd(tot)} committed outside the unverified $650M deal (${fmtPct(tot ? t[1] / tot : null)})${fu ? `, and ${fmtPct(fu.fu)} of their event attendances were followed up` : ""}.${t[0] === "Family Office" ? " They matter most to fundraising, so they are the investor type to measure first when testing whether events pay off; this does not show that events drove their commitments." : ""}`; },
   sens: rows => { const allUp = rows.every(r => r.fu > r.base), sameBest = new Set(rows.map(r => r.best)).size === 1, liftW = rows.filter(r => r.lift).map(r => r.w);
-    return `${allUp ? "At every window more attending firms were met after the event than before." : "The follow-up gain over the before-event baseline does not hold at every window in this view."} ${sameBest ? `${rows[0].best} has the lowest cost per extra firm met at every window.` : "The most efficient event changes with the window in this view."} ${rows[0].t1 !== rows[2].t1 ? `Tier 1 firms not met falls from ${rows[0].t1} at 30 days to ${rows[2].t1} at 90, so that gap is about speed.` : ""} ${liftW.length === 0 ? "No window shows attending firms opening more new deals than firms at other events." : liftW.length === 3 ? "Every window shows attending firms opening more new deals than firms at other events." : `Attending firms open more new deals than firms at other events only at ${listAnd(liftW.map(String))} days, which fits events bringing some deals forward rather than creating extra ones.`}`; },
+    return `${allUp ? "At every window more attending firms were met after the event than before." : "The follow-up gain over the before-event baseline does not hold at every window in this view."} ${sameBest ? (rows[0].best === "–" ? "No event met more attending firms than the season explains at any window." : `${rows[0].best} has the lowest cost per extra firm met beyond the season at every window.`) : `The season-adjusted cost per extra firm met is not stable across windows (${rows.map(r => `${r.w} days: ${r.best === "–" ? "no event" : r.best}`).join("; ")}), because each event's comparison group is small, so read event efficiency as a signal to test.`} ${rows[0].t1 !== rows[2].t1 ? `Tier 1 firms not met falls from ${rows[0].t1} at 30 days to ${rows[2].t1} at 90, so that gap is about speed.` : ""} ${liftW.length === 0 ? "No window shows attending firms opening more new deals than firms at other events." : liftW.length === 3 ? "Every window shows attending firms opening more new deals than firms at other events." : `Attending firms open more new deals than firms at other events only at ${listAnd(liftW.map(String))} days, which fits events bringing some deals forward rather than creating extra ones.`}`; },
 };
 
 /* ================= SUMMARY ================= */
@@ -589,8 +621,8 @@ function renderSummary() {
   const T = totals(), st = Object.fromEntries(T.st.map(x => [x.eid, x])), P = placebo(), G = didGroups(), t1 = tier1(), mix = eventVsMix();
   const base = share(attRows(), r => r.meetings_pre > 0), fu = T.att ? T.fu / T.att : null;
   const lift = N.placeboLift(P), dA = G.attended.post - G.attended.pre, dO = G.other.post - G.other.pre, dLift = N.didLift(dA, dO), lo = N.lowTier();
-  const cp = T.st.filter(x => x.cpx != null).sort((a, b) => a.cpx - b.cpx), zero = T.st.filter(x => x.n && x.cpx == null), bestE = cp[0], worstE = zero[0] || cp[cp.length - 1];
-  const mixOk = bestE && worstE && mix[bestE.eid].actual > mix[bestE.eid].expected && mix[worstE.eid].actual < mix[worstE.eid].expected;
+  const cp = T.st.filter(x => x.cpxNet != null).sort((a, b) => a.cpxNet - b.cpxNet), zero = T.st.filter(x => x.n && x.net != null && x.cpxNet == null), bestE = cp[0];
+  const mixOk = bestE && mix[bestE.eid].actual > mix[bestE.eid].expected + 0.05;
   const ans = (n, q, a, body, facts, tab) => el("div", { class: "card answer" }, el("div", { class: "num", text: n }),
     el("div", {}, el("div", { class: "q", text: q }), el("div", { class: "a", text: a }), el("div", { class: "body" }, ...body),
       el("div", { class: "facts" }, facts.map(([v, k]) => el("div", { class: "fact" }, el("div", { class: "v" }, v), el("div", { class: "k", text: k })))), goto("See the evidence", tab)));
@@ -606,9 +638,9 @@ function renderSummary() {
         ["After events, ", numlink(`${T.srcN} new deals`, { cond: "sourced", label: "Firms with a new opportunity after an event" }), ` were opened with attending firms and ${T.advN} other, already-open deals moved to a later stage. `,
           numlink(`${T.evCom} event-sourced deals`, { cond: "committed", label: "Firms whose event-sourced deal has committed" }), ` have committed ${fmtUsd(T.evComUsd)} so far. But measured against their own starting point, attending firms went from ${fmtPct(G.attended.pre)} to ${fmtPct(G.attended.post)} opening a new deal, while firms that attended a different event went from ${fmtPct(G.other.pre)} to ${fmtPct(G.other.post)}${dLift ? ", a smaller rise" : ", as much or more"}. Firms never invited were already more active beforehand (${fmtPct(G.never.pre)}), so they are not a fair comparison. All of this is association, not cause.`],
         [[`${T.srcN} + ${T.advN}`, "new deals opened + existing deals moved forward"], [`${pts(G.attended.post - G.attended.pre)} vs ${pts(G.other.post - G.other.pre)}`, "change in firms opening a deal: attending vs other-event firms"], [fmtUsd(T.evComUsd), "committed from event-sourced deals"]], "outcomes"),
-      ans("3", "What should we learn for future events?", `${bestE ? `The ${EV_NAME[bestE.eid]} bought the most extra contact per dollar and the ${EV_NAME[worstE.eid]} the least${mixOk ? ", and investor mix does not explain either" : ""}.` : ""} Whether any event paid off in pipeline is not measurable yet.`,
+      ans("3", "What should we learn for future events?", `${bestE ? `${cp.length === 1 ? `Only the ${EV_NAME[bestE.eid]} met more attending firms than the season explains` : `The ${EV_NAME[bestE.eid]} bought the most extra contact per dollar`} (on a small sample)${mixOk ? ", and its investor mix does not explain that" : ""}.` : "No event clearly bought extra contact beyond the season in this view."}${(() => { const f = T.st.filter(x => x.n && x.extra < 0); return f.length ? ` The ${listAnd(f.map(x => EV_NAME[x.eid]))} ${f.length === 1 ? "was" : "were"} followed by less contact than before.` : ""; })()} Whether any event paid off in pipeline is not measurable yet.`,
         [`${N.score(T.st, mix)} Today the data cannot link a meeting or deal to the event that drove it, and one unverified $650M deal is ${fmtPct(outlierShare())} of all committed capital.`],
-        [[bestE ? fmtUsd(bestE.cpx) : "–", bestE ? `${EV_NAME[bestE.eid]}: cost per extra firm met` : ""], [worstE ? (worstE.cpx == null ? "none" : fmtUsd(worstE.cpx)) : "–", worstE ? (worstE.cpx == null ? `${EV_NAME[worstE.eid]}: no extra firms met` : `${EV_NAME[worstE.eid]}: cost per extra firm met`) : ""], [fmtPct(outlierShare()), "of committed $ is one unverified deal"]], "learn")),
+        [[bestE ? fmtUsd(bestE.cpxNet) : "–", bestE ? `${EV_NAME[bestE.eid]}: cost per extra firm met, beyond the season` : "cost per extra firm met, beyond the season"], [zero.length ? "none" : cp.length > 1 ? fmtUsd(cp[cp.length - 1].cpxNet) : "–", zero.length ? `${listAnd(zero.map(x => EV_NAME[x.eid]))}: no extra firms beyond the season` : cp.length > 1 ? `${EV_NAME[cp[cp.length - 1].eid]}: cost per extra firm met` : ""], [fmtPct(outlierShare()), "of committed $ is one unverified deal"]], "learn")),
     el("div", { class: "card mt" }, el("h3", { text: "Recommendations" }), el("p", { class: "cap", text: "Ranked by importance. Each is tied to the evidence behind it and a measure to track next time. Based on all firms at the default settings (60-day window, Confirmed attendance), so the filters above do not change them." }), recList()));
 }
 function withDefaults(fn) { const keep = { w: S.w, def: S.def, seg: S.seg, tier: S.tier, region: S.region, out: S.out };
@@ -623,13 +655,16 @@ function recListInner() {
       [`Attending firms opened new deals only slightly more often after events (${pts(G.attended.post - G.attended.pre)}), and firms at other events rose ${(G.other.post - G.other.pre) > (G.attended.post - G.attended.pre) ? "more" : "about as much"} (${pts(G.other.post - G.other.pre)}): the pipeline case for events is unproven, not disproven. The data cannot link a meeting or deal to the event that drove it, meetings are logged only for attendees, RSVP status stands in for attendance, and `,
         numlink(`${un.length} Tier 1 firms`, { cond: "uninvited", label: "Tier 1 firms never invited to any event" }), ` were never invited. Separately, one unverified $650M commitment is ${fmtPct(outlierShare())} of the year's committed capital.`],
       "share of deals tagged with a source event; meetings logged for all firms; invited vs similar non-invited firms after the next event"),
-    rec("Follow up faster with Tier 1 firms, especially foundations and insurers, starting with those that have live deals: a named owner and a first meeting within 30 days.",
-      [t1.firms ? `${t1.missFirms} of ${t1.firms} Tier 1 firms were not met within ${S.w} days of an event they attended; by 90 days that ${t1_90.missFirms < t1.missFirms ? `falls to ${t1_90.missFirms}, so the problem is mostly speed, not neglect` : `is still ${t1_90.missFirms}`}. ` : "", (() => { const g = N.instGap(tierInst()); return g && g.gap ? `The gap sits with Tier 1 foundations and insurers: only ${g.k} of ${pl(g.n, "attendance")} followed up. ` : ""; })(), (() => { const k = CL.filter(c => c.od).length; return k ? `${pl(k, "firm")} that missed follow-up ${k === 1 ? "has" : "have"} live deals worth ${fmtUsd(CL.reduce((s, c) => s + c.usd, 0))} in target size: start with the ` : "Start with the "; })(), goto("priority call list", "learn"),
-        `. ${L.yN && L.nN ? `Firms with a live deal that we did follow up moved a deal forward ${(L.y - L.n) > 0.05 ? "more often" : (L.y - L.n) < -0.05 ? "less often" : "about as often"} (${fmtPct(L.y)} vs ${fmtPct(L.n)}), though there are too few firms to be sure.` : ""}`],
-      "Tier 1 follow-up within 30 days, by investor type; deal movement for followed-up vs not"),
-    rec("Shift spend toward smaller hospitality formats, and review whether the Berlin Forum reaches the right firms before renewing it.",
-      [`Counting only the extra firms each event got us in front of (firms met after minus firms met before), London cost ${fmtUsd(st.E002.cpx)} per extra firm, New York ${fmtUsd(st.E001.cpx)}, and Berlin met ${Math.abs(st.E003.extra)} fewer attending firms after the event than before. London's lead also holds after adjusting for the types of investors who attended. With three events, pilot two more dinners rather than cutting conferences outright.`],
-      "cost per extra firm met and deals opened per attending firm, by format"));
+    rec("Set a 30-day follow-up standard for Tier 1 firms, starting with those that have a live deal and no meeting since their event: a named owner for each.",
+      [t1.firms ? `${t1.missFirms} of ${t1.firms} Tier 1 firms were not met within ${S.w} days of an event they attended; by 90 days that ${t1_90.missFirms < t1.missFirms ? `falls to ${t1_90.missFirms}, so the problem is mostly speed, not neglect` : `is still ${t1_90.missFirms}`}. ` : "", (() => { const g = N.instGap(tierInst()); return g && g.gap ? `The gap sits with Tier 1 foundations and insurers: only ${g.k} of ${pl(g.n, "attendance")} followed up. ` : ""; })(),
+        (() => { const ns = CL.filter(c => c.metSince == null && c.od), t = ns.filter(c => c.f.priority === "Tier 1"); return ns.length ? `${pl(ns.length, "firm")} with live deals worth ${fmtUsd(ns.reduce((s, c) => s + c.usd, 0))} in target size still ${ns.length === 1 ? "has" : "have"} no meeting logged since their event${t.length ? `, ${t.length} of them Tier 1` : ""}: check the CRM, then call, starting with the ` : "Start with the "; })(), goto("priority call list", "learn"),
+        `. ${(() => { const sp = speedOutcome(); return `The evidence that faster follow-up wins deals is weak: ${L.yN && L.nN ? `firms with a live deal that we followed up moved a deal forward ${(L.y - L.n) > 0.05 ? "somewhat more often" : (L.y - L.n) < -0.05 ? "less often" : "about as often"} (${fmtPct(L.y)} vs ${fmtPct(L.n)}), and ` : ""}firms met within 30 days opened a new deal ${Math.abs(sp.yOpen - sp.nOpen) <= 0.05 ? "at about the same rate as" : sp.yOpen > sp.nOpen ? "more often than" : "less often than"} firms met later or not at all (${fmtPct(sp.yOpen)} vs ${fmtPct(sp.nOpen)}). Treat this as a service standard for our top-priority investors and test it, not as a proven driver of pipeline.`; })()}`],
+      "Tier 1 follow-up within 30 days, by investor type; deals opened and moved for firms met within 30 days vs later"),
+    rec("Review whether the Berlin Forum reaches the right firms before renewing it, and test two more dinner-style events before shifting budget.",
+      [(() => { const W = [30, 60, 90].map(w => withWindow(w, () => { const b = eventStats("E003"), l = eventStats("E002"); return { w, bFell: b.mPost < b.mPre, lAdj: l.cpxNet != null }; }));
+        const allFell = W.every(x => x.bFell), lW = W.filter(x => x.lAdj).map(x => x.w), b = st.E003, l = st.E002, m = eventVsMix();
+        return `Berlin was the most expensive event (${fmtUsd(b.cost)}) and was followed by less contact: we met ${b.extra < 0 ? `${pl(-b.extra, "fewer attending firm")} after it than before` : `${pl(b.extra, "more attending firm")} after it than before`} (${b.metBefore} → ${b.fu}), and meetings with its attendees fell ${allFell ? "at every window (30, 60 and 90 days), including firms that did not also attend London" : `at the ${S.w}-day window`}. London had the highest follow-up rate (${fmtPct(l.rate)}, above the ${fmtPct(m.E002.expected)} its investor mix predicts) at the lowest cost${l.cpxNet != null ? `, and it is the only event whose rise beat the comparison group: ${about(l.net)} extra firms met beyond the season, ${fmtUsd(l.cpxNet)} each` : ""}. But that comparison is ${pl(l.cN, "firm")}${lW.length && lW.length < 3 ? ` and holds only at the ${listAnd(lW.map(String))}-day window` : ""}, and there was one dinner, so treat dinners as a format to test, not a proven winner.`; })()],
+      "cost per extra firm met beyond the season, and deals opened per attending firm, by format"));
 }
 
 /* ================= 1. WHAT HAPPENED ================= */
@@ -767,7 +802,9 @@ function renderLearn() {
     ["Cost per attending firm", x => fmtUsd(x.cpa), x => x.cpa, true],
     [term("Cost per firm followed up", "cpf"), x => fmtUsd(x.cpf), x => x.cpf, true],
     ["Extra firms met (after minus before)", x => `${x.extra >= 0 ? "+" : "−"}${Math.abs(x.extra)} (${x.metBefore} → ${x.fu})`, x => x.extra, false],
-    [term("Cost per extra firm met", "cpx"), x => x.cpx == null ? "none: no extra firms" : fmtUsd(x.cpx), x => x.cpx, true],
+    ["…expected from the season", x => x.exp == null ? "too few comparison firms" : `${sgn1(x.exp)} (comparison firms met ${fmtPct(x.cB)} → ${fmtPct(x.cA)})`, null],
+    ["Extra firms met beyond the season", x => x.net == null ? "–" : sgn1(x.net), x => x.net, false],
+    [term("Cost per extra firm met, beyond the season", "cpxs"), x => x.cpxNet == null ? (x.net == null ? "cannot adjust" : "none: no extra firms") : fmtUsd(x.cpxNet), x => x.cpxNet, true],
   ];
   const tbl = el("table", {}, el("thead", {}, el("tr", {}, el("th", { text: "" }), st.map(x => el("th", { class: "n" }, el("span", { class: "swatch", style: `background:${EV_COLOR[x.eid]}` }), EVL(x.eid))))),
     el("tbody", {}, rows.map(([lbl, f, val, low]) => { const b = val ? best(st.map(val), low) : [false, false, false];
@@ -778,19 +815,19 @@ function renderLearn() {
     el("tbody", {}, ["Tier 1", "Tier 2", "Tier 3"].filter(t => TI[t]).map(t => el("tr", {}, el("td", { text: t }), ["inst", "other"].map(g => { const a = TI[t][g]; return el("td", { class: "n", text: a.length ? `${fmtPct(share(a, x => x))} of ${a.length}` : "–" }); })))));
   const segTbl = el("table", {}, el("thead", {}, el("tr", {}, ["Segment", "Commitments", "Committed $"].map((h, i) => el("th", { class: i ? "n" : null, text: h })))),
     el("tbody", {}, Object.entries(comSeg).sort((a, b) => b[1].usd - a[1].usd).map(([s, v]) => el("tr", {}, el("td", { text: s }), el("td", { class: "n", text: v.n }), el("td", { class: "n", text: fmtUsd(v.usd) })))));
-  const callTbl = el("table", {}, el("thead", {}, el("tr", {}, ["", "Firm", "Tier", "Segment", "Missed after"].map(h => el("th", { text: h })), ["Live deals", "Furthest stage", "Target $", "Last meeting"].map(h => el("th", { class: "n", text: h })))),
+  const callTbl = el("table", {}, el("thead", {}, el("tr", {}, ["", "Firm", "Tier", "Segment", "Missed after"].map(h => el("th", { text: h })), ["Live deals", "Furthest stage", "Target $", "Met since the event?"].map(h => el("th", { class: "n", text: h })))),
     el("tbody", {}, CL.map(c => el("tr", { class: "click", onclick: () => { S.focus = null; S.firm = c.fid; S.tab = "firms"; render(); window.scrollTo({ top: 0 }); } },
       el("td", {}, el("span", { class: `pri pri-${c.pr}`, text: `P${c.pr}` })), el("td", {}, el("b", { text: c.f.firm_name }), el("div", { class: "asof", text: c.why })), el("td", { text: c.f.priority }), el("td", { text: c.f.segment }),
       el("td", {}, c.evs.map(e => el("span", { class: "pill" }, el("span", { class: "swatch", style: `background:${EV_COLOR[e]}` }), EV_NAME[e]))),
-      el("td", { class: "n", text: c.od || "–" }), el("td", { class: "n", text: c.top ? STAGE_SHORT[c.top] : "–" }), el("td", { class: "n", text: c.usd ? fmtUsd(c.usd) : "–" }), el("td", { class: "n", text: fmtDate(c.lastM) })))),
-    el("tfoot", {}, el("tr", {}, el("td", { colspan: 5, text: `Total · ${pl(CL.length, "firm")} · P1 ${CL.filter(c => c.pr === 1).length} · P2 ${CL.filter(c => c.pr === 2).length} · P3 ${CL.filter(c => c.pr === 3).length}` }),
+      el("td", { class: "n", text: c.od || "–" }), el("td", { class: "n", text: c.top ? STAGE_SHORT[c.top] : "–" }), el("td", { class: "n", text: c.usd ? fmtUsd(c.usd) : "–" }), el("td", { class: "n" }, c.metSince == null ? el("span", { class: "flag", text: "Not yet" }) : `Yes, ${fmtDate(c.metSince)}`)))),
+    el("tfoot", {}, el("tr", {}, el("td", { colspan: 5, text: `Total · ${pl(CL.length, "firm")} · ${CL.filter(c => c.metSince == null).length} not met since · P1 ${CL.filter(c => c.pr === 1).length} · P2 ${CL.filter(c => c.pr === 2).length} · P3 ${CL.filter(c => c.pr === 3).length}` }),
       el("td", { class: "n", text: CL.reduce((s, c) => s + c.od, 0) }), el("td", {}), el("td", { class: "n", text: fmtUsd(CL.reduce((s, c) => s + c.usd, 0)) }), el("td", {}))));
   document.getElementById("learn").replaceChildren(...[
     lede("3 · What should we learn for future events?", "Which event worked best for the money, which investors respond, and who to call first. Three events is a small sample: read differences as signals to test."),
     card("Event scorecard", [el("span", { style: "color:var(--good)", text: "●" }), " marks the best of the three on each row. Click any linked number to see the firms behind it. * includes one low-confidence record (O9998)."], el("div", { style: "overflow-x:auto" }, tbl),
       whatMeans(N.score(st, mix))),
     el("div", { class: "grid g3 mt" },
-      card(term("Cost per extra firm met", "cpx"), "Event cost ÷ (attending firms met after minus met before). Lower is better.", hbars(st.map(x => ({ label: EV_NAME[x.eid], value: x.cpx || 0, color: EV_COLOR[x.eid], suffix: x.cpx == null ? "no extra firms" : `+${pl(x.extra, "firm")}`, extra: [`${x.metBefore} firms met before, ${x.fu} after`] })), { fmt: v => v ? fmtUsd(v) : "–" })),
+      card(term("Cost per extra firm met, beyond the season", "cpxs"), "Event cost ÷ extra attending firms met beyond what the season explains. Lower is better.", hbars(st.map(x => ({ label: EV_NAME[x.eid], value: x.cpxNet || 0, color: EV_COLOR[x.eid], suffix: x.cpxNet == null ? (x.net == null ? "cannot adjust" : "no extra firms") : firmsN(x.net), extra: [`${x.metBefore} firms met before, ${x.fu} after; ${x.exp == null ? "too few comparison firms" : `${sgn1(x.exp)} expected from the season`}`] })), { fmt: v => v ? fmtUsd(v) : "–" })),
       card("Follow-up rate by priority tier", `Attending firms we met again within ${S.w} days.`, hbars(tiers.map(t => ({ label: t.k, value: t.fu, color: t.k === "Tier 1" ? "var(--seq-mid)" : "var(--seq-light)", suffix: `of ${t.n}` })), { fmt: fmtPct, max: 1 }),
         whatMeans(N.tier(tiers))),
       card("Follow-up rate by segment", `Attending firms we met again within ${S.w} days, highest first.`, hbars(segs.map(t => ({ label: t.k, value: t.fu, color: INST.has(t.k) ? "var(--seq-mid)" : "var(--seq-light)", suffix: `of ${t.n}`, extra: [`Deal opened or moved: ${fmtPct(t.mv)}`] })), { fmt: fmtPct, max: 1 }),
@@ -800,9 +837,10 @@ function renderLearn() {
         whatMeans(N.inst(TI))),
       card(N.segComTitle(comSeg), "Commitments by investor type, as of 14 Oct 2026.", el("div", { style: "overflow-x:auto" }, segTbl),
         whatMeans(N.segCom(comSeg, segs)))),
-    card(`Priority call list: ${pl(CL.length, "firm")} not met within ${S.w} days of an event they attended`, [`Ranked by what follow-up could most affect: P1 = live deal in due diligence or IC; P2 = earlier-stage live deal, or a Tier 1 firm; P3 = no live deal. Within each, by tier and then deal size. Investor type is shown but not used to rank: foundations and insurers commit less often, but that may partly be because they are followed up less. Select a row to open the firm's timeline.`],
+    card(`Priority call list: ${pl(CL.filter(c => c.metSince == null).length, "firm")} with no meeting logged since their event`, [`Every attending firm not met within ${S.w} days of an event. Firms with no meeting logged since (as of 14 Oct) come first; firms met later follow. Within each group, ranked by what follow-up could most affect: P1 = live deal in due diligence or IC; P2 = earlier-stage live deal, or a Tier 1 firm; P3 = no live deal; then by tier and deal size. Investor type is shown but not used to rank: foundations and insurers commit less often, but that may partly be because they are followed up less. Select a row to open the firm's timeline.`],
       el("div", { class: "tscroll", style: "max-height:460px" }, callTbl),
-      whatMeans(`${CL.filter(c => c.od).length} of these ${pl(CL.length, "firm")} have live deals worth ${fmtUsd(CL.reduce((s, c) => s + c.usd, 0))} in target size, ${CL.filter(c => c.pr === 1).length} of them already in due diligence or IC. These are the first calls to make after the next event.`)),
+      whatMeans((() => { const ns = CL.filter(c => c.metSince == null), nsl = ns.filter(c => c.od), lg = loggingGap(), late = CL.length - ns.length;
+        return `${pl(ns.length, "firm")} still ${ns.length === 1 ? "has" : "have"} no meeting logged since their event${nsl.length ? `; ${nsl.length} of them ${nsl.length === 1 ? "has" : "have"} live deals worth ${fmtUsd(nsl.reduce((s, c) => s + c.usd, 0))} in target size, ${nsl.filter(c => c.f.priority === "Tier 1").length} Tier 1` : ""}. These are the calls to make. Check the CRM first: ${lg.none} of ${pl(lg.n, "attending firm")} whose deals moved past the first stage have no meeting logged at all, so some contact is not being recorded.${late ? ` The other ${pl(late, "firm")} were met, but later than ${S.w} days: that is slow follow-up, not a missing call.` : ""}`; })())),
     un.length ? card(`${un.length} Tier 1 firm${un.length === 1 ? " was" : "s were"} never invited to any event`, "IR's own highest-priority label, but on no attendee list.",
       el("div", { style: "overflow-x:auto" }, el("table", {}, el("thead", {}, el("tr", {}, ["Firm", "Segment", "Region", "Historical commitments"].map((h, i) => el("th", { class: i === 3 ? "n" : null, text: h })))),
         el("tbody", {}, un.map(f => el("tr", { class: "click", onclick: () => { S.focus = null; S.firm = f.firm_id; S.tab = "firms"; render(); window.scrollTo({ top: 0 }); } }, el("td", {}, el("b", { text: f.firm_name })), el("td", { text: f.segment }), el("td", { text: f.coverage_region }), el("td", { class: "n", text: fmtUsd(f.historical_commitments_usd) })))))),
@@ -857,7 +895,8 @@ function firmView(fid) {
   const opps = D.opps.filter(o => o.firm_id === fid && (S.out || !o.flag_outlier)), open = opps.filter(o => !["Committed", "Declined"].includes(o.current_stage));
   const com = opps.filter(o => o.current_stage === "Committed"), meets = D.meetings.filter(m => m.firm_id === fid), ever = everAttended().has(fid);
   const call = callList().find(c => c.fid === fid), top = open.length ? Math.max(...open.map(o => o.max_stage_ord)) : 0;
-  const action = call ? `Priority ${call.pr} on the call list: ${call.why.charAt(0).toLowerCase() + call.why.slice(1)}, and not met within ${S.w} days of ${listAnd(call.evs.map(e => EV_NAME[e]))}.`
+  const action = call ? (call.metSince == null ? `Priority ${call.pr} on the call list: ${call.why.charAt(0).toLowerCase() + call.why.slice(1)}, and no meeting logged since ${listAnd(call.evs.map(e => EV_NAME[e]))}.${!meets.length && opps.some(o => o.max_stage_ord >= 2) ? " Its deals moved forward with no meeting logged at all, so check the CRM before calling." : ""}`
+      : `Slow follow-up: not met within ${S.w} days of ${listAnd(call.evs.map(e => EV_NAME[e]))}, but met on ${fmtDate(call.metSince)}, so no call needed now.`)
     : open.length && ever ? `${open.length} live deal${open.length > 1 ? "s" : ""} (furthest stage: ${STAGE_SHORT[top]}). Followed up after every event it attended, so no follow-up gap.`
     : ever ? "No live deals, and followed up after every event it attended. No action flagged."
     : onAnyList.has(fid) ? `Invited but never confirmed${open.length ? `; ${open.length} live deal${open.length > 1 ? "s" : ""} (furthest: ${STAGE_SHORT[top]})` : ""}.`
@@ -932,21 +971,21 @@ function timeline(fid) {
     opps.length ? null : el("p", { class: "cap", text: "No opportunities recorded for this firm." }));
 }
 
-/* ================= HOW IT'S MEASURED ================= */
+/* ================= HOW IT IS MEASURED ================= */
 function renderMethods() {
   const dl = pairs => el("dl", {}, pairs.flatMap(([t, d]) => [el("dt", { text: t }), el("dd", { text: d.replaceAll("{w}", S.w) })]));
   const kpi = [["Reach", "Firms attended, Tier 1 firms attended, cost per attending firm", "Did we get the right firms in the room?"],
     ["Follow-up", "Follow-up rate vs the before-event baseline, days to first meeting, Tier 1 firms not met in time", "Did attendance turn into conversations, quickly? The leading indicator IR controls directly."],
     ["Pipeline", "New deals opened after events, existing deals moved forward, change vs other firms", "Did conversations become fundraising activity?"],
     ["Outcome", "Event-sourced deals committed ($ and count); commit rate of mature deals", "Did it become capital? Lagging: a typical deal commits about 53 days after opening."],
-    ["Efficiency", "Cost per extra firm met (headline), cost per firm followed up, cost per attending firm", "Was it worth the money compared with the other events? Counting only extra firms removes those we would have met anyway."]];
+    ["Efficiency", "Cost per extra firm met beyond the season (headline), cost per firm followed up, cost per attending firm", "Was it worth the money compared with the other events? Counting only extra firms beyond the seasonal rise removes those we would have met anyway."]];
   const L = lagStats(), A = attribution();
   const sens = [30, 60, 90].map(w => withWindow(w, () => { const T = totals(), G = didGroups(), t1 = tier1(), Lf = liveFollow(), st = T.st;
-    const bestCpf = st.filter(x => x.cpx != null).sort((a, b) => a.cpx - b.cpx)[0];
+    const bestCpf = st.filter(x => x.cpxNet != null).sort((a, b) => a.cpxNet - b.cpxNet)[0];
     return { w, lift: N.didLift(G.attended.post - G.attended.pre, G.other.post - G.other.pre), fu: T.att ? T.fu / T.att : null, base: share(attRows(), r => r.meetings_pre > 0), t1: `${t1.missFirms} of ${t1.firms}`,
       best: bestCpf ? EV_NAME[bestCpf.eid] : "–", did: `${pts(G.attended.post - G.attended.pre)} vs ${pts(G.other.post - G.other.pre)}`, live: `${fmtPct(Lf.y)} vs ${fmtPct(Lf.n)}` }; }));
   const sensRows = [["Attending firms followed up", s => fmtPct(s.fu)], ["…had a meeting in the same span before", s => fmtPct(s.base)], ["Tier 1 firms not met in time", s => s.t1],
-    ["Lowest cost per extra firm met", s => s.best], ["Change in firms opening a deal: attending vs other-event firms", s => s.did], ["Live deals moved forward: followed up vs not", s => s.live]];
+    ["Lowest cost per extra firm met, beyond the season", s => s.best], ["Change in firms opening a deal: attending vs other-event firms", s => s.did], ["Live deals moved forward: followed up vs not", s => s.live]];
   const sensTbl = el("table", {}, el("thead", {}, el("tr", {}, el("th", { text: "Finding" }), sens.map(s => el("th", { class: "n", text: `${s.w} days` + (s.w === 60 ? " (default)" : "") })))),
     el("tbody", {}, sensRows.map(([l, f]) => el("tr", {}, el("td", { text: l }), sens.map(s => el("td", { class: "n", text: f(s) }))))));
   const attTbl = el("table", {}, el("thead", {}, el("tr", {}, el("th", { text: "Credit rule" }), EVS.map(e => el("th", { class: "n", text: EV_NAME[e] })))),
@@ -971,12 +1010,12 @@ function renderMethods() {
         el("div", { style: "overflow-x:auto" }, el("table", {}, el("thead", {}, el("tr", {}, ["Group (all three events)", "Meetings before → after", "Change", "Use"].map((h, i) => el("th", { class: i === 1 || i === 2 ? "n" : null, text: h })))),
           el("tbody", {}, row(el("b", { text: "Attended the event" }), P.att, "Measured"), row(el("b", { text: "Comparison group used: no event of their own within the window" }), P.oth, "Used as the seasonal benchmark"),
             row("Left out: their own event fell inside the window", P.ovl, "Excluded: before-period inflated by their own event"), row("Original comparison (both together)", P.othAll, "Earlier version; kept here for transparency")))),
-        whatMeans(`With the original comparison, attending firms' meetings looked like they beat the season overall (${growth(P.att.pre, P.att.post)} vs ${growth(P.othAll.pre, P.othAll.post)}). With the fair comparison, the overall rise matches the season (${growth(P.att.pre, P.att.post)} vs ${growth(P.oth.pre, P.oth.post)}), and only ${N.liftEvents(P).length ? listAnd(N.liftEvents(P)) : "no event"} shows a clear lift. The comparison group is small (${pl(P.oth.pre, "meeting")} before), so this is directional too.`))); })(),
+        whatMeans(`With the original comparison, attending firms' meetings looked like they beat the season overall (${growth(P.att.pre, P.att.post)} vs ${growth(P.othAll.pre, P.othAll.post)}). With the fair comparison, the overall rise matches the season (${growth(P.att.pre, P.att.post)} vs ${growth(P.oth.pre, P.oth.post)}), and only ${N.liftEvents(P).length ? listAnd(N.liftEvents(P)) : "no event"} shows a lift. The comparison group is small (${pl(P.oth.pre, "meeting")} before), so this is directional too.`))); })(),
     el("div", { class: "methods mt" }, card("How certain are the comparisons?", "Bootstrap 95% ranges: the data were resampled 5,000 times by firm and event, on all firms at the default settings (src/analysis.py).",
-      el("table", {}, el("thead", {}, el("tr", {}, ["Comparison", "Estimate", "95% range", "Reading"].map((h, i) => el("th", { class: i && i < 3 ? "n" : null, text: h })))),
+      el("div", { style: "overflow-x:auto" }, el("table", {}, el("thead", {}, el("tr", {}, ["Comparison", "Estimate", "95% range", "Reading"].map((h, i) => el("th", { class: i && i < 3 ? "n" : null, text: h })))),
         el("tbody", {},
           el("tr", {}, el("td", { text: "Meeting growth: attending firms minus comparison group (all three events)" }), el("td", { class: "n", text: pp(D.ci.ci_meeting_growth_gap.point) }), el("td", { class: "n", text: `${pp(D.ci.ci_meeting_growth_gap.lo)} to ${pp(D.ci.ci_meeting_growth_gap.hi)}` }), el("td", { text: D.ci.ci_meeting_growth_gap.lo < 0 && D.ci.ci_meeting_growth_gap.hi > 0 ? "Range includes zero: no clear difference overall" : "Range excludes zero" })),
-          el("tr", {}, el("td", { text: "Change in firms opening a new deal: attending firms minus firms at other events" }), el("td", { class: "n", text: pp(D.ci.ci_new_deal_gap.point) }), el("td", { class: "n", text: `${pp(D.ci.ci_new_deal_gap.lo)} to ${pp(D.ci.ci_new_deal_gap.hi)}` }), el("td", { text: "Consistent with no effect, or a modest one either way" })))),
+          el("tr", {}, el("td", { text: "Change in firms opening a new deal: attending firms minus firms at other events" }), el("td", { class: "n", text: pp(D.ci.ci_new_deal_gap.point) }), el("td", { class: "n", text: `${pp(D.ci.ci_new_deal_gap.lo)} to ${pp(D.ci.ci_new_deal_gap.hi)}` }), el("td", { text: "Consistent with no effect, or a modest one either way" }))))),
       whatMeans("With three events and about 70 firm-event attendances, none of the comparisons is statistically clear. The findings are directional: strong enough to decide what to test and measure next, not to prove what events cause."))),
     el("div", { class: "methods mt" }, card("Data model", "Three steps from raw files to the one table every chart reads from.", dataModel())),
     el("div", { class: "methods mt" },
@@ -985,12 +1024,12 @@ function renderMethods() {
         ["New deal after an event", GLOSS.sourced[1]], ["Existing deal moved forward", GLOSS.advanced[1]], ["Committed", GLOSS.committed[1]],
         ["Live deal", "A deal opened before the event date that had not committed or been declined by then."],
         ["Mature deal", `A deal opened at least ${MATURE_DAYS} days before 14 Oct 2026, so it has had time to commit.`],
-        ["Cost per extra firm met", GLOSS.cpx[1]], ["Cost per firm followed up", GLOSS.cpf[1]], ["Expected from investor mix", GLOSS.mix[1]], ["Pipeline $", GLOSS.pipeline[1]], ["Priority tier", GLOSS.tier[1]]]))),
+        ["Cost per extra firm met, beyond the season", GLOSS.cpxs[1]], ["Cost per extra firm met (before season adjustment)", GLOSS.cpx[1]], ["Cost per firm followed up", GLOSS.cpf[1]], ["Expected from investor mix", GLOSS.mix[1]], ["Pipeline $", GLOSS.pipeline[1]], ["Priority tier", GLOSS.tier[1]]]))),
     el("div", { class: "mt" }),
     card("Data-quality log", "Issues found while profiling the data and how each was handled. Reproduce with src/profile_data.py.",
       el("div", { style: "overflow-x:auto" }, el("table", {}, el("thead", {}, el("tr", {}, ["Severity", "Table", "Issue", "Decision"].map(h => el("th", { text: h })))),
         el("tbody", {}, D.dq.map(r => el("tr", {}, el("td", { class: "sev-" + r.severity, text: r.severity }), el("td", { text: r.table }), el("td", { text: r.issue }), el("td", { text: r.decision })))))),
-      el("p", { class: "cap", style: "margin-top:10px", text: "Limits: only 3 events (event comparisons are directional); invited firms are pre-selected; 24 firms attended more than one event; meetings and deals share only a firm ID, so a meeting cannot be tied to the deal it drove; meetings are logged only for firms that attended an event." }))
+      el("p", { class: "cap", style: "margin-top:10px", text: "Limits: only 3 events (event comparisons are directional); invited firms are pre-selected; 21 firms attended more than one event (24 counting Tentative); meetings and deals share only a firm ID, so a meeting cannot be tied to the deal it drove; meetings are logged only for firms that attended an event." }))
   );
 }
 

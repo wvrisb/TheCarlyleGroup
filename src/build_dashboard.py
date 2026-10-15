@@ -23,6 +23,7 @@ DQ_ISSUES = [
     ("High", "Meetings", "Meetings are logged only for firms that attended an event. The 10 never-attending firms have 0 meetings but 24 opportunities.", "Meetings used only for before/after comparisons within attending firms, never attendee vs non-attendee."),
     ("High", "Opportunities", "O9998 / O9999: identical $25M F008 commitments with no prior stages and non-standard IDs.", "One kept (flagged low-confidence), duplicate dropped."),
     ("Medium", "Opportunities", "5 stage rows dated after the 2026-10-14 as-of date, incl. two 'Committed'.", "Treated as forecasts: only stages on or before the as-of date count."),
+    ("Medium", "Meetings", "Some contact is not logged: 4 of 37 attending firms whose deals moved past the first stage have no meeting logged at all (F045's deal reached IC with none).", "No meeting logged is treated as a gap to confirm in the CRM, not proof of no contact."),
     ("Medium", "Attendance", "34 contact rows are 'Tentative'; 9 firm-event pairs are Tentative-only.", "Firm attended = any contact Confirmed. Toggle includes Tentative."),
     ("Medium", "Opportunities", "8 deals jump from Follow-up/VDR straight to Committed.", "Kept and flagged (possible re-ups / fast-track)."),
     ("Low", "Opportunities", "13 deals log 'IC / Documentation' twice.", "First date each stage was reached is used."),

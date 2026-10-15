@@ -55,11 +55,11 @@ def analyse(m, w=60, att_def="confirmed"):
     rows = []
     for e in ev.index:
         d0 = ev.event_date[e]
-        for fid in ever:
+        for fid in sorted(ever):
             mm = meet[meet.firm_id == fid].meeting_date
             if (e, fid) in pairs: grp = "attended"
             else: grp = "clean" if all(abs((x - d0).days) > w for x in own[fid]) else "overlap"
-            rows.append(dict(event_id=e, group=grp, pre=int(((mm < d0) & (mm >= d0 - W)).sum()), post=int(((mm >= d0) & (mm <= d0 + W)).sum())))
+            rows.append(dict(event_id=e, firm_id=fid, group=grp, pre=int(((mm < d0) & (mm >= d0 - W)).sum()), post=int(((mm >= d0) & (mm <= d0 + W)).sum())))
     pl = pd.DataFrame(rows)
     out["placebo"] = pl.groupby(["event_id", "group"])[["pre", "post"]].sum().reset_index().to_dict("records")
     out["placebo_total"] = pl.groupby("group")[["pre", "post"]].sum().to_dict("index")
@@ -140,20 +140,48 @@ def analyse(m, w=60, att_def="confirmed"):
         od = open_[open_.firm_id == fid]
         top = int(od.max_stage_ord.max()) if len(od) else 0
         pr = 1 if top >= 3 else 2 if (len(od) or firms.priority[fid] == "Tier 1") else 3
+        last_ev = max(ev.event_date[e] for e in gg.event_id)
+        since = meet[(meet.firm_id == fid) & (meet.meeting_date > last_ev)].meeting_date
         calls.append(dict(firm_id=fid, tier=firms.priority[fid], segment=firms.segment[fid], events=sorted(gg.event_id),
-                          open_deals=len(od), open_usd=float(od.amount_usd.sum()), furthest_stage_ord=top, priority=pr))
-    calls = sorted(calls, key=lambda c: (c["priority"], c["tier"], -c["open_usd"]))
+                          open_deals=len(od), open_usd=float(od.amount_usd.sum()), furthest_stage_ord=top, priority=pr,
+                          met_since=since.min().strftime("%Y-%m-%d") if len(since) else None))
+    # firms with no logged meeting since their event come first: those are the ones to call; "met later" firms
+    # show slow follow-up but have since been met
+    calls = sorted(calls, key=lambda c: (c["met_since"] is not None, c["priority"], c["tier"], -c["open_usd"]))
     out["call_list"] = calls
     out["call_list_summary"] = dict(firms=len(calls), with_live_deals=sum(c["open_deals"] > 0 for c in calls),
                                     live_usd=sum(c["open_usd"] for c in calls), priority1=sum(c["priority"] == 1 for c in calls))
+    ns = [c for c in calls if c["met_since"] is None]
+    out["call_list_summary"].update(not_met_since=len(ns), not_met_since_live=sum(c["open_deals"] > 0 for c in ns),
+                                    not_met_since_live_usd=sum(c["open_usd"] for c in ns),
+                                    not_met_since_tier1_live=sum(c["open_deals"] > 0 and c["tier"] == "Tier 1" for c in ns),
+                                    met_later=len(calls) - len(ns))
 
     # 11. incremental follow-up: extra attending firms met after vs before, and event cost per extra firm
+    #     "beyond the season": subtract the extra firms the comparison group's change in share-met implies
+    #     (attending firms x (comparison share met after - share met before)); needs >= 5 comparison firms.
     inc = {}
     for e, g_ in a.groupby("event_id"):
         extra = int((g_.meetings_post > 0).sum() - (g_.meetings_pre > 0).sum())
+        c_ = pl[(pl.event_id == e) & (pl.group == "clean")]
+        exp_ = len(g_) * ((c_.post > 0).mean() - (c_.pre > 0).mean()) if len(c_) >= 5 else None
+        net = extra - exp_ if exp_ is not None else None
         inc[e] = dict(met_after=int((g_.meetings_post > 0).sum()), met_before=int((g_.meetings_pre > 0).sum()), extra_firms=extra,
-                      cost_per_extra_firm=float(ev.cost_usd[e] / extra) if extra > 0 else None)
+                      cost_per_extra_firm=float(ev.cost_usd[e] / extra) if extra > 0 else None,
+                      comparison_firms=len(c_), comparison_share_before=(c_.pre > 0).mean(), comparison_share_after=(c_.post > 0).mean(),
+                      seasonal_expected=exp_, extra_beyond_season=net,
+                      cost_per_extra_beyond_season=float(ev.cost_usd[e] / net) if net is not None and net >= 1 else None)
     out["incremental_followup"] = inc
+
+    # 13. does faster follow-up go with better deal outcomes? (association only)
+    a["fu_fast"] = a.days_to_first_meeting.le(30)
+    out["followup_speed_vs_outcome"] = {("within_30_days" if k else "later_or_never"): dict(n=len(g_), opened=(g_.opps_created_post > 0).mean(),
+                                         advanced=(g_.opps_advanced_post > 0).mean()) for k, g_ in a.groupby("fu_fast")}
+
+    # 14. logging gap: attending firms whose deal moved past the first stage but with no meeting logged at all
+    progressed = set(stages[stages.stage_ord >= 2].firm_id) & ever
+    out["logging_gap"] = dict(progressed_firms=len(progressed), no_meetings=len(progressed - set(meet.firm_id)),
+                              firms=sorted(progressed - set(meet.firm_id)))
 
     # 12. uncertainty: bootstrap 95% ranges (resampling firm-event pairs, 5,000 draws, fixed seed)
     rng = np.random.default_rng(7)
@@ -185,6 +213,8 @@ def main():
     print("Attribution:", d["attribution"])
     print("Funnel groups:", d["funnel_groups"])
     print("Call list:", d["call_list_summary"])
+    print("Follow-up speed vs outcome:", d["followup_speed_vs_outcome"])
+    print("Logging gap:", d["logging_gap"])
     print("Incremental follow-up:", d["incremental_followup"])
     print("95% range, meeting growth gap:", {k: round(v, 2) for k, v in d["ci_meeting_growth_gap"].items()})
     print("95% range, new-deal gap:", {k: round(v, 2) for k, v in d["ci_new_deal_gap"].items()})

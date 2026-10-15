@@ -35,6 +35,7 @@ Severity: **High** = changes a headline number; **Medium** = changes a metric at
 | M1 | **Meetings are only logged for firms that attended an event** | All 44 meeting firms are on an attendee list; the 10 never-attending firms have 0 meetings but 24 opportunities | **High** | Meeting data cannot be used to compare attendees vs. non-attendees: the absence of meetings is a logging gap, not an outcome. Meetings are used for **before/after comparisons within attending firms**, and against a **comparison group** of firms that attended a *different* event (the only other firms whose meetings are logged), measured over the same dates |
 | M2 | Two meetings, same firm, same day | F007 on 2026-05-30 (M0054 Due diligence, M0056 Fundraising) | Low | Keep both: different purpose and channel, plausibly two real touchpoints. Follow-up is measured as "at least one meeting", so the pair does not inflate any rate |
 | M3 | Meetings stop early | Last meeting 2026-09-07, while opportunity stages run to November | Medium | Post-event meeting windows are capped at 90 days, so the latest window (E003 + 90 days = 2026-09-14) is almost fully covered |
+| M4 | **Some contact is not logged** | 4 of 37 attending firms whose deals moved past the first stage have no meeting logged at all (F016, F045, F056, F060); F045's deal reached IC with none | Medium | "No meeting logged" is treated as a gap to confirm, not proof of no contact: the call list says to check the CRM first. Reproduce: `logging_gap` in `output/insights.json` |
 
 ### Opportunities
 
@@ -46,7 +47,7 @@ Severity: **High** = changes a headline number; **Medium** = changes a metric at
 | O4 | Repeated stage entries | 13 opportunities log "IC / Documentation" twice on different dates | Low | Treat as a status refresh. Use the **first** date a stage was reached for progression timing |
 | O5 | Stages skipped | 8 opportunities go Follow-up/VDR → Committed with no Due Diligence or IC (O0002, O0003, O0006, O0017, O0023, O0040, O0070, O0098) | Medium | Keep: could be re-ups or fast-track. Flag them; "furthest stage reached" logic handles them without error |
 | O6 | Small-ticket amounts stored differently | All $1.5M and $2.5M amounts are stored as floats (`1500000.0`), every other amount as integers. This hints at a different source or manual entry | Low | Values are plausible, so keep them as-is and cast all amounts to a single numeric type |
-| O7 | Amount never changes over an opportunity's life | No opportunity has more than one amount | Design | "Pipeline $" = opportunity amount (it's a target size, not probability-weighted). Note: we can't see deals growing or shrinking |
+| O7 | Amount never changes over an opportunity's life | No opportunity has more than one amount | Design | "Pipeline $" = opportunity amount (it is a target size, not probability-weighted). Note: we cannot see deals growing or shrinking |
 | O8 | Multiple opportunities per firm–fund | 16 firm–fund pairs have 2–3 opportunities (e.g. F041 Credit Strategy ×3) | Low | Treat as distinct opportunities (e.g. separate tranches); IDs and dates differ |
 | O9 | `created_date` precedes first stage by 5–30 days | Every opportunity | Design | Use `created_date` as "opportunity opened" for event attribution; use stage dates for progression |
 
@@ -61,11 +62,11 @@ Severity: **High** = changes a headline number; **Medium** = changes a metric at
 
 These are not errors, but they shape what the analysis can honestly claim:
 
-1. **Three events, 50 attending firms.** Every event-level comparison is n=3. Differences between events are directional, not statistically significant.
+1. **Three events, 47 attending firms (50 counting Tentative-only).** Every event-level comparison is n=3. Differences between events are directional, not statistically significant.
 2. **Attendance is not random.** Invited firms differ from non-invited ones. Here the never-invited firms were already far more active before each event (50% opened a deal in the prior 60 days vs 27% of attendees), so raw attendee-vs-non-attendee comparisons mislead; the analysis compares each group's change from its own baseline instead.
-3. **Firms attend more than one event.** 19 firms attended 2 events and 5 attended all 3. Their outcomes overlap in time, so the same opportunity could be "associated" with more than one event. The model assigns each outcome to the **most recent prior event attended**. Only 2 of 30 new deals fall in two windows, and first-touch or split credit changes no conclusion (Methods tab of the dashboard).
+3. **Firms attend more than one event.** 21 firms attended more than one event (19 attended two, 2 attended all three; 24 counting Tentative RSVPs). Their outcomes overlap in time, so the same opportunity could be "associated" with more than one event. The model assigns each outcome to the **most recent prior event attended**. Only 2 of 30 new deals fall in two windows, and first-touch or split credit changes no conclusion (Methods tab of the dashboard).
 4. **Comparisons are limited by logging.** Because of M1, opportunities are the only outcome observed for never-invited firms; for meetings, the comparison group is firms that attended a different event and had no event of their own within the window (firms in their own post-event period are left out, because their follow-up inflates the "before" period). That leaves a small group (13 → 21 meetings at 60 days).
-5. **No meeting-to-opportunity link.** Meetings and opportunities share only firm_id, so we can't tell which meeting drove which deal.
+5. **No meeting-to-opportunity link.** Meetings and opportunities share only firm_id, so we cannot tell which meeting drove which deal.
 
 ## 4. Impact on headline numbers
 

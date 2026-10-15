@@ -277,54 +277,6 @@
   ],
   "call_list": [
    {
-    "firm_id": "F031",
-    "tier": "Tier 1",
-    "segment": "Foundation",
-    "events": [
-     "E003"
-    ],
-    "open_deals": 3,
-    "open_usd": 201500000.0,
-    "furthest_stage_ord": 4,
-    "priority": 1
-   },
-   {
-    "firm_id": "F006",
-    "tier": "Tier 1",
-    "segment": "Asset Manager",
-    "events": [
-     "E001"
-    ],
-    "open_deals": 2,
-    "open_usd": 165000000.0,
-    "furthest_stage_ord": 4,
-    "priority": 1
-   },
-   {
-    "firm_id": "F030",
-    "tier": "Tier 1",
-    "segment": "Sovereign Wealth",
-    "events": [
-     "E002"
-    ],
-    "open_deals": 1,
-    "open_usd": 100000000.0,
-    "furthest_stage_ord": 4,
-    "priority": 1
-   },
-   {
-    "firm_id": "F059",
-    "tier": "Tier 1",
-    "segment": "Foundation",
-    "events": [
-     "E001"
-    ],
-    "open_deals": 2,
-    "open_usd": 80000000.0,
-    "furthest_stage_ord": 3,
-    "priority": 1
-   },
-   {
     "firm_id": "F045",
     "tier": "Tier 1",
     "segment": "Insurance",
@@ -334,7 +286,8 @@
     "open_deals": 2,
     "open_usd": 76500000.0,
     "furthest_stage_ord": 4,
-    "priority": 1
+    "priority": 1,
+    "met_since": null
    },
    {
     "firm_id": "F022",
@@ -348,19 +301,8 @@
     "open_deals": 2,
     "open_usd": 50000000.0,
     "furthest_stage_ord": 3,
-    "priority": 1
-   },
-   {
-    "firm_id": "F002",
-    "tier": "Tier 1",
-    "segment": "Pension",
-    "events": [
-     "E001"
-    ],
-    "open_deals": 1,
-    "open_usd": 40000000.0,
-    "furthest_stage_ord": 3,
-    "priority": 1
+    "priority": 1,
+    "met_since": null
    },
    {
     "firm_id": "F026",
@@ -372,7 +314,8 @@
     "open_deals": 1,
     "open_usd": 40000000.0,
     "furthest_stage_ord": 4,
-    "priority": 1
+    "priority": 1,
+    "met_since": null
    },
    {
     "firm_id": "F044",
@@ -385,31 +328,8 @@
     "open_deals": 1,
     "open_usd": 40000000.0,
     "furthest_stage_ord": 4,
-    "priority": 1
-   },
-   {
-    "firm_id": "F036",
-    "tier": "Tier 1",
-    "segment": "Insurance",
-    "events": [
-     "E001"
-    ],
-    "open_deals": 1,
-    "open_usd": 15000000.0,
-    "furthest_stage_ord": 3,
-    "priority": 1
-   },
-   {
-    "firm_id": "F029",
-    "tier": "Tier 2",
-    "segment": "Sovereign Wealth",
-    "events": [
-     "E001"
-    ],
-    "open_deals": 2,
-    "open_usd": 80000000.0,
-    "furthest_stage_ord": 4,
-    "priority": 1
+    "priority": 1,
+    "met_since": null
    },
    {
     "firm_id": "F019",
@@ -421,43 +341,8 @@
     "open_deals": 3,
     "open_usd": 75000000.0,
     "furthest_stage_ord": 3,
-    "priority": 1
-   },
-   {
-    "firm_id": "F034",
-    "tier": "Tier 2",
-    "segment": "Family Office",
-    "events": [
-     "E002"
-    ],
-    "open_deals": 2,
-    "open_usd": 30000000.0,
-    "furthest_stage_ord": 4,
-    "priority": 1
-   },
-   {
-    "firm_id": "F010",
-    "tier": "Tier 2",
-    "segment": "Insurance",
-    "events": [
-     "E003"
-    ],
-    "open_deals": 1,
-    "open_usd": 10000000.0,
-    "furthest_stage_ord": 4,
-    "priority": 1
-   },
-   {
-    "firm_id": "F023",
-    "tier": "Tier 2",
-    "segment": "Family Office",
-    "events": [
-     "E001"
-    ],
-    "open_deals": 1,
-    "open_usd": 10000000.0,
-    "furthest_stage_ord": 4,
-    "priority": 1
+    "priority": 1,
+    "met_since": null
    },
    {
     "firm_id": "F060",
@@ -469,19 +354,8 @@
     "open_deals": 1,
     "open_usd": 5000000.0,
     "furthest_stage_ord": 4,
-    "priority": 1
-   },
-   {
-    "firm_id": "F024",
-    "tier": "Tier 2",
-    "segment": "Sovereign Wealth",
-    "events": [
-     "E002"
-    ],
-    "open_deals": 1,
-    "open_usd": 1500000.0,
-    "furthest_stage_ord": 4,
-    "priority": 1
+    "priority": 1,
+    "met_since": null
    },
    {
     "firm_id": "F017",
@@ -493,7 +367,8 @@
     "open_deals": 6,
     "open_usd": 155500000.0,
     "furthest_stage_ord": 4,
-    "priority": 1
+    "priority": 1,
+    "met_since": null
    },
    {
     "firm_id": "F047",
@@ -506,7 +381,8 @@
     "open_deals": 4,
     "open_usd": 50000000.0,
     "furthest_stage_ord": 4,
-    "priority": 1
+    "priority": 1,
+    "met_since": null
    },
    {
     "firm_id": "F016",
@@ -518,7 +394,8 @@
     "open_deals": 2,
     "open_usd": 35000000.0,
     "furthest_stage_ord": 3,
-    "priority": 1
+    "priority": 1,
+    "met_since": null
    },
    {
     "firm_id": "F001",
@@ -531,20 +408,8 @@
     "open_deals": 2,
     "open_usd": 25000000.0,
     "furthest_stage_ord": 4,
-    "priority": 1
-   },
-   {
-    "firm_id": "F046",
-    "tier": "Tier 1",
-    "segment": "Pension",
-    "events": [
-     "E001",
-     "E002"
-    ],
-    "open_deals": 0,
-    "open_usd": 0.0,
-    "furthest_stage_ord": 0,
-    "priority": 2
+    "priority": 1,
+    "met_since": null
    },
    {
     "firm_id": "F050",
@@ -556,44 +421,8 @@
     "open_deals": 1,
     "open_usd": 150000000.0,
     "furthest_stage_ord": 2,
-    "priority": 2
-   },
-   {
-    "firm_id": "F057",
-    "tier": "Tier 2",
-    "segment": "Family Office",
-    "events": [
-     "E001",
-     "E002"
-    ],
-    "open_deals": 1,
-    "open_usd": 75000000.0,
-    "furthest_stage_ord": 2,
-    "priority": 2
-   },
-   {
-    "firm_id": "F033",
-    "tier": "Tier 3",
-    "segment": "Family Office",
-    "events": [
-     "E002"
-    ],
-    "open_deals": 2,
-    "open_usd": 90000000.0,
-    "furthest_stage_ord": 2,
-    "priority": 2
-   },
-   {
-    "firm_id": "F027",
-    "tier": "Tier 3",
-    "segment": "Asset Manager",
-    "events": [
-     "E001"
-    ],
-    "open_deals": 1,
-    "open_usd": 15000000.0,
-    "furthest_stage_ord": 2,
-    "priority": 2
+    "priority": 2,
+    "met_since": null
    },
    {
     "firm_id": "F056",
@@ -605,31 +434,8 @@
     "open_deals": 1,
     "open_usd": 5000000.0,
     "furthest_stage_ord": 2,
-    "priority": 2
-   },
-   {
-    "firm_id": "F003",
-    "tier": "Tier 2",
-    "segment": "Family Office",
-    "events": [
-     "E003"
-    ],
-    "open_deals": 0,
-    "open_usd": 0.0,
-    "furthest_stage_ord": 0,
-    "priority": 3
-   },
-   {
-    "firm_id": "F008",
-    "tier": "Tier 2",
-    "segment": "Asset Manager",
-    "events": [
-     "E002"
-    ],
-    "open_deals": 0,
-    "open_usd": 0.0,
-    "furthest_stage_ord": 0,
-    "priority": 3
+    "priority": 2,
+    "met_since": null
    },
    {
     "firm_id": "F013",
@@ -642,43 +448,8 @@
     "open_deals": 0,
     "open_usd": 0.0,
     "furthest_stage_ord": 0,
-    "priority": 3
-   },
-   {
-    "firm_id": "F039",
-    "tier": "Tier 2",
-    "segment": "Family Office",
-    "events": [
-     "E001"
-    ],
-    "open_deals": 0,
-    "open_usd": 0.0,
-    "furthest_stage_ord": 0,
-    "priority": 3
-   },
-   {
-    "firm_id": "F055",
-    "tier": "Tier 2",
-    "segment": "Insurance",
-    "events": [
-     "E001"
-    ],
-    "open_deals": 0,
-    "open_usd": 0.0,
-    "furthest_stage_ord": 0,
-    "priority": 3
-   },
-   {
-    "firm_id": "F058",
-    "tier": "Tier 2",
-    "segment": "Insurance",
-    "events": [
-     "E003"
-    ],
-    "open_deals": 0,
-    "open_usd": 0.0,
-    "furthest_stage_ord": 0,
-    "priority": 3
+    "priority": 3,
+    "met_since": null
    },
    {
     "firm_id": "F009",
@@ -690,7 +461,270 @@
     "open_deals": 0,
     "open_usd": 0.0,
     "furthest_stage_ord": 0,
-    "priority": 3
+    "priority": 3,
+    "met_since": null
+   },
+   {
+    "firm_id": "F031",
+    "tier": "Tier 1",
+    "segment": "Foundation",
+    "events": [
+     "E003"
+    ],
+    "open_deals": 3,
+    "open_usd": 201500000.0,
+    "furthest_stage_ord": 4,
+    "priority": 1,
+    "met_since": "2026-09-01"
+   },
+   {
+    "firm_id": "F006",
+    "tier": "Tier 1",
+    "segment": "Asset Manager",
+    "events": [
+     "E001"
+    ],
+    "open_deals": 2,
+    "open_usd": 165000000.0,
+    "furthest_stage_ord": 4,
+    "priority": 1,
+    "met_since": "2026-05-12"
+   },
+   {
+    "firm_id": "F030",
+    "tier": "Tier 1",
+    "segment": "Sovereign Wealth",
+    "events": [
+     "E002"
+    ],
+    "open_deals": 1,
+    "open_usd": 100000000.0,
+    "furthest_stage_ord": 4,
+    "priority": 1,
+    "met_since": "2026-07-25"
+   },
+   {
+    "firm_id": "F059",
+    "tier": "Tier 1",
+    "segment": "Foundation",
+    "events": [
+     "E001"
+    ],
+    "open_deals": 2,
+    "open_usd": 80000000.0,
+    "furthest_stage_ord": 3,
+    "priority": 1,
+    "met_since": "2026-06-02"
+   },
+   {
+    "firm_id": "F002",
+    "tier": "Tier 1",
+    "segment": "Pension",
+    "events": [
+     "E001"
+    ],
+    "open_deals": 1,
+    "open_usd": 40000000.0,
+    "furthest_stage_ord": 3,
+    "priority": 1,
+    "met_since": "2026-06-06"
+   },
+   {
+    "firm_id": "F036",
+    "tier": "Tier 1",
+    "segment": "Insurance",
+    "events": [
+     "E001"
+    ],
+    "open_deals": 1,
+    "open_usd": 15000000.0,
+    "furthest_stage_ord": 3,
+    "priority": 1,
+    "met_since": "2026-05-26"
+   },
+   {
+    "firm_id": "F029",
+    "tier": "Tier 2",
+    "segment": "Sovereign Wealth",
+    "events": [
+     "E001"
+    ],
+    "open_deals": 2,
+    "open_usd": 80000000.0,
+    "furthest_stage_ord": 4,
+    "priority": 1,
+    "met_since": "2026-05-24"
+   },
+   {
+    "firm_id": "F034",
+    "tier": "Tier 2",
+    "segment": "Family Office",
+    "events": [
+     "E002"
+    ],
+    "open_deals": 2,
+    "open_usd": 30000000.0,
+    "furthest_stage_ord": 4,
+    "priority": 1,
+    "met_since": "2026-07-14"
+   },
+   {
+    "firm_id": "F010",
+    "tier": "Tier 2",
+    "segment": "Insurance",
+    "events": [
+     "E003"
+    ],
+    "open_deals": 1,
+    "open_usd": 10000000.0,
+    "furthest_stage_ord": 4,
+    "priority": 1,
+    "met_since": "2026-08-15"
+   },
+   {
+    "firm_id": "F023",
+    "tier": "Tier 2",
+    "segment": "Family Office",
+    "events": [
+     "E001"
+    ],
+    "open_deals": 1,
+    "open_usd": 10000000.0,
+    "furthest_stage_ord": 4,
+    "priority": 1,
+    "met_since": "2026-04-21"
+   },
+   {
+    "firm_id": "F024",
+    "tier": "Tier 2",
+    "segment": "Sovereign Wealth",
+    "events": [
+     "E002"
+    ],
+    "open_deals": 1,
+    "open_usd": 1500000.0,
+    "furthest_stage_ord": 4,
+    "priority": 1,
+    "met_since": "2026-06-27"
+   },
+   {
+    "firm_id": "F046",
+    "tier": "Tier 1",
+    "segment": "Pension",
+    "events": [
+     "E001",
+     "E002"
+    ],
+    "open_deals": 0,
+    "open_usd": 0.0,
+    "furthest_stage_ord": 0,
+    "priority": 2,
+    "met_since": "2026-06-23"
+   },
+   {
+    "firm_id": "F057",
+    "tier": "Tier 2",
+    "segment": "Family Office",
+    "events": [
+     "E001",
+     "E002"
+    ],
+    "open_deals": 1,
+    "open_usd": 75000000.0,
+    "furthest_stage_ord": 2,
+    "priority": 2,
+    "met_since": "2026-07-01"
+   },
+   {
+    "firm_id": "F033",
+    "tier": "Tier 3",
+    "segment": "Family Office",
+    "events": [
+     "E002"
+    ],
+    "open_deals": 2,
+    "open_usd": 90000000.0,
+    "furthest_stage_ord": 2,
+    "priority": 2,
+    "met_since": "2026-06-22"
+   },
+   {
+    "firm_id": "F027",
+    "tier": "Tier 3",
+    "segment": "Asset Manager",
+    "events": [
+     "E001"
+    ],
+    "open_deals": 1,
+    "open_usd": 15000000.0,
+    "furthest_stage_ord": 2,
+    "priority": 2,
+    "met_since": "2026-04-14"
+   },
+   {
+    "firm_id": "F003",
+    "tier": "Tier 2",
+    "segment": "Family Office",
+    "events": [
+     "E003"
+    ],
+    "open_deals": 0,
+    "open_usd": 0.0,
+    "furthest_stage_ord": 0,
+    "priority": 3,
+    "met_since": "2026-08-05"
+   },
+   {
+    "firm_id": "F008",
+    "tier": "Tier 2",
+    "segment": "Asset Manager",
+    "events": [
+     "E002"
+    ],
+    "open_deals": 0,
+    "open_usd": 0.0,
+    "furthest_stage_ord": 0,
+    "priority": 3,
+    "met_since": "2026-06-21"
+   },
+   {
+    "firm_id": "F039",
+    "tier": "Tier 2",
+    "segment": "Family Office",
+    "events": [
+     "E001"
+    ],
+    "open_deals": 0,
+    "open_usd": 0.0,
+    "furthest_stage_ord": 0,
+    "priority": 3,
+    "met_since": "2026-04-15"
+   },
+   {
+    "firm_id": "F055",
+    "tier": "Tier 2",
+    "segment": "Insurance",
+    "events": [
+     "E001"
+    ],
+    "open_deals": 0,
+    "open_usd": 0.0,
+    "furthest_stage_ord": 0,
+    "priority": 3,
+    "met_since": "2026-06-24"
+   },
+   {
+    "firm_id": "F058",
+    "tier": "Tier 2",
+    "segment": "Insurance",
+    "events": [
+     "E003"
+    ],
+    "open_deals": 0,
+    "open_usd": 0.0,
+    "furthest_stage_ord": 0,
+    "priority": 3,
+    "met_since": "2026-08-25"
    },
    {
     "firm_id": "F025",
@@ -702,39 +736,85 @@
     "open_deals": 0,
     "open_usd": 0.0,
     "furthest_stage_ord": 0,
-    "priority": 3
+    "priority": 3,
+    "met_since": "2026-06-22"
    }
   ],
   "call_list_summary": {
    "firms": 35,
    "with_live_deals": 26,
    "live_usd": 1620000000.0,
-   "priority1": 21
+   "priority1": 21,
+   "not_met_since": 14,
+   "not_met_since_live": 12,
+   "not_met_since_live_usd": 707000000.0,
+   "not_met_since_tier1_live": 4,
+   "met_later": 21
   },
   "incremental_followup": {
    "E001": {
     "met_after": 9,
     "met_before": 7,
     "extra_firms": 2,
-    "cost_per_extra_firm": 210000.0
+    "cost_per_extra_firm": 210000.0,
+    "comparison_firms": 21,
+    "comparison_share_before": 0.047619047619047616,
+    "comparison_share_after": 0.09523809523809523,
+    "seasonal_expected": 1.2380952380952381,
+    "extra_beyond_season": 0.7619047619047619,
+    "cost_per_extra_beyond_season": null
    },
    "E002": {
     "met_after": 11,
     "met_before": 8,
     "extra_firms": 3,
-    "cost_per_extra_firm": 61666.666666666664
+    "cost_per_extra_firm": 61666.666666666664,
+    "comparison_firms": 9,
+    "comparison_share_before": 0.1111111111111111,
+    "comparison_share_after": 0.4444444444444444,
+    "seasonal_expected": 8.333333333333332,
+    "extra_beyond_season": -5.333333333333332,
+    "cost_per_extra_beyond_season": null
    },
    "E003": {
     "met_after": 7,
     "met_before": 9,
     "extra_firms": -2,
-    "cost_per_extra_firm": null
+    "cost_per_extra_firm": null,
+    "comparison_firms": 9,
+    "comparison_share_before": 0.3333333333333333,
+    "comparison_share_after": 0.3333333333333333,
+    "seasonal_expected": 0.0,
+    "extra_beyond_season": -2.0,
+    "cost_per_extra_beyond_season": null
    }
+  },
+  "followup_speed_vs_outcome": {
+   "later_or_never": {
+    "n": 43,
+    "opened": 0.27906976744186046,
+    "advanced": 0.2558139534883721
+   },
+   "within_30_days": {
+    "n": 27,
+    "opened": 0.18518518518518517,
+    "advanced": 0.25925925925925924
+   }
+  },
+  "logging_gap": {
+   "progressed_firms": 37,
+   "no_meetings": 4,
+   "firms": [
+    "F016",
+    "F045",
+    "F056",
+    "F060"
+   ]
   },
   "ci_meeting_growth_gap": {
    "point": -0.6333333333333333,
-   "lo": -5.362619047619048,
-   "hi": 0.7421666666666665
+   "lo": -5.3062709030100335,
+   "hi": 0.6666666666666667
   },
   "ci_new_deal_gap": {
    "point": 0.12816901408450707,
@@ -1020,54 +1100,6 @@
   ],
   "call_list": [
    {
-    "firm_id": "F031",
-    "tier": "Tier 1",
-    "segment": "Foundation",
-    "events": [
-     "E003"
-    ],
-    "open_deals": 3,
-    "open_usd": 201500000.0,
-    "furthest_stage_ord": 4,
-    "priority": 1
-   },
-   {
-    "firm_id": "F006",
-    "tier": "Tier 1",
-    "segment": "Asset Manager",
-    "events": [
-     "E001"
-    ],
-    "open_deals": 2,
-    "open_usd": 165000000.0,
-    "furthest_stage_ord": 4,
-    "priority": 1
-   },
-   {
-    "firm_id": "F030",
-    "tier": "Tier 1",
-    "segment": "Sovereign Wealth",
-    "events": [
-     "E002"
-    ],
-    "open_deals": 1,
-    "open_usd": 100000000.0,
-    "furthest_stage_ord": 4,
-    "priority": 1
-   },
-   {
-    "firm_id": "F059",
-    "tier": "Tier 1",
-    "segment": "Foundation",
-    "events": [
-     "E001"
-    ],
-    "open_deals": 2,
-    "open_usd": 80000000.0,
-    "furthest_stage_ord": 3,
-    "priority": 1
-   },
-   {
     "firm_id": "F045",
     "tier": "Tier 1",
     "segment": "Insurance",
@@ -1077,7 +1109,8 @@
     "open_deals": 2,
     "open_usd": 76500000.0,
     "furthest_stage_ord": 4,
-    "priority": 1
+    "priority": 1,
+    "met_since": null
    },
    {
     "firm_id": "F022",
@@ -1091,19 +1124,8 @@
     "open_deals": 2,
     "open_usd": 50000000.0,
     "furthest_stage_ord": 3,
-    "priority": 1
-   },
-   {
-    "firm_id": "F002",
-    "tier": "Tier 1",
-    "segment": "Pension",
-    "events": [
-     "E001"
-    ],
-    "open_deals": 1,
-    "open_usd": 40000000.0,
-    "furthest_stage_ord": 3,
-    "priority": 1
+    "priority": 1,
+    "met_since": null
    },
    {
     "firm_id": "F026",
@@ -1115,7 +1137,8 @@
     "open_deals": 1,
     "open_usd": 40000000.0,
     "furthest_stage_ord": 4,
-    "priority": 1
+    "priority": 1,
+    "met_since": null
    },
    {
     "firm_id": "F044",
@@ -1128,31 +1151,8 @@
     "open_deals": 1,
     "open_usd": 40000000.0,
     "furthest_stage_ord": 4,
-    "priority": 1
-   },
-   {
-    "firm_id": "F036",
-    "tier": "Tier 1",
-    "segment": "Insurance",
-    "events": [
-     "E001"
-    ],
-    "open_deals": 1,
-    "open_usd": 15000000.0,
-    "furthest_stage_ord": 3,
-    "priority": 1
-   },
-   {
-    "firm_id": "F029",
-    "tier": "Tier 2",
-    "segment": "Sovereign Wealth",
-    "events": [
-     "E001"
-    ],
-    "open_deals": 2,
-    "open_usd": 80000000.0,
-    "furthest_stage_ord": 4,
-    "priority": 1
+    "priority": 1,
+    "met_since": null
    },
    {
     "firm_id": "F019",
@@ -1164,7 +1164,8 @@
     "open_deals": 3,
     "open_usd": 75000000.0,
     "furthest_stage_ord": 3,
-    "priority": 1
+    "priority": 1,
+    "met_since": null
    },
    {
     "firm_id": "F060",
@@ -1176,7 +1177,8 @@
     "open_deals": 1,
     "open_usd": 5000000.0,
     "furthest_stage_ord": 4,
-    "priority": 1
+    "priority": 1,
+    "met_since": null
    },
    {
     "firm_id": "F017",
@@ -1188,7 +1190,8 @@
     "open_deals": 6,
     "open_usd": 155500000.0,
     "furthest_stage_ord": 4,
-    "priority": 1
+    "priority": 1,
+    "met_since": null
    },
    {
     "firm_id": "F047",
@@ -1200,7 +1203,8 @@
     "open_deals": 4,
     "open_usd": 50000000.0,
     "furthest_stage_ord": 4,
-    "priority": 1
+    "priority": 1,
+    "met_since": null
    },
    {
     "firm_id": "F016",
@@ -1212,7 +1216,8 @@
     "open_deals": 2,
     "open_usd": 35000000.0,
     "furthest_stage_ord": 3,
-    "priority": 1
+    "priority": 1,
+    "met_since": null
    },
    {
     "firm_id": "F001",
@@ -1224,7 +1229,8 @@
     "open_deals": 2,
     "open_usd": 25000000.0,
     "furthest_stage_ord": 4,
-    "priority": 1
+    "priority": 1,
+    "met_since": null
    },
    {
     "firm_id": "F050",
@@ -1236,19 +1242,8 @@
     "open_deals": 1,
     "open_usd": 150000000.0,
     "furthest_stage_ord": 2,
-    "priority": 2
-   },
-   {
-    "firm_id": "F057",
-    "tier": "Tier 2",
-    "segment": "Family Office",
-    "events": [
-     "E001"
-    ],
-    "open_deals": 1,
-    "open_usd": 75000000.0,
-    "furthest_stage_ord": 2,
-    "priority": 2
+    "priority": 2,
+    "met_since": null
    },
    {
     "firm_id": "F056",
@@ -1260,7 +1255,8 @@
     "open_deals": 1,
     "open_usd": 5000000.0,
     "furthest_stage_ord": 2,
-    "priority": 2
+    "priority": 2,
+    "met_since": null
    },
    {
     "firm_id": "F013",
@@ -1273,31 +1269,8 @@
     "open_deals": 0,
     "open_usd": 0.0,
     "furthest_stage_ord": 0,
-    "priority": 3
-   },
-   {
-    "firm_id": "F055",
-    "tier": "Tier 2",
-    "segment": "Insurance",
-    "events": [
-     "E001"
-    ],
-    "open_deals": 0,
-    "open_usd": 0.0,
-    "furthest_stage_ord": 0,
-    "priority": 3
-   },
-   {
-    "firm_id": "F058",
-    "tier": "Tier 2",
-    "segment": "Insurance",
-    "events": [
-     "E003"
-    ],
-    "open_deals": 0,
-    "open_usd": 0.0,
-    "furthest_stage_ord": 0,
-    "priority": 3
+    "priority": 3,
+    "met_since": null
    },
    {
     "firm_id": "F009",
@@ -1309,39 +1282,215 @@
     "open_deals": 0,
     "open_usd": 0.0,
     "furthest_stage_ord": 0,
-    "priority": 3
+    "priority": 3,
+    "met_since": null
+   },
+   {
+    "firm_id": "F031",
+    "tier": "Tier 1",
+    "segment": "Foundation",
+    "events": [
+     "E003"
+    ],
+    "open_deals": 3,
+    "open_usd": 201500000.0,
+    "furthest_stage_ord": 4,
+    "priority": 1,
+    "met_since": "2026-09-01"
+   },
+   {
+    "firm_id": "F006",
+    "tier": "Tier 1",
+    "segment": "Asset Manager",
+    "events": [
+     "E001"
+    ],
+    "open_deals": 2,
+    "open_usd": 165000000.0,
+    "furthest_stage_ord": 4,
+    "priority": 1,
+    "met_since": "2026-05-12"
+   },
+   {
+    "firm_id": "F030",
+    "tier": "Tier 1",
+    "segment": "Sovereign Wealth",
+    "events": [
+     "E002"
+    ],
+    "open_deals": 1,
+    "open_usd": 100000000.0,
+    "furthest_stage_ord": 4,
+    "priority": 1,
+    "met_since": "2026-07-25"
+   },
+   {
+    "firm_id": "F059",
+    "tier": "Tier 1",
+    "segment": "Foundation",
+    "events": [
+     "E001"
+    ],
+    "open_deals": 2,
+    "open_usd": 80000000.0,
+    "furthest_stage_ord": 3,
+    "priority": 1,
+    "met_since": "2026-06-02"
+   },
+   {
+    "firm_id": "F002",
+    "tier": "Tier 1",
+    "segment": "Pension",
+    "events": [
+     "E001"
+    ],
+    "open_deals": 1,
+    "open_usd": 40000000.0,
+    "furthest_stage_ord": 3,
+    "priority": 1,
+    "met_since": "2026-06-06"
+   },
+   {
+    "firm_id": "F036",
+    "tier": "Tier 1",
+    "segment": "Insurance",
+    "events": [
+     "E001"
+    ],
+    "open_deals": 1,
+    "open_usd": 15000000.0,
+    "furthest_stage_ord": 3,
+    "priority": 1,
+    "met_since": "2026-05-26"
+   },
+   {
+    "firm_id": "F029",
+    "tier": "Tier 2",
+    "segment": "Sovereign Wealth",
+    "events": [
+     "E001"
+    ],
+    "open_deals": 2,
+    "open_usd": 80000000.0,
+    "furthest_stage_ord": 4,
+    "priority": 1,
+    "met_since": "2026-05-24"
+   },
+   {
+    "firm_id": "F057",
+    "tier": "Tier 2",
+    "segment": "Family Office",
+    "events": [
+     "E001"
+    ],
+    "open_deals": 1,
+    "open_usd": 75000000.0,
+    "furthest_stage_ord": 2,
+    "priority": 2,
+    "met_since": "2026-07-01"
+   },
+   {
+    "firm_id": "F055",
+    "tier": "Tier 2",
+    "segment": "Insurance",
+    "events": [
+     "E001"
+    ],
+    "open_deals": 0,
+    "open_usd": 0.0,
+    "furthest_stage_ord": 0,
+    "priority": 3,
+    "met_since": "2026-06-24"
+   },
+   {
+    "firm_id": "F058",
+    "tier": "Tier 2",
+    "segment": "Insurance",
+    "events": [
+     "E003"
+    ],
+    "open_deals": 0,
+    "open_usd": 0.0,
+    "furthest_stage_ord": 0,
+    "priority": 3,
+    "met_since": "2026-08-25"
    }
   ],
   "call_list_summary": {
    "firms": 24,
    "with_live_deals": 20,
    "live_usd": 1463500000.0,
-   "priority1": 17
+   "priority1": 17,
+   "not_met_since": 14,
+   "not_met_since_live": 12,
+   "not_met_since_live_usd": 707000000.0,
+   "not_met_since_tier1_live": 4,
+   "met_later": 10
   },
   "incremental_followup": {
    "E001": {
     "met_after": 15,
     "met_before": 9,
     "extra_firms": 6,
-    "cost_per_extra_firm": 70000.0
+    "cost_per_extra_firm": 70000.0,
+    "comparison_firms": 21,
+    "comparison_share_before": 0.047619047619047616,
+    "comparison_share_after": 0.3333333333333333,
+    "seasonal_expected": 7.428571428571428,
+    "extra_beyond_season": -1.428571428571428,
+    "cost_per_extra_beyond_season": null
    },
    "E002": {
     "met_after": 18,
     "met_before": 10,
     "extra_firms": 8,
-    "cost_per_extra_firm": 23125.0
+    "cost_per_extra_firm": 23125.0,
+    "comparison_firms": 9,
+    "comparison_share_before": 0.5555555555555556,
+    "comparison_share_after": 0.5555555555555556,
+    "seasonal_expected": 0.0,
+    "extra_beyond_season": 8.0,
+    "cost_per_extra_beyond_season": 23125.0
    },
    "E003": {
     "met_after": 9,
     "met_before": 11,
     "extra_firms": -2,
-    "cost_per_extra_firm": null
+    "cost_per_extra_firm": null,
+    "comparison_firms": 9,
+    "comparison_share_before": 0.4444444444444444,
+    "comparison_share_after": 0.4444444444444444,
+    "seasonal_expected": 0.0,
+    "extra_beyond_season": -2.0,
+    "cost_per_extra_beyond_season": null
    }
+  },
+  "followup_speed_vs_outcome": {
+   "later_or_never": {
+    "n": 43,
+    "opened": 0.32558139534883723,
+    "advanced": 0.2558139534883721
+   },
+   "within_30_days": {
+    "n": 27,
+    "opened": 0.3333333333333333,
+    "advanced": 0.25925925925925924
+   }
+  },
+  "logging_gap": {
+   "progressed_firms": 37,
+   "no_meetings": 4,
+   "firms": [
+    "F016",
+    "F045",
+    "F056",
+    "F060"
+   ]
   },
   "ci_meeting_growth_gap": {
    "point": -0.07879924953095685,
-   "lo": -1.8775566893424034,
-   "hi": 1.049507389162561
+   "lo": -1.9459294587400178,
+   "hi": 1.056340718105423
   },
   "ci_new_deal_gap": {
    "point": -0.05553319919517097,
@@ -1636,7 +1785,8 @@
     "open_deals": 2,
     "open_usd": 76500000.0,
     "furthest_stage_ord": 4,
-    "priority": 1
+    "priority": 1,
+    "met_since": null
    },
    {
     "firm_id": "F022",
@@ -1650,7 +1800,8 @@
     "open_deals": 2,
     "open_usd": 50000000.0,
     "furthest_stage_ord": 3,
-    "priority": 1
+    "priority": 1,
+    "met_since": null
    },
    {
     "firm_id": "F026",
@@ -1662,7 +1813,8 @@
     "open_deals": 1,
     "open_usd": 40000000.0,
     "furthest_stage_ord": 4,
-    "priority": 1
+    "priority": 1,
+    "met_since": null
    },
    {
     "firm_id": "F044",
@@ -1674,7 +1826,8 @@
     "open_deals": 1,
     "open_usd": 40000000.0,
     "furthest_stage_ord": 4,
-    "priority": 1
+    "priority": 1,
+    "met_since": null
    },
    {
     "firm_id": "F019",
@@ -1686,7 +1839,8 @@
     "open_deals": 3,
     "open_usd": 75000000.0,
     "furthest_stage_ord": 3,
-    "priority": 1
+    "priority": 1,
+    "met_since": null
    },
    {
     "firm_id": "F060",
@@ -1698,7 +1852,8 @@
     "open_deals": 1,
     "open_usd": 5000000.0,
     "furthest_stage_ord": 4,
-    "priority": 1
+    "priority": 1,
+    "met_since": null
    },
    {
     "firm_id": "F017",
@@ -1710,7 +1865,8 @@
     "open_deals": 6,
     "open_usd": 155500000.0,
     "furthest_stage_ord": 4,
-    "priority": 1
+    "priority": 1,
+    "met_since": null
    },
    {
     "firm_id": "F047",
@@ -1722,7 +1878,8 @@
     "open_deals": 4,
     "open_usd": 50000000.0,
     "furthest_stage_ord": 4,
-    "priority": 1
+    "priority": 1,
+    "met_since": null
    },
    {
     "firm_id": "F016",
@@ -1734,7 +1891,8 @@
     "open_deals": 2,
     "open_usd": 35000000.0,
     "furthest_stage_ord": 3,
-    "priority": 1
+    "priority": 1,
+    "met_since": null
    },
    {
     "firm_id": "F001",
@@ -1746,7 +1904,8 @@
     "open_deals": 2,
     "open_usd": 25000000.0,
     "furthest_stage_ord": 4,
-    "priority": 1
+    "priority": 1,
+    "met_since": null
    },
    {
     "firm_id": "F050",
@@ -1758,19 +1917,8 @@
     "open_deals": 1,
     "open_usd": 150000000.0,
     "furthest_stage_ord": 2,
-    "priority": 2
-   },
-   {
-    "firm_id": "F057",
-    "tier": "Tier 2",
-    "segment": "Family Office",
-    "events": [
-     "E001"
-    ],
-    "open_deals": 1,
-    "open_usd": 75000000.0,
-    "furthest_stage_ord": 2,
-    "priority": 2
+    "priority": 2,
+    "met_since": null
    },
    {
     "firm_id": "F056",
@@ -1782,7 +1930,8 @@
     "open_deals": 1,
     "open_usd": 5000000.0,
     "furthest_stage_ord": 2,
-    "priority": 2
+    "priority": 2,
+    "met_since": null
    },
    {
     "firm_id": "F013",
@@ -1795,19 +1944,8 @@
     "open_deals": 0,
     "open_usd": 0.0,
     "furthest_stage_ord": 0,
-    "priority": 3
-   },
-   {
-    "firm_id": "F055",
-    "tier": "Tier 2",
-    "segment": "Insurance",
-    "events": [
-     "E001"
-    ],
-    "open_deals": 0,
-    "open_usd": 0.0,
-    "furthest_stage_ord": 0,
-    "priority": 3
+    "priority": 3,
+    "met_since": null
    },
    {
     "firm_id": "F009",
@@ -1819,39 +1957,111 @@
     "open_deals": 0,
     "open_usd": 0.0,
     "furthest_stage_ord": 0,
-    "priority": 3
+    "priority": 3,
+    "met_since": null
+   },
+   {
+    "firm_id": "F057",
+    "tier": "Tier 2",
+    "segment": "Family Office",
+    "events": [
+     "E001"
+    ],
+    "open_deals": 1,
+    "open_usd": 75000000.0,
+    "furthest_stage_ord": 2,
+    "priority": 2,
+    "met_since": "2026-07-01"
+   },
+   {
+    "firm_id": "F055",
+    "tier": "Tier 2",
+    "segment": "Insurance",
+    "events": [
+     "E001"
+    ],
+    "open_deals": 0,
+    "open_usd": 0.0,
+    "furthest_stage_ord": 0,
+    "priority": 3,
+    "met_since": "2026-06-24"
    }
   ],
   "call_list_summary": {
    "firms": 16,
    "with_live_deals": 13,
    "live_usd": 782000000.0,
-   "priority1": 10
+   "priority1": 10,
+   "not_met_since": 14,
+   "not_met_since_live": 12,
+   "not_met_since_live_usd": 707000000.0,
+   "not_met_since_tier1_live": 4,
+   "met_later": 2
   },
   "incremental_followup": {
    "E001": {
     "met_after": 21,
     "met_before": 11,
     "extra_firms": 10,
-    "cost_per_extra_firm": 42000.0
+    "cost_per_extra_firm": 42000.0,
+    "comparison_firms": 7,
+    "comparison_share_before": 0.14285714285714285,
+    "comparison_share_after": 0.7142857142857143,
+    "seasonal_expected": 14.857142857142856,
+    "extra_beyond_season": -4.857142857142856,
+    "cost_per_extra_beyond_season": null
    },
    "E002": {
     "met_after": 19,
     "met_before": 13,
     "extra_firms": 6,
-    "cost_per_extra_firm": 30833.333333333332
+    "cost_per_extra_firm": 30833.333333333332,
+    "comparison_firms": 0,
+    "comparison_share_before": NaN,
+    "comparison_share_after": NaN,
+    "seasonal_expected": null,
+    "extra_beyond_season": null,
+    "cost_per_extra_beyond_season": null
    },
    "E003": {
     "met_after": 11,
     "met_before": 12,
     "extra_firms": -1,
-    "cost_per_extra_firm": null
+    "cost_per_extra_firm": null,
+    "comparison_firms": 9,
+    "comparison_share_before": 0.8888888888888888,
+    "comparison_share_after": 0.4444444444444444,
+    "seasonal_expected": -8.444444444444445,
+    "extra_beyond_season": 7.444444444444445,
+    "cost_per_extra_beyond_season": 81940.29850746268
    }
+  },
+  "followup_speed_vs_outcome": {
+   "later_or_never": {
+    "n": 43,
+    "opened": 0.3953488372093023,
+    "advanced": 0.2558139534883721
+   },
+   "within_30_days": {
+    "n": 27,
+    "opened": 0.37037037037037035,
+    "advanced": 0.25925925925925924
+   }
+  },
+  "logging_gap": {
+   "progressed_firms": 37,
+   "no_meetings": 4,
+   "firms": [
+    "F016",
+    "F045",
+    "F056",
+    "F060"
+   ]
   },
   "ci_meeting_growth_gap": {
    "point": 0.4493927125506074,
-   "lo": -0.897741718027735,
-   "hi": 1.3761775362318824
+   "lo": -0.9633498053309375,
+   "hi": 1.3257696647324304
   },
   "ci_new_deal_gap": {
    "point": -0.041649899396378254,

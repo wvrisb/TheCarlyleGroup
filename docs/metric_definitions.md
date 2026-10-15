@@ -33,11 +33,12 @@ Code: `src/build_model.py` (firm × event table), `src/analysis.py` (insights), 
 | Follow-up | Meeting growth vs comparison group | Meetings in the window after ÷ before, minus 1: attending firms vs comparison group | +54% vs +62% overall; London +158% vs +33% |
 | Pipeline | New deals after an event | Opportunities created within the window after an event the firm attended (credited per the rule above) | 30 ($1.40B target) |
 | Pipeline | Existing deals moved forward | Opportunities created before the event that reached a new stage (not Declined) within the window | 23 |
-| Pipeline | Change in firms opening a deal | Share of firm-event pairs with a new opportunity, after minus before, by group | attending +6 pts · comparison +11 · never invited −3 |
+| Pipeline | Change in firms opening a deal | Share of firm-event pairs with a new opportunity, after minus before, by group | attending +6 pts · firms at other events +11 · never invited −3 |
 | Pipeline | Live deals moved forward | Among attending pairs with a live deal: share where a deal moved to a later stage, followed up vs not | 59% vs 50% (17 vs 14) |
 | Outcome | Event-sourced deals committed | New deals after an event whose current stage is Committed (as of 14 Oct) | 3 ($250M; one is the low-confidence O9998) |
 | Outcome | Mature-deal commit rate | Share of mature deals now Committed, by origin | after an event 13% (2 of 16) · already open before 24% (7 of 29) |
-| Efficiency | **Cost per extra firm met** (headline) | Event cost ÷ (attending firms met after − attending firms met before). Removes firms we would have met anyway; none if the event met no more firms after than before | London $23K · NY $70K · Berlin none (−2 firms) |
+| Efficiency | **Cost per extra firm met, beyond the season** (headline) | Extra firms = attending firms met after − attending firms met before. Seasonal expectation = attending firms × (share of comparison-group firms met after − share met before), over the same dates; needs at least 5 comparison firms. Cost ÷ (extra − expected); none if that is below 1 | London $23K (+8 firms; comparison 56% → 56%, 9 firms) · NY none (+6 extra vs about 7 expected; comparison 5% → 33%, 21 firms) · Berlin none (−2 firms) |
+| Efficiency | Cost per extra firm met, before season adjustment | Event cost ÷ (attending firms met after − met before) | London $23K · NY $70K · Berlin none |
 | Efficiency | Cost per firm followed up | Event cost ÷ attending firms met within the window after | London $10K · NY $28K · Berlin $68K |
 | Efficiency | Expected follow-up from investor mix | The event's follow-up rate if each attending firm were followed up at its investor type's average rate (all events) | London 72% actual vs 62% expected · Berlin 47% vs 59% |
 
@@ -47,12 +48,23 @@ Bootstrap 95% ranges (5,000 resamples of firm-event pairs, `src/analysis.py`):
 
 | Comparison | Estimate | 95% range |
 |---|---|---|
-| Meeting growth: attending minus comparison group | −8 pts | −188 to +102 pts |
-| Change in firms opening a deal: attending minus firms at other events | −6 pts | −26 to +16 pts |
+| Meeting growth: attending minus comparison group | −8 pts | −195 to +106 pts |
+| Change in firms opening a deal: attending minus firms at other events | −6 pts | −27 to +16 pts |
 
-Both ranges include zero. With three events, every finding is directional: enough to decide what to test and measure next, not to prove what events cause.
+Both ranges include zero. The firm order is fixed before resampling, so the ranges are identical on every run. With three events, every finding is directional: enough to decide what to test and measure next, not to prove what events cause.
 
 ## Priority call list
 
-Attending firms with no meeting within the window after an event they attended, one row per firm, ranked:
+Attending firms with no meeting within the window after an event they attended, one row per firm (24 firms at default). Firms with **no meeting logged since** their most recent missed event, as of 14 Oct, come first (14 firms; 12 with live deals worth $707M, 4 of them Tier 1): these are the calls. Firms met later than the window follow (10 firms): slow follow-up, no call needed now. Within each group:
 **P1** live deal in due diligence or IC · **P2** earlier-stage live deal, or a Tier 1 firm · **P3** no live deal; then by tier, then live deal size. Investor type is shown but not used to rank, since foundations and insurers commit less often but are also followed up less.
+
+Check against the CRM before calling: 4 of 37 attending firms whose deals moved past the first stage have no meeting logged at all.
+
+## Follow-up speed and outcomes (association)
+
+| Group | Attendances | Opened a new deal within the window | Moved an existing deal forward |
+|---|---|---|---|
+| Met within 30 days | 27 | 33% | 26% |
+| Met later or not at all | 43 | 33% | 26% |
+
+No difference, so the 30-day standard is a service level to test, not a proven driver of pipeline.

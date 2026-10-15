@@ -18,7 +18,10 @@ JS = """() => ({
   attr: attribution(), calls: callList().length, callsP1: callList().filter(c => c.pr === 1).length,
   callsUsd: callList().reduce((s, c) => s + c.usd, 0), mix: eventVsMix(),
   t1_30: withWindow(30, tier1), t1_90: withWindow(90, tier1),
-  inc: Object.fromEntries(EVS.map(e => { const x = eventStats(e); return [e, [x.extra, x.cpx]]; }))
+  inc: Object.fromEntries(EVS.map(e => { const x = eventStats(e); return [e, [x.extra, x.cpx]]; })),
+  season: Object.fromEntries(EVS.map(e => { const x = eventStats(e); return [e, [x.cN, x.exp, x.net, x.cpxNet]]; })),
+  notMet: (c => [c.length, c.filter(x => x.od).length, c.reduce((s, x) => s + x.usd, 0), c.filter(x => x.od && x.f.priority === "Tier 1").length])(callList().filter(c => c.metSince == null)),
+  speed: speedOutcome(), lg: loggingGap()
 })"""
 
 
@@ -54,6 +57,11 @@ def main():
         ("attribution last-touch", js["attr"]["res"]["last"], d["attribution"]["by_rule"]["last"]),
         ("call list firms / P1 / $", (js["calls"], js["callsP1"], js["callsUsd"]), (d["call_list_summary"]["firms"], d["call_list_summary"]["priority1"], d["call_list_summary"]["live_usd"])),
         ("incremental follow-up (extra firms, cost per extra)", js["inc"], {e: [v["extra_firms"], v["cost_per_extra_firm"]] for e, v in d["incremental_followup"].items()}),
+        ("extra firms beyond the season (comparison n, expected, net, cost)", js["season"], {e: [v["comparison_firms"], v["seasonal_expected"], v["extra_beyond_season"], v["cost_per_extra_beyond_season"]] for e, v in d["incremental_followup"].items()}),
+        ("call list: not met since (firms, with live deals, $, Tier 1 live)", js["notMet"], [d["call_list_summary"][k] for k in ("not_met_since", "not_met_since_live", "not_met_since_live_usd", "not_met_since_tier1_live")]),
+        ("follow-up within 30 days vs later: n and new-deal rate", (js["speed"]["yN"], js["speed"]["yOpen"], js["speed"]["nN"], js["speed"]["nOpen"]),
+         tuple(d["followup_speed_vs_outcome"][k][f] for k in ("within_30_days", "later_or_never") for f in ("n", "opened"))),
+        ("logging gap (progressed firms, with no meetings)", (js["lg"]["n"], js["lg"]["none"]), (d["logging_gap"]["progressed_firms"], d["logging_gap"]["no_meetings"])),
         ("event vs mix (London)", (js["mix"]["E002"]["actual"], js["mix"]["E002"]["expected"]), (d["event_vs_mix"]["E002"]["actual"], d["event_vs_mix"]["E002"]["expected_from_mix"])),
     ]
     norm = lambda v: json.dumps(v, sort_keys=True, default=lambda x: x) if not isinstance(v, (int, float, tuple, list)) else v

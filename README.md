@@ -2,7 +2,7 @@
 
 **Question:** What happened following our investor events, what business outcomes are associated with them, and what should we learn for future events?
 
-**Short answer:** Three events cost $1.2M and reached 78% of our investor firms. Contact with attending firms rose after the events, but only after the London dinner did it clearly beat the usual seasonal rise. We cannot detect that the events created new pipeline, and today's data cannot show it either way. The levers we control are event format (London bought the most extra contact per dollar) and the speed of follow-up with Tier 1 firms (10 of 13 were not met within 60 days of an event). One unverified $650M deal is 55% of committed capital.
+**Short answer:** Three events cost $1.2M and reached 78% of our investor firms. More attending firms were met after the events (43% → 60%), but most of that rise matches the season: firms at other events rose as much over the same dates. Only after the London dinner did contact beat the season, and that rests on a small comparison group. We cannot detect that the events created new pipeline, and today's data cannot show it either way. What to act on: Tier 1 follow-up is slow (10 of 13 not met within 60 days of an event; 4 with live deals still have no meeting logged), Berlin, the most expensive event, was followed by less contact, and one unverified $650M deal is 55% of committed capital.
 
 ## Deliverables
 
@@ -10,8 +10,8 @@
 |---|---|---|
 | 1. Interactive analytics | [`dashboard/index.html`](dashboard/index.html) · [live page](https://<your-username>.github.io/<repo>/dashboard/) · [screenshots](docs/screenshots/) | Six tabs organised around the three questions: Summary, What happened, What it led to, What to learn, Firm explorer, Methods and data. Filters for window, attendance definition, segment, tier, region and the $650M deal |
 | 2. Analysis and data model | [`src/`](src/) · [`output/`](output/) · [`docs/metric_definitions.md`](docs/metric_definitions.md) · [`docs/data_quality.md`](docs/data_quality.md) | Python pipeline, model tables as CSV, every metric definition, and every data-quality decision |
-| 3. Executive readout | [`docs/readout.pdf`](docs/readout.pdf) | Three slides: the answer and three decisions, the evidence, and what to do this week and before the next event. Speaker notes included |
-| 4. AI usage | [`AI_USAGE.md`](AI_USAGE.md) | Where AI helped, how output was validated, and ten documented corrections |
+| 3. Executive readout | [`docs/readout.pdf`](docs/readout.pdf) · [speaker notes](docs/readout_notes.md) | Three slides: the answer and three decisions, the evidence, and what to do this week and before the next event. The notes hold the talking points and backup answers to likely questions |
+| 4. AI usage | [`AI_USAGE.md`](AI_USAGE.md) | Where AI helped, how output was validated, and fifteen documented corrections |
 
 ## How to review (no install)
 
@@ -37,7 +37,7 @@ python src/analysis.py         # insights at 30/60/90 days -> output/insights.js
 python src/build_dashboard.py  # embeds the data into dashboard/template.html -> dashboard/index.html
 
 # validation (needs: playwright install chromium)
-python src/check_dashboard.py  # dashboard figures == Python figures (19 checks)
+python src/check_dashboard.py  # dashboard figures == Python figures (23 checks)
 python src/check_narrative.py  # every tab's text under all 1,344 filter combinations
 python src/capture_screenshots.py  # optional: refresh docs/screenshots/
 ```
@@ -48,7 +48,7 @@ python src/capture_screenshots.py  # optional: refresh docs/screenshots/
 
 **Linking outcomes to events (association, not cause).** An outcome counts for an event if it happens within the window after an event the firm attended; overlaps are credited to the most recent event. Each claim is then tested against a fair comparison: the same firms before the event, firms that attended a different event over the same dates, and deals old enough to have closed. With three events these comparisons are directional; bootstrap 95% ranges are reported.
 
-**KPIs, from reach to capital.** Reach (firms attended) → Follow-up (follow-up rate vs before-event baseline, days to first meeting, Tier 1 firms not met) → Pipeline (new deals, existing deals moved forward, change vs comparison group) → Outcome (event-sourced commitments, mature-deal commit rate) → Efficiency (cost per extra firm met). Full definitions: [`docs/metric_definitions.md`](docs/metric_definitions.md).
+**KPIs, from reach to capital.** Reach (firms attended) → Follow-up (follow-up rate vs before-event baseline, days to first meeting, Tier 1 firms not met) → Pipeline (new deals, existing deals moved forward, change vs comparison group) → Outcome (event-sourced commitments, mature-deal commit rate) → Efficiency (cost per extra firm met, beyond the season). Full definitions: [`docs/metric_definitions.md`](docs/metric_definitions.md).
 
 ## Key assumptions
 
@@ -65,7 +65,9 @@ Full log with evidence: [`docs/data_quality.md`](docs/data_quality.md).
 
 - Three events: every event comparison is directional, and both key bootstrap ranges include zero.
 - Meetings are logged only for firms that attended an event, so firms never invited cannot be compared on meetings, and "no meeting logged" may not mean "no contact".
-- The meetings comparison group is firms that attended a different event and had no event of their own within the window. Firms in their own post-event period were removed because their "before" meetings were inflated by follow-up, which made our events look better. With them removed, the overall rise in meetings matches the season (+54% vs +62%); only London clearly beats it (+158% vs +33%). The comparison group is small (13 → 21 meetings), so read it as directional.
+- The meetings comparison group is firms that attended a different event and had no event of their own within the window. Firms in their own post-event period were removed because their "before" meetings were inflated by follow-up, which made our events look better. With them removed, the overall rise in meetings matches the season (+54% vs +62%); only London beats it (+158% vs +33%), and London's comparison group is 9 firms, so read it as directional.
+- Event efficiency is a signal, not a ranking: each event's comparison group is small (9 firms for London and Berlin), so the season-adjusted cost per extra firm met changes with the window. Berlin's drop in contact is the one event finding that holds at every window.
+- Meetings are under-logged: 4 of 37 attending firms whose deals moved past the first stage have no meeting logged at all, so the call list should be checked against the CRM.
 - Meetings and deals share only a firm ID, so a meeting cannot be tied to the deal it drove.
 
 ## Taking this to production
